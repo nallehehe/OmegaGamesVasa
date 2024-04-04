@@ -1,6 +1,13 @@
+using DataAccess;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+//var connectionString = builder.Configuration.GetConnectionString("OmegaGamesVasa");
+//builder.Services.AddDbContext<OmegaGamesVasaDbContext>(options =>
+//{
+//    options.UseSqlServer(connectionString);
+//});
 
 app.Run();
