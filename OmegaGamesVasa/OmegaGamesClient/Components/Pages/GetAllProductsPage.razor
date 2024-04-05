@@ -1,6 +1,9 @@
 ﻿@page "/GetAllProductsPage"
 @using Common.DTO
+@using Common.Interface
+@using OmegaGamesAPI.Services
 @rendermode InteractiveServer
+@inject ProductService ProductService
 
 <h3>GetAllProductsPage</h3>
 
@@ -19,21 +22,8 @@
     protected override async Task OnInitializedAsync()
     {
         //TODO: Ändra ProductService till namnet på vår service och hämta listan med produkter därifrån
-        // Products = (await ProductService.GetAllProducts()).ToList();
+        Products = (await ProductService.GetAllProducts()).ToList();
 
-        Products.Add(new ProductDTO()
-            {
-                Description = "Description",
-                ProductName = "Name",
-                Price = 50
-            });
-
-        Products.Add(new ProductDTO()
-            {
-                Description = "Beskrivning",
-                ProductName = "Namn",
-                Price = 9999
-            });
     }
 
 }
