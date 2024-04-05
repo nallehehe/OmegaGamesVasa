@@ -17,14 +17,14 @@ public class ProductService : IProductService<ProductDTO>
     {
         var response = await _httpClient.GetAsync("products");
 
-        if (response.IsSuccessStatusCode)
+        if (!response.IsSuccessStatusCode)
         {
             return Enumerable.Empty<ProductDTO>();
         }
 
         var result = await response.Content.ReadFromJsonAsync<IEnumerable<ProductDTO>>();
         return result ?? Enumerable.Empty<ProductDTO>();
-    }
+    }   
 
     public async Task AddProductAsync(ProductDTO product)
     {

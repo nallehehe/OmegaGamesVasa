@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using OmegaGamesAPI.Services;
 using OmegaGamesClient.Components;
 using OmegaGamesClient.Components.Account;
 using OmegaGamesClient.Data;
@@ -34,6 +35,11 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+//TODO: Ändra URI så att det inte kollar mot local host utan mot Azure
+builder.Services.AddHttpClient("OmegaGamesAPI", client => client.BaseAddress = new Uri("http://localhost:5137"));
+
+builder.Services.AddScoped<ProductService, ProductService>();
 
 var app = builder.Build();
 
