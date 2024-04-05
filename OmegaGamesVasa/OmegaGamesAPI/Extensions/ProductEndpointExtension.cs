@@ -1,4 +1,7 @@
-﻿namespace OmegaGamesAPI.Extensions;
+﻿using Common.Interface;
+using DataAccess.Entities;
+
+namespace OmegaGamesAPI.Extensions;
 
 public static class ProductEndpointExtension
 {
@@ -8,19 +11,20 @@ public static class ProductEndpointExtension
 
         group.MapGet("/", GetAllProducts);
 
-        group.MapGet("/{id}", GetProductById);
+        group.MapGet("/", AddProduct);
 
         return app;
     }
 
-    private static Task<IResult> GetAllProducts(HttpContext context)
+    private static async Task<IResult> GetAllProducts(IProductService<Product> repo)
     {
-        throw new NotImplementedException();
+        var products = await repo.GetAllProducts();
+        return Results.Ok(products);
     }
 
-    private static Task GetProductById(HttpContext context)
+    private static async Task AddProduct(IProductService<Product> repo)
     {
-        throw new NotImplementedException();
+        var product = await repo.AddProductAsync(new Product());
     }
 }
 
