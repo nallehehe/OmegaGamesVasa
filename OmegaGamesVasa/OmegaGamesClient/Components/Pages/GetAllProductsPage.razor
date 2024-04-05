@@ -1,4 +1,5 @@
 ﻿@page "/GetAllProductsPage"
+@using Common.DTO
 @rendermode InteractiveServer
 
 <h3>GetAllProductsPage</h3>
@@ -6,19 +7,33 @@
 <CardDeck>
     @foreach (var product in Products)
     {
-        <ProductCard Name="@product.Name" Description="@product.Description" ShortDescription="@product.Description" Price="@product.Price" Product="@product" Modal="modal" />
+        <ProductCard Name="@product.ProductName" Description="@product.Description" ShortDescription="@product.Description" Price="@product.Price" />
     }
 </CardDeck>
 
 @code {
-    
-    //TODO: Ändra <ProductRecord> till namnet på DTOn som innehåller relevant information
-    // private List<ProductRecord> Products { get; set; } = new List<ProductRecord>();
+
+    private List<ProductDTO> Products { get; set; } = new List<ProductDTO>();
+
 
     protected override async Task OnInitializedAsync()
     {
-        //TODO: Ändra ProductService till namnet på vår service
+        //TODO: Ändra ProductService till namnet på vår service och hämta listan med produkter därifrån
         // Products = (await ProductService.GetAllProducts()).ToList();
+
+        Products.Add(new ProductDTO()
+            {
+                Description = "Description",
+                ProductName = "Name",
+                Price = 50
+            });
+
+        Products.Add(new ProductDTO()
+            {
+                Description = "Beskrivning",
+                ProductName = "Namn",
+                Price = 9999
+            });
     }
 
 }
