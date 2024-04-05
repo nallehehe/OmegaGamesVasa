@@ -1,5 +1,5 @@
-﻿using Common.Interface;
-using DataAccess.Entities;
+﻿using Common.DTO;
+using Common.Interface;
 
 namespace OmegaGamesAPI.Extensions;
 
@@ -16,15 +16,15 @@ public static class ProductEndpointExtension
         return app;
     }
 
-    private static async Task<IResult> GetAllProducts(IProductService<Product> repo)
+    private static async Task<IResult> GetAllProducts(IProductService<ProductDTO> repo)
     {
         var products = await repo.GetAllProducts();
         return Results.Ok(products);
     }
 
-    private static async Task AddProduct(IProductService<Product> repo)
+    private static async Task AddProduct(IProductService<ProductDTO> repo, ProductDTO product)
     {
-        var product = await repo.AddProductAsync(new Product());
+        await repo.AddProductAsync(new ProductDTO());
     }
 }
 
