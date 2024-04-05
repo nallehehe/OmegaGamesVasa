@@ -24,7 +24,7 @@ public class ProductService : IProductService<ProductDTO>
 
         var result = await response.Content.ReadFromJsonAsync<IEnumerable<ProductDTO>>();
         return result ?? Enumerable.Empty<ProductDTO>();
-    }
+    }   
 
     public async Task AddProductAsync(ProductDTO product)
     {

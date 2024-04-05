@@ -6,9 +6,10 @@ using OmegaGamesAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectString = builder.Configuration.GetConnectionString("OmegaGamesVasa");
+var connectStringLocal = builder.Configuration.GetConnectionString("OmegaGamesVasa");
+var connectionStringAzure = builder.Configuration.GetConnectionString("OmegaGamesVasaAzure");
 
-builder.Services.AddDbContext<OmegaGamesDbContext>(options => options.UseSqlServer(connectString));
+builder.Services.AddDbContext<OmegaGamesDbContext>(options => options.UseSqlServer(connectionStringAzure));
 
 builder.Services.AddScoped<IProductService<Product>, ProductRepository>();
 
