@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace Common.DTO;
 
-namespace DataAccess.Entities;
-
-public class Product
+public class ProductDTO
 {
-    [Key]
     public int Id { get; set; }
     public string ProductName { get; set; }
     public string? Description { get; set; }
