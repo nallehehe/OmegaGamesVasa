@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  api:
+    build:
+      context: ./OmegaGamesVasa
+      dockerfile: ./OmegaGamesAPI/Dockerfile
+    ports:
+      - "8888:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Database=${DATABASE};User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=true
+    depends_on:
+      - db
+  frontend:
+    build:
+      context: ./OmegaGamesVasa
+      dockerfile: ./OmegaGamesClient/Dockerfile
+    ports:
+      - "8889:8080"
+  db:
+    build:
+      context: .
+      dockerfile: ./docker-mssql/Dockerfile
+    environment:
+      - ACCEPT_EULA="Y"
+      - SA_PASSWORD=${SA_PASSWORD}
+      - DATABASE=${DATABASE}
+    ports:
+      - "1433:1433"
