@@ -18,12 +18,10 @@
 
     private List<ProductDTO> Products { get; set; } = new List<ProductDTO>();
 
-
     protected override async Task OnInitializedAsync()
     {
         //TODO: Ändra ProductService till namnet på vår service och hämta listan med produkter därifrån
         Products = (await ProductService.GetAllProducts()).ToList();
-
     }
 
 }

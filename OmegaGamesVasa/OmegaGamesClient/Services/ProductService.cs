@@ -17,7 +17,7 @@ public class ProductService : IProductService<ProductDTO>
     {
         var response = await _httpClient.GetAsync("products");
 
-        if (response.IsSuccessStatusCode)
+        if (!response.IsSuccessStatusCode)
         {
             return Enumerable.Empty<ProductDTO>();
         }
