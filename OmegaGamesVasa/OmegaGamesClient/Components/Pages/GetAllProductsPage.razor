@@ -1,0 +1,24 @@
+﻿@page "/GetAllProductsPage"
+@rendermode InteractiveServer
+
+<h3>GetAllProductsPage</h3>
+
+<CardDeck>
+    @foreach (var product in Products)
+    {
+        <ProductCard Name="@product.Name" Description="@product.Description" ShortDescription="@product.Description" Price="@product.Price" Product="@product" Modal="modal" />
+    }
+</CardDeck>
+
+@code {
+    
+    //TODO: Ändra <ProductRecord> till namnet på DTOn som innehåller relevant information
+    // private List<ProductRecord> Products { get; set; } = new List<ProductRecord>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        //TODO: Ändra ProductService till namnet på vår service
+        // Products = (await ProductService.GetAllProducts()).ToList();
+    }
+
+}
