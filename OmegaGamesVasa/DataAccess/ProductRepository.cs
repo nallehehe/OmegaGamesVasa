@@ -12,13 +12,10 @@ public class ProductRepository(OmegaGamesDbContext _context) : IProductService<P
         return await _context.Products.ToListAsync();
     }
 
-    public async Task<Product> AddProductAsync(Product product)
+    public async Task AddProductAsync(Product product)
     {
-        _context.Products.Add(product);
-        await _context.SaveChangesAsync();
-
-        //maybe remove return product
-        return product;
+       await _context.Products.AddAsync(product);
+       await _context.SaveChangesAsync();
     }
 
 }
