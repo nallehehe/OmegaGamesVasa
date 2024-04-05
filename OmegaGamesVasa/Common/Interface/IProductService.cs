@@ -4,5 +4,5 @@ public interface IProductService<T> where T : class
 {
     Task<IEnumerable<T>> GetAllProducts();
 
-    Task<T> AddProductAsync(T product);
+    Task AddProductAsync(T product);
 }
