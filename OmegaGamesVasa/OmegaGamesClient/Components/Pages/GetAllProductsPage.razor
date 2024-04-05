@@ -21,7 +21,7 @@
     protected override async Task OnInitializedAsync()
     {
         //TODO: Ändra ProductService till namnet på vår service och hämta listan med produkter därifrån
-        Products = (await ProductService.GetAllProducts()).ToList();
+        Products.AddRange(await ProductService.GetAllProducts());
     }
 
 }
