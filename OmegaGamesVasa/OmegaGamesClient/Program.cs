@@ -42,7 +42,6 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 builder.Services.AddHttpClient("OmegaGamesAPI", client => client.BaseAddress = new Uri(builder.Configuration["OmegaGamesAPIBaseAdress"]));
 
 builder.Services.AddScoped<ProductService, ProductService>();
-//provar att lägga singleton vi behöver en customer per session
 builder.Services.AddSingleton<CustomerService>();
 var app = builder.Build();
 
