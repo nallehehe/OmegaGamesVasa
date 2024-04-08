@@ -7,7 +7,7 @@ Resource    common.resource
 Suite Setup    Open browser and maximize
 
 *** Variables ***
-${productsPageHeaderText}    GetAllProductsPage
+${productsPageHeaderText}    Our Products
 
 *** Test Cases ***
 Products page renders correctly
@@ -16,6 +16,13 @@ Products page renders correctly
     Given the user is on the OmegaGames website
     When the user goes to the products page
     Then the website should display the products page
+
+Products page displays multiple products
+    [Documentation]    Test case for rendering multiple products
+    [Tags]    products
+    Given the user is on the OmegaGames website
+    When the user goes to the products page
+    Then the website should display multiple products
 
 *** Keywords ***
 Open browser and maximize
@@ -29,3 +36,8 @@ the user goes to the products page
 the website should display the products page
     Wait Until Location Contains    ${PRODUCTS_PAGE}
     Wait Until Page Contains    ${productsPageHeaderText}
+
+the website should display multiple products
+    ${products}=    Get all products on page
+    ${productsCount}=    Get Length    ${products}
+    Should Be True    ${productsCount} > 0
