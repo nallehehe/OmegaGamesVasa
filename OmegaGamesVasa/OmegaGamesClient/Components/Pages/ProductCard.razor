@@ -1,12 +1,14 @@
-﻿@rendermode InteractiveServer
-
+﻿@using OmegaGamesAPI.Services
+@using Common.DTO
+@rendermode InteractiveServer
+@inject CustomerService customerService
 
 <div class="card btn col-3 m-3" data-bs-toggle="modal" data-bs-target="#Booster1">
     <img class="card-img-top" src="./Images/Products/1/Booster1.png" alt="@Name">
     <div class="card-body"><h4 class="card-title">@Name</h4><span class="card-subtitle">@Description</span>
         <div class="card-text">@ShortDescription</div></div>
     <div class="card-footer">
-        <button type="button" class="btn btn-primary">Köp nu</button>
+        <button type="button" class="btn btn-primary" @onclick="() => AddToCart()" >Köp nu</button>
     </div>
 </div>
 
@@ -16,6 +18,12 @@
     [Parameter] public string ShortDescription { get; set; }
     [Parameter] public string Description { get; set; }
     [Parameter] public double Price { get; set; }
+    [Parameter] public ProductDTO Product { get; set; }
 
+
+    private async Task AddToCart()
+    {
+        await customerService.AddToCart(Product);
+    }
     
 }
