@@ -1,0 +1,50 @@
+﻿@page "/ShoppingCart"
+@using OmegaGamesAPI.Services
+@using Common.DTO
+@rendermode InteractiveServer
+@inject CustomerService customerService
+
+
+<h3>ShoppingCart</h3>
+
+@if (message != null)
+{
+    <p>@message</p>
+}
+else
+{
+<Virtualize Items="Products" Context="Products">
+    <div class="col-md-3 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <label>Product Name</label>
+                <h5 class="card-title">@Products.ProductName</h5>
+                <label>Product Description</label>
+                <p class="card-text">@Products.Description</p>
+                <label>Price</label>
+                <p class="card-text">@Products.Price</p>
+                <label>Category</label>
+                <p class="card-text">@Products.Category</p>
+            </div>
+        </div>
+    </div>
+</Virtualize>
+}
+
+@code {
+     private List<ProductDTO> Products { get; set; } = new List<ProductDTO>();
+
+     private string message;
+    
+     protected override async Task OnInitializedAsync()
+     {
+         if (customerService.Customer.Cart == null)
+         {
+             message = "Your cart is empty";
+         }
+         else
+         {
+          Products.AddRange(await customerService.GetShoppingCart());
+         }
+     }
+}
