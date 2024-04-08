@@ -1,14 +1,10 @@
-﻿@inherits LayoutComponentBase
+﻿@using OmegaGamesAPI.Services
+@inherits LayoutComponentBase
+@inject CustomerService customerService
 
 <div class="page">
-    @* <div class="sidebar"> *@
-    @*     <NavMenu /> *@
-    @* </div> *@
 
     <main>
-        @* <div class="top-row px-4"> *@
-        @*     <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a> *@
-        @* </div> *@
         <nav class="navbar navbar-light top-navbar navbar-expand-lg bg-body-tertiary">
           <div class="container-fluid">
             <NavLink class="navbar-brand me-auto" href="/">Omega Games</NavLink>
@@ -29,7 +25,7 @@
                 </ul>
                 <ul class="navbar-nav ms-auto me-5">
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Social</a>
+                  <a class="nav-link" href="/ShoppingCart"  Match="NavLinkMatch.Prefix">Shopping Cart (@customerService.Customer.Cart.Count)</a>
                 </li>
               </ul>
             </div>
