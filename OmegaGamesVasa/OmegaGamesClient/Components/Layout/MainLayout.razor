@@ -1,15 +1,40 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+    @* <div class="sidebar"> *@
+    @*     <NavMenu /> *@
+    @* </div> *@
 
     <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
+        @* <div class="top-row px-4"> *@
+        @*     <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a> *@
+        @* </div> *@
+        <nav class="navbar navbar-light top-navbar navbar-expand-lg bg-body-tertiary">
+          <div class="container-fluid">
+            <NavLink class="navbar-brand me-auto" href="/">Omega Games</NavLink>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#top-navbar" aria-controls="top-navbar" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="top-navbar">
+              <ul class="navbar-nav justify-content-center flex-fill">
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="/" Match="NavLinkMatch.All">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/GetAllProductsPage" Match="NavLinkMatch.Prefix">Products</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#" Match="NavLinkMatch.Prefix">Events</a>
+                </li>
+                </ul>
+                <ul class="navbar-nav ms-auto me-5">
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Social</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
         <article class="content px-4">
             @Body
         </article>
