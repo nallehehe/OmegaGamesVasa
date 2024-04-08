@@ -17,7 +17,8 @@ else
 {
     <div class="container text-center">
     <div class="row">
-        <Virtualize Items="Products" Context="Products">
+        <Virtualize Items="ProductsInCart" Context="Products">
+            
             <div class="col-md-3 mb-4">
                 <div class="card">
                     <div class="card-body">
@@ -29,6 +30,8 @@ else
                         <p class="card-text">@Products.Price</p>
                         <label>Category</label>
                         <p class="card-text">@Products.Category</p>
+                        <label>Amount</label>
+                        <p class="card-text">@Products.Amount</p>
                         <button type="button" class="btn btn-primary" @onclick="() => RemoveFromCart(Products)">Ta bort från kundvagn</button>
                     </div>
                 </div>
@@ -40,6 +43,9 @@ else
 
 @code {
     private List<ProductDTO> Products { get; set; } = new List<ProductDTO>();
+    private List<ProductInCartDTO> ProductsInCart { get; set; } = new List<ProductInCartDTO>();
+
+    public int Amount { get; set; } = 1;
 
     private string message;
 
@@ -52,19 +58,63 @@ else
         else
         {
             Products.AddRange(await customerService.GetShoppingCart());
+
+            ConvertProductsToProductsInCart();
         }
     }
 
-    private async Task RemoveFromCart(ProductDTO product)
+    private async Task RemoveFromCart(ProductInCartDTO product)
     {
-        await customerService.RemoveFromCart(product);
-        Products.Clear();
-        Products.AddRange(await customerService.GetShoppingCart());
+        var foundProduct = Products.FirstOrDefault(p => p.Id == product.Id);
+
+        if (product.Amount > 1)
+        {
+            product.Amount--;
+            await customerService.RemoveFromCart(foundProduct);
+        }
+        else
+        {
+            await customerService.RemoveFromCart(foundProduct);
+            Products.Clear();
+            Products.AddRange(await customerService.GetShoppingCart());
+            ConvertProductsToProductsInCart();
+            //TODO: Kanske behöver vara await + metoden en Task
+        }
 
         if (customerService.Customer.Cart.Count == 0)
         {
             message = "Your cart is empty";
         }
 
+    }
+
+    private void ConvertProductsToProductsInCart()
+    {
+        ProductsInCart.Clear();
+
+        foreach (var product in Products)
+        {
+            if (ProductsInCart.Exists(p => p.Id == product.Id))
+            {
+                var foundProduct = ProductsInCart.FirstOrDefault(p => p.Id == product.Id);
+                foundProduct.Amount++;
+            }
+            else
+            {
+                var newProduct = new ProductInCartDTO()
+                {
+                    AgeRestriction = product.AgeRestriction,
+                    Amount = 1,
+                    Category = product.Category,
+                    Description = product.Description,
+                    Genre = product.Genre,
+                    Id = product.Id,
+                    Image = product.Image,
+                    Price = product.Price,
+                    ProductName = product.ProductName
+                };
+                ProductsInCart.Add(newProduct);
+            }
+        }
     }
 }
