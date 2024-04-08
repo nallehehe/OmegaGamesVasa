@@ -1,24 +1,29 @@
-﻿<h3>ProductCard</h3>
-
+﻿@using OmegaGamesAPI.Services
+@using Common.DTO
 @rendermode InteractiveServer
+@inject CustomerService customerService
 
-<Card>
-    <CardBody>
-        <CardTitle Size="3">
-            @Name
-        </CardTitle>
-        <CardText>
-            @ShortDescription
-            @Price kr
-        </CardText>
-    </CardBody>
-</Card> 
+<div class="card btn col-3 m-3" data-bs-toggle="modal" data-bs-target="#Booster1">
+    <img class="card-img-top" src="./Images/Products/1/Booster1.png" alt="@Name">
+    <div class="card-body"><h4 class="card-title">@Name</h4><span class="card-subtitle">@Description</span>
+        <div class="card-text">@ShortDescription</div></div>
+    <div class="card-footer">
+        <button type="button" class="btn btn-primary" @onclick="() => AddToCart()" >Köp nu</button>
+    </div>
+</div>
 
 @code {
+    //TODO: Själva klassuppbyggnaden behöver snyggas till. "data-bs-toggle" till exempel använder sig av ett variabelnamn som har med javascript att göra. Kolla igenom alla attribut för kortet innan vi är helt klara med detta!
     [Parameter] public string Name { get; set; }
     [Parameter] public string ShortDescription { get; set; }
     [Parameter] public string Description { get; set; }
     [Parameter] public double Price { get; set; }
+    [Parameter] public ProductDTO Product { get; set; }
 
+
+    private async Task AddToCart()
+    {
+        await customerService.AddToCart(Product);
+    }
     
 }

@@ -6,13 +6,22 @@
 @inject ProductService ProductService
 
 <h3>GetAllProductsPage</h3>
+<div class="container text-center">
+    <div class="row">
+        @foreach (var product in Products)
+        {
+            <ProductCard Name="@product.ProductName" Description="@product.Description" ShortDescription="@product.Description" Price="@product.Price" Product="product" />
+        }
+    </div>
+</div>
 
-<CardDeck>
+
+@* <CardDeck>
     @foreach (var product in Products)
     {
         <ProductCard Name="@product.ProductName" Description="@product.Description" ShortDescription="@product.Description" Price="@product.Price" />
     }
-</CardDeck>
+</CardDeck> *@
 
 @code {
 
@@ -21,7 +30,6 @@
     protected override async Task OnInitializedAsync()
     {
         //TODO: Ändra ProductService till namnet på vår service och hämta listan med produkter därifrån
-        Products = (await ProductService.GetAllProducts()).ToList();
+        Products.AddRange(await ProductService.GetAllProducts());
     }
-
 }
