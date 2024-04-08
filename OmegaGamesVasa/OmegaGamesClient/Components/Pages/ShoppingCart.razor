@@ -25,6 +25,7 @@ else
                 <p class="card-text">@Products.Price</p>
                 <label>Category</label>
                 <p class="card-text">@Products.Category</p>
+                <button type="button" class="btn btn-primary" @onclick="() => RemoveFromCart(Products)" >Ta bort från kundvagn</button>
             </div>
         </div>
     </div>
@@ -38,7 +39,7 @@ else
     
      protected override async Task OnInitializedAsync()
      {
-         if (customerService.Customer.Cart == null)
+         if (customerService.Customer.Cart.Count == 0)
          {
              message = "Your cart is empty";
          }
@@ -47,4 +48,17 @@ else
           Products.AddRange(await customerService.GetShoppingCart());
          }
      }
+
+     private async Task RemoveFromCart(ProductDTO product)
+        {
+            await customerService.RemoveFromCart(product);
+            Products.Clear();
+            Products.AddRange(await customerService.GetShoppingCart());
+
+            if (customerService.Customer.Cart.Count == 0)
+            {
+                message = "Your cart is empty";
+            }
+
+        }
 }
