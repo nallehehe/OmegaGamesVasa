@@ -22,6 +22,10 @@
 									"\r",
 									"pm.test(\"Body is array\", function () {\r",
 									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Product contains correct fields\", function () {\r",
+									"    pm.expect(pm.response.json()[0]).to.have.all.keys('id', 'productName','description','price','category','stock','image','genre','ageRestriction');\r",
 									"});"
 								],
 								"type": "text/javascript"
