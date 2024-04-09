@@ -46,10 +46,7 @@ else
 <div class="text-center">
     <label>Cart total</label>
     <textbox disabled="true">
-@foreach (var prod in Products)
-{
-price += prod.Price;
-}
+
 @price
 </textbox>
 </div>
@@ -70,6 +67,7 @@ price += prod.Price;
 
     protected override async Task OnInitializedAsync()
     {
+        
         if (customerService.Customer.Cart.Count == 0)
         {
             message = "Your cart is empty";
@@ -80,6 +78,7 @@ price += prod.Price;
 
             ConvertProductsToProductsInCart();
         }
+        CalculateTotalCost();
     }
 
     private async Task RemoveFromCart(ProductInCartDTO product)
@@ -90,6 +89,7 @@ price += prod.Price;
         {
             product.Amount--;
             await customerService.RemoveFromCart(foundProduct);
+            CalculateTotalCost();
         }
         else
         {
@@ -97,14 +97,20 @@ price += prod.Price;
             Products.Clear();
             Products.AddRange(await customerService.GetShoppingCart());
             ConvertProductsToProductsInCart();
+            CalculateTotalCost();
             //TODO: Kanske behöver vara await + metoden en Task
         }
 
         if (customerService.Customer.Cart.Count == 0)
         {
             message = "Your cart is empty";
+            price = 0;
         }
+    }
 
+    private void CalculateTotalCost()
+    {
+        price = ProductsInCart.Sum(item => item.Price * item.Amount);
     }
 
     private async Task ClearCart()
@@ -115,6 +121,9 @@ price += prod.Price;
         message = "Your cart is empty";
     }
 
+    private void GotoCheck()
+    {
+        NavigationManager.NavigateTo("/OrderPage");
     }
 
     private void ConvertProductsToProductsInCart()
