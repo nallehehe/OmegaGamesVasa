@@ -1,0 +1,27 @@
+﻿
+
+.frontpage1 {
+    background: url(https://teamvasastorage.blob.core.windows.net/images/landing-pic17-twostiffs_portrait_of_a_very_happy_luchador_in_the_comic_style__eb9679d8-ef27-4eb4-8791-33e39f08ec74.jpg);
+    height: 100%;
+    flex-flow: column;
+    background-repeat: no-repeat;
+    background-attachment: local;
+    background-size: 100% auto;
+}
+
+.frontpage2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.frontpage-h2 {
+    align-content: center;
+    font-size: 10rem;
+    word-wrap: break-word;
+    text-align:center;
+}
+.section3{
+    background-color: black;
+    height: 100vh;
+}
