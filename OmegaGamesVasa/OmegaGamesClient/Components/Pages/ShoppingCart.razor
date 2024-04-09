@@ -1,8 +1,10 @@
 ﻿@page "/ShoppingCart"
 @using OmegaGamesAPI.Services
 @using Common.DTO
+@using System.Runtime.InteropServices
 @rendermode InteractiveServer
 @inject CustomerService customerService
+@inject NavigationManager NavigationManager
 
 <div class="text-center">
     <h3>ShoppingCart</h3>
@@ -41,6 +43,21 @@ else
     </div>
 }
 
+<div class="text-center">
+    <label>Cart total</label>
+    <textbox disabled="true">
+@foreach (var prod in Products)
+{
+price += prod.Price;
+}
+@price
+</textbox>
+</div>
+    <div class="text-center">
+    <button type="button" class="btn btn-primary" @onclick="() => ClearCart()">Clear Cart</button>
+    <button type="button" class="btn btn-primary" @onclick="() => GotoCheck()">Go to checkout</button>
+</div>
+
 @code {
     private List<ProductDTO> Products { get; set; } = new List<ProductDTO>();
     private List<ProductInCartDTO> ProductsInCart { get; set; } = new List<ProductInCartDTO>();
@@ -48,6 +65,8 @@ else
     public int Amount { get; set; } = 1;
 
     private string message;
+
+    private double price;
 
     protected override async Task OnInitializedAsync()
     {
@@ -85,6 +104,16 @@ else
         {
             message = "Your cart is empty";
         }
+
+    }
+
+    private async Task ClearCart()
+    {
+        await customerService.ClearCart();
+        Products.Clear();
+        price = 0;
+        message = "Your cart is empty";
+    }
 
     }
 
