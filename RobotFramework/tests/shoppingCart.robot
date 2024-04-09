@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation    Test suite for testing shopping cart functionality
 Metadata    UserStoryIds    86, 146
-Metadata    UserStoryLinks    https://dev.azure.com/TeamVasa/TeamVasa/_workitems/edit/74    https://dev.azure.com/TeamVasa/TeamVasa/_workitems/edit/146
+Metadata    UserStoryLinks    https://dev.azure.com/TeamVasa/TeamVasa/_workitems/edit/86    https://dev.azure.com/TeamVasa/TeamVasa/_workitems/edit/146
 Library    SeleniumLibrary
 Library    XML
 Library    Collections
@@ -10,6 +10,7 @@ Suite Setup    Open browser and maximize
 
 *** Variables ***
 ${shoppingCartHeaderText}    ShoppingCart
+@{addedProducts}
 
 *** Test Cases ***
 Shopping cart renders
@@ -21,10 +22,18 @@ Shopping cart renders
 
 Add single product to cart
     [Documentation]    Test case for adding a single product to cart
-    [Tags]    shopping-cart    expected-fail
+    [Tags]    shopping-cart
     Given the user is on the products page
-    When the user adds a product to the shopping cart
+    When the user adds a product to the shopping cart    Product 1
     Then the shopping cart page should display the added product
+
+Add multiple products to cart
+    [Documentation]    Test case for adding multiple products to cart
+    [Tags]    shopping-cart
+    Given the user is on the products page
+    When the user adds a product to the shopping cart    Product 1
+    And the user adds a product to the shopping cart    Product 2
+    Then the shopping cart page should display all added products
 
 *** Keywords ***
 the user goes to the shopping cart page
@@ -35,10 +44,23 @@ the page should display the shopping cart page
     Wait Until Page Contains    ${shoppingCartHeaderText}
 
 the user adds a product to the shopping cart
-    ${productName}=    Get Text    ${firstProductNamePath}
-    Click Button    ${addFirstProductButtonPath}
-    Set Test Variable    $addedProductName    ${productName}
+    [Arguments]    ${productNameToAdd}
+    ${productTitlePath}=    Set Variable    //h4[contains(@class, 'card-title') and text()='${productNameToAdd}']
+    Wait Until Page Contains Element    ${productTitlePath}
+    ${buttonPath}=    Set Variable    ${productTitlePath}/parent::*/parent::*//button[contains(@class, 'add-to-cart-button')]
+    Click Button    ${buttonPath}
+    Append To List    ${addedProducts}    ${productNameToAdd}
 
 the shopping cart page should display the added product
-    Page Should Contain    ${addedProductName}
     Go To    ${BASE_URL}/${SHOPPING_CART_PAGE}
+    Wait Until Page Contains    ${shoppingCartHeaderText}
+    ${productName}=    Get From List    ${addedProducts}    0
+    Page Should Contain   ${productName} 
+    Go To    ${BASE_URL}/${SHOPPING_CART_PAGE}
+
+the shopping cart page should display all added products
+    Go To    ${BASE_URL}/${SHOPPING_CART_PAGE}
+    Wait Until Page Contains    ${shoppingCartHeaderText}
+    FOR    ${productName}    IN    @{addedProducts}
+        Page Should Contain    ${productName}
+    END
