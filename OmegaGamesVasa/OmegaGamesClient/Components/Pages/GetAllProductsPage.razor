@@ -5,9 +5,8 @@
 @rendermode InteractiveServer
 @inject ProductService ProductService
 
-<div class="text-center">
-<h3>Our Products</h3>
-</div>
+<section class="page-image">
+
 <div class="container text-center product-container">
     <div class="row justify-content-center">
         @foreach (var product in Products)
@@ -16,6 +15,7 @@
         }
     </div>
 </div>
+</section>
 
 @code {
 

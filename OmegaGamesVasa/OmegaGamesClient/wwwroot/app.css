@@ -2,6 +2,22 @@ html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+/*Home*/
+
+.frontpage1 {
+    background: linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4) ), 
+                url(https://teamvasastorage.blob.core.windows.net/images/pic17-twostiffs_portrait_of_a_very_happy_luchador_in_the_comic_style__eb9679d8-ef27-4eb4-8791-33e39f08ec74.png);
+    height: 100%;
+    flex-flow: column;
+    background-repeat: no-repeat;
+    background-attachment: local;
+    background-size: 100% auto;
+}
+
+.overwriteA {
+    height: 100%;
+}
+
 a, .btn-link {
     color: #006bb7;
 }
@@ -12,7 +28,7 @@ a, .btn-link {
     border-color: #1861ac;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+.btn:focus, .btn:active:focus, .btn-link, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
