@@ -1,0 +1,34 @@
+﻿/*.link-position {
+    margin-top: 5rem;
+}*/
+/*.background-color {
+    color: #3C454B;
+}*/
+
+/** {
+    margin: 0;
+    padding: 0;
+    background-image: url(https://teamvasastorage.blob.core.windows.net/images/pic11-twostiffs_portrait_of_a_luchador_playing_football_in_the_comic__4696089e-ab96-404c-a50f-9e6f2ba51eff.png?format=webp&quality=lossless&width=1342&height=671);
+    background-size: cover;
+    background-attachment: fixed;
+}*/
+
+.page-image {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4) ), url(https://teamvasastorage.blob.core.windows.net/images/pic11-twostiffs_portrait_of_a_luchador_playing_football_in_the_comic__4696089e-ab96-404c-a50f-9e6f2ba51eff.png?format=webp&quality=lossless&width=1342&height=671);
+    height: 100vh;
+    flex-flow: column;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.overwriteA {
+    height: 100%;
+}
+
+.product-container {
+    position: relative;
+    top: 5rem;
+}

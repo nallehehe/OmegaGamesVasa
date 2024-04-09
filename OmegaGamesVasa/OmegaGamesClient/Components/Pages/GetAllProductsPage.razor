@@ -5,17 +5,17 @@
 @rendermode InteractiveServer
 @inject ProductService ProductService
 
-<div class="text-center">
-<h3>Our Products</h3>
-</div>
+<section class="page-image">
+
 <div class="container text-center product-container">
     <div class="row">
         @foreach (var product in Products)
         {
-            <ProductCard Name="@product.ProductName" Description="@product.Description" ShortDescription="@product.Description" Price="@product.Price" Product="product" />
+            <ProductCard Name="@product.ProductName" Description="@product.Description" ShortDescription="@product.Description" Price="@product.Price" Product="product"/>
         }
     </div>
 </div>
+</section>
 
 @code {
 
