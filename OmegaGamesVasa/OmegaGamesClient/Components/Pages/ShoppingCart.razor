@@ -18,28 +18,31 @@
 else
 {
     <div class="container text-center">
-    <div class="row">
-        <Virtualize Items="ProductsInCart" Context="Products">
-            
-            <div class="col-md-3 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <label>Product Name</label>
-                        <h5 class="card-title">@Products.ProductName</h5>
-                        <label>Product Description</label>
-                        <p class="card-text">@Products.Description</p>
-                        <label>Price</label>
-                            <p class="card-text">@Math.Round(Products.Price, 2)</p>
-                        <label>Category</label>
-                        <p class="card-text">@Products.Category</p>
-                        <label>Amount</label>
-                        <p class="card-text">@Products.Amount</p>
-                        <button type="button" class="btn btn-primary" @onclick="() => RemoveFromCart(Products)">Ta bort från kundvagn</button>
+        <div class="row">
+            <Virtualize Items="ProductsInCart" Context="Products">
+                <div class="col-md-3 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <label>Product Name</label>
+                            <h5 class="card-title">@Products.ProductName</h5>
+                            <label>Product Description</label>
+                            <p class="card-text">@Products.Description</p>
+                            <label>Price</label>
+                            <p class="card-text">@Math.Round(Products.Price,2)</p>
+                            <label>Category</label>
+                            <p class="card-text">@Products.Category</p>
+                            <label>Amount</label>
+                            <div class="input-group mb-3">
+                                <button class="btn btn-outline-secondary" type="button" @onclick="() => IncrementAmount(Products)">+</button>
+                                <input type="number" class="form-control" @bind="Products.Amount" />
+                                <button class="btn btn-outline-secondary" type="button" @onclick="() => DecrementAmount(Products)">-</button>
+                            </div>
+                            <button type="button" class="btn btn-primary" @onclick="() => RemoveAllFromCart(Products)">Ta bort från kundvagn</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </Virtualize>
-    </div>
+            </Virtualize>
+        </div>
     </div>
 }
 
@@ -47,10 +50,10 @@ else
     <label>Cart total</label>
     <textbox disabled="true">
 
- @Math.Round(@price,2)
-</textbox>
+        @Math.Round(@price,2)
+    </textbox>
 </div>
-    <div class="text-center">
+<div class="text-center">
     <button type="button" class="btn btn-primary" @onclick="() => ClearCart()">Clear Cart</button>
     <button type="button" class="btn btn-primary" @onclick="() => GotoCheck()">Go to checkout</button>
 </div>
@@ -67,13 +70,14 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        
+
         if (customerService.Customer.Cart.Count == 0)
         {
             message = "Your cart is empty";
         }
         else
         {
+            ProductsInCart.Clear();
             Products.AddRange(await customerService.GetShoppingCart());
 
             ConvertProductsToProductsInCart();
@@ -81,25 +85,57 @@ else
         CalculateTotalCost();
     }
 
-    private async Task RemoveFromCart(ProductInCartDTO product)
+    private async Task DecrementAmount(ProductInCartDTO product)
+    {
+            product.Amount--;
+            await RemoveOneFromCart(product);
+    }
+
+    private async Task IncrementAmount(ProductInCartDTO product)
+    {
+        product.Amount++;
+        await UpdateCart(product);
+    }
+
+    private async Task UpdateCart(ProductInCartDTO product)
     {
         var foundProduct = Products.FirstOrDefault(p => p.Id == product.Id);
+        await customerService.AddToCart(foundProduct);
+        Products.Clear();
+        Products.AddRange(await customerService.GetShoppingCart());
+        ConvertProductsToProductsInCart();
+        CalculateTotalCost();
+    }
 
-        if (product.Amount > 1)
-        {
-            product.Amount--;
-            await customerService.RemoveFromCart(foundProduct);
-            CalculateTotalCost();
-        }
-        else
+    private async Task RemoveAllFromCart(ProductInCartDTO product)
+    {
+        var foundProduct = Products.FirstOrDefault(p => p.Id == product.Id);
+        while (Products.Exists(p => p.Id == product.Id))
         {
             await customerService.RemoveFromCart(foundProduct);
-            Products.Clear();
-            Products.AddRange(await customerService.GetShoppingCart());
-            ConvertProductsToProductsInCart();
-            CalculateTotalCost();
-            //TODO: Kanske behöver vara await + metoden en Task
+            Products.Remove(foundProduct);
         }
+        Products.Clear();
+        Products.AddRange(await customerService.GetShoppingCart());
+        ConvertProductsToProductsInCart();
+        CalculateTotalCost();
+        //TODO: Kanske behöver vara await + metoden en Task
+
+        if (customerService.Customer.Cart.Count == 0)
+        {
+            message = "Your cart is empty";
+            price = 0;
+        }
+    }
+
+    private async Task RemoveOneFromCart(ProductInCartDTO product)
+    {
+        var foundProduct = Products.FirstOrDefault(p => p.Id == product.Id);
+        await customerService.RemoveFromCart(foundProduct);
+        Products.Clear();
+        Products.AddRange(await customerService.GetShoppingCart());
+        ConvertProductsToProductsInCart();
+        CalculateTotalCost();
 
         if (customerService.Customer.Cart.Count == 0)
         {
@@ -140,17 +176,17 @@ else
             else
             {
                 var newProduct = new ProductInCartDTO()
-                {
-                    AgeRestriction = product.AgeRestriction,
-                    Amount = 1,
-                    Category = product.Category,
-                    Description = product.Description,
-                    Genre = product.Genre,
-                    Id = product.Id,
-                    Image = product.Image,
-                    Price = product.Price,
-                    ProductName = product.ProductName
-                };
+                    {
+                        AgeRestriction = product.AgeRestriction,
+                        Amount = 1,
+                        Category = product.Category,
+                        Description = product.Description,
+                        Genre = product.Genre,
+                        Id = product.Id,
+                        Image = product.Image,
+                        Price = product.Price,
+                        ProductName = product.ProductName
+                    };
                 ProductsInCart.Add(newProduct);
             }
         }
