@@ -7,7 +7,7 @@ Resource    common.resource
 Suite Setup    Open browser and maximize
 
 *** Variables ***
-${productsPageHeaderText}    Our Products
+${productsContainerElement}    //div[contains(@class, 'product-container')]
 
 *** Test Cases ***
 Products page renders correctly
@@ -35,7 +35,7 @@ the user goes to the products page
 
 the website should display the products page
     Wait Until Location Contains    ${PRODUCTS_PAGE}
-    Wait Until Page Contains    ${productsPageHeaderText}
+    Wait Until Page Contains Element    ${productsContainerElement}
 
 the website should display multiple products
     ${products}=    Get all products on page
