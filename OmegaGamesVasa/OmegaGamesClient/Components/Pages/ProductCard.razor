@@ -26,10 +26,17 @@
     [Parameter] public double Price { get; set; }
     [Parameter] public ProductDTO Product { get; set; }
 
+    public string Image { get; set; }
+
 
     private async Task AddToCart()
     {
         await customerService.AddToCart(Product);
     }
-    
+
+    protected override void OnInitialized()
+    {
+        Image = Name + ".PNG";
+        base.OnInitialized();
+    }
 }
