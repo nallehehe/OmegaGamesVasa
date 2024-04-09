@@ -5,13 +5,12 @@
 @rendermode InteractiveServer
 @inject CustomerService customerService
 
-<div class="card btn shadow-sm col-md-3 mb-4 col-sm-6 m-2" data-bs-toggle="modal" data-bs-target="#Booster1">
-    <img class="card-img-top" src="./Images/Products/1/Booster1.png" alt="@Name">
+<div class="card btn shadow-sm col-md-3 mb-4 col-sm-6 m-2">
+    <img class="card-img-top" src="@Product.Image" alt="@Product.ProductName">
     <div class="card-body">
-        <h4 class="card-title">@Name</h4>
-        <span class="card-subtitle">@Description</span>
-        <div class="card-text">@ShortDescription</div>
-        <div class="card-text">@Price kr</div>
+        <h4 class="card-title">@Product.ProductName</h4>
+        <span class="card-subtitle">@Product.Description</span>
+        <div class="card-text">@Product.Price kr</div>
     </div>
     <div class="card-footer">
         <button type="button" class="btn btn-primary add-to-cart-button" @onclick="() => AddToCart()" >Köp nu</button>
@@ -19,15 +18,10 @@
 </div>
 
 @code {
-    //TODO: Själva klassuppbyggnaden behöver snyggas till. "data-bs-toggle" till exempel använder sig av ett variabelnamn som har med javascript att göra. Kolla igenom alla attribut för kortet innan vi är helt klara med detta!
-    [Parameter] public string Name { get; set; }
-    [Parameter] public string ShortDescription { get; set; }
-    [Parameter] public string Description { get; set; }
-    [Parameter] public double Price { get; set; }
+
     [Parameter] public ProductDTO Product { get; set; }
 
     public string Image { get; set; }
-
 
     private async Task AddToCart()
     {
@@ -36,7 +30,7 @@
 
     protected override void OnInitialized()
     {
-        Image = Name + ".PNG";
+        Image = Product.Image;
         base.OnInitialized();
     }
 }
