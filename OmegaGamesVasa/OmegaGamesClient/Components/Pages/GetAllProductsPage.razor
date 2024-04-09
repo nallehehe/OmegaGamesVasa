@@ -9,7 +9,7 @@
 <h3>Our Products</h3>
 </div>
 <div class="container text-center product-container">
-    <div class="row">
+    <div class="row justify-content-center">
         @foreach (var product in Products)
         {
             <ProductCard Name="@product.ProductName" Description="@product.Description" ShortDescription="@product.Description" Price="@product.Price" Product="product" />
