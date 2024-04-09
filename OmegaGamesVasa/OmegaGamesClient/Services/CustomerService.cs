@@ -1,4 +1,5 @@
 ﻿using Common.DTO;
+using Microsoft.AspNetCore.Components;
 using System.Net.Http;
 
 namespace OmegaGamesAPI.Services;
@@ -31,5 +32,4 @@ public class CustomerService
     {
         Customer.Cart.Clear();
     }
-
 }
