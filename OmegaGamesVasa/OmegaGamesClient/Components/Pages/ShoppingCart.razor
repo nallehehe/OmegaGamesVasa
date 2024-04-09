@@ -29,7 +29,7 @@ else
                         <label>Product Description</label>
                         <p class="card-text">@Products.Description</p>
                         <label>Price</label>
-                        <p class="card-text">@Products.Price</p>
+                            <p class="card-text">@Math.Round(Products.Price, 2)</p>
                         <label>Category</label>
                         <p class="card-text">@Products.Category</p>
                         <label>Amount</label>
@@ -47,7 +47,7 @@ else
     <label>Cart total</label>
     <textbox disabled="true">
 
-@price
+ @Math.Round(@price,2)
 </textbox>
 </div>
     <div class="text-center">
@@ -56,10 +56,10 @@ else
 </div>
 
 @code {
-    private List<ProductDTO> Products { get; set; } = new List<ProductDTO>();
-    private List<ProductInCartDTO> ProductsInCart { get; set; } = new List<ProductInCartDTO>();
+    private List<ProductDTO> Products { get; set; } = new();
+    private List<ProductInCartDTO> ProductsInCart { get; set; } = new();
 
-    public int Amount { get; set; } = 1;
+    
 
     private string message;
 
