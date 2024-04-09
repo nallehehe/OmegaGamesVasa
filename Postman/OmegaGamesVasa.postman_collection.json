@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a35ac656-53f8-44d5-92c5-054a7098dafd",
+		"_postman_id": "6924ecb6-253c-4270-a676-77dacef9d6b6",
 		"name": "OmegaGamesVasa",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "7374966"
@@ -24,8 +24,7 @@
 									"    pm.expect(pm.response.json()).to.be.an('array');\r",
 									"});"
 								],
-								"type": "text/javascript",
-								"packages": {}
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -33,12 +32,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://{{host.development}}:{{port.development}}/products",
-							"protocol": "https",
+							"raw": "{{baseAddress}}/products",
 							"host": [
-								"{{host.development}}"
+								"{{baseAddress}}"
 							],
-							"port": "{{port.development}}",
 							"path": [
 								"products"
 							]
@@ -54,7 +51,6 @@
 			"listen": "prerequest",
 			"script": {
 				"type": "text/javascript",
-				"packages": {},
 				"exec": [
 					""
 				]
@@ -64,7 +60,6 @@
 			"listen": "test",
 			"script": {
 				"type": "text/javascript",
-				"packages": {},
 				"exec": [
 					""
 				]
@@ -80,6 +75,11 @@
 		{
 			"key": "port.development",
 			"value": "7092",
+			"type": "string"
+		},
+		{
+			"key": "baseAddress",
+			"value": "http://localhost:5137",
 			"type": "string"
 		}
 	]
