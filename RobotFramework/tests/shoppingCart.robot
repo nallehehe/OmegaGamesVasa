@@ -24,15 +24,14 @@ Add single product to cart
     [Documentation]    Test case for adding a single product to cart
     [Tags]    shopping-cart
     Given the user is on the products page
-    When the user adds a product to the shopping cart    Product 1
+    When the user adds a product to the shopping cart
     Then the shopping cart page should display the added product
 
 Add multiple products to cart
     [Documentation]    Test case for adding multiple products to cart
     [Tags]    shopping-cart
     Given the user is on the products page
-    When the user adds a product to the shopping cart    Product 1
-    And the user adds a product to the shopping cart    Product 2
+    When the user adds two products to the shopping cart
     Then the shopping cart page should display all added products
 
 *** Keywords ***
@@ -44,12 +43,19 @@ the page should display the shopping cart page
     Wait Until Page Contains    ${shoppingCartHeaderText}
 
 the user adds a product to the shopping cart
-    [Arguments]    ${productNameToAdd}
-    ${productTitlePath}=    Set Variable    //h4[contains(@class, 'card-title') and text()='${productNameToAdd}']
-    Wait Until Page Contains Element    ${productTitlePath}
+    Add product with index 1 to cart
+
+the user adds two products to the shopping cart
+    Add product with index 1 to cart
+    Add product with index 2 to cart
+    Log To Console    ${addedProducts}
+    
+Add product with index ${index} to cart
+    ${productTitlePath}=    Set Variable    (//h4[contains(@class, 'card-title')])[${index}]
+    ${productTitle}=    Get Text    ${productTitlePath}
     ${buttonPath}=    Set Variable    ${productTitlePath}/parent::*/parent::*//button[contains(@class, 'add-to-cart-button')]
     Click Button    ${buttonPath}
-    Append To List    ${addedProducts}    ${productNameToAdd}
+    Append To List    ${addedProducts}    ${productTitle}
 
 the shopping cart page should display the added product
     Go To    ${BASE_URL}/${SHOPPING_CART_PAGE}
