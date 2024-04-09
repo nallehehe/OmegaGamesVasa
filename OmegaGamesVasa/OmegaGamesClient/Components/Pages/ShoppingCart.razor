@@ -45,7 +45,7 @@ else
     <textbox disabled="true">
 @foreach (var prod in Products)
 {
-price += prod.Price;
+price = prod.Price + price;
 }
 @price
 </textbox>
