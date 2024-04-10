@@ -7,6 +7,7 @@
     background-repeat: no-repeat;
     background-attachment: local;
     background-size: 100% auto;
+    min-height: 100vh;
 }
 
 .frontpage2 {
@@ -17,11 +18,11 @@
 
 .frontpage-h2 {
     align-content: center;
-    font-size: 10rem;
+    font-size: 5rem;
     word-wrap: break-word;
     text-align:center;
 }
 .section3{
     background-color: black;
-    height: 100vh;
+    min-height: 100vh;
 }
