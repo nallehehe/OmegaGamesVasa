@@ -5,21 +5,22 @@ Metadata    UserStoryLinks    https://dev.azure.com/TeamVasa/TeamVasa/_workitems
 Library    SeleniumLibrary
 Resource    common.resource
 Suite Setup    Open browser and maximize
+Suite Teardown    Close All Browsers
 
 *** Variables ***
-${productsContainerElement}    //div[contains(@class, 'product-container')]
+
 
 *** Test Cases ***
 Products page renders correctly
     [Documentation]    Test case for rendering products page
-    [Tags]    smoke    products
+    [Tags]    smoke    products    
     Given the user is on the OmegaGames website
     When the user goes to the products page
     Then the website should display the products page
 
 Products page displays multiple products
     [Documentation]    Test case for rendering multiple products
-    [Tags]    products
+    [Tags]    products    happy-path
     Given the user is on the OmegaGames website
     When the user goes to the products page
     Then the website should display multiple products
@@ -38,6 +39,4 @@ the website should display the products page
     Wait Until Page Contains Element    ${productsContainerElement}
 
 the website should display multiple products
-    ${products}=    Get all products on page
-    ${productsCount}=    Get Length    ${products}
-    Should Be True    ${productsCount} > 0
+    Products are displaying
