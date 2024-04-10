@@ -19,7 +19,7 @@
 else
 {
     <div class="container text-center product-container">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center mb-5 mt-5">
             @foreach (var Product in Products.Distinct())
             {
                 <div class="card btn shadow-sm col-md-3 col-sm-6 m-2 product-card">
@@ -40,15 +40,14 @@ else
                 </div>
             }
         </div>
-        <div class="mt-4 fixed-bottom">
-            <div class="text-center">
+        <div class="justify-content-center mt-5">
+            <div class="text-center pt-5">
                 <label>Cart total</label>
                 <textbox disabled="true">
-
                     @Math.Round(@price, 2)
                 </textbox>
             </div>
-            <div class="text-center">
+            <div class="row text-center mb-5">
                 <button type="button" class="btn btn-primary" @onclick="() => ClearCart()">Clear Cart</button>
                 <button type="button" class="btn btn-primary" @onclick="() => GotoCheck()">Go to checkout</button>
             </div>
