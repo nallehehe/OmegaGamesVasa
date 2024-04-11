@@ -20,7 +20,7 @@ else
 {
     <div class="container text-center product-container">
         <div class="row justify-content-center mb-5 mt-5">
-            @foreach (var Product in Products.Distinct())
+            @foreach (var Product in Products.DistinctBy(p => p.Id))
             {
                 <div class="card shadow-sm col-md-3 col-sm-6 m-2 product-card">
                     <img class="card-img-top" src="@Product.Image" alt="@Product.ProductName">
@@ -66,7 +66,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-
+        Products.Clear();
         if (customerService.Customer.Cart.Count == 0)
         {
             message = "Your cart is empty";
