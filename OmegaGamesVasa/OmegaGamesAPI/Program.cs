@@ -1,8 +1,8 @@
 using Common.Interface;
 using DataAccess;
 using DataAccess.Entities;
+using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
-using OmegaGamesAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +13,10 @@ builder.Services.AddDbContext<OmegaGamesDbContext>(options => options.UseSqlServ
 
 builder.Services.AddScoped<IProductService<Product>, ProductRepository>();
 
+builder.Services.AddFastEndpoints();
 var app = builder.Build();
 //TODO: Repositories
 
-app.MapProductsEndpoints();
+app.UseFastEndpoints();
 
 app.Run();

@@ -1,0 +1,43 @@
+﻿.shopping-cart-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(https://teamvasastorage.blob.core.windows.net/images/pic11-twostiffs_portrait_of_a_luchador_playing_football_in_the_comic__4696089e-ab96-404c-a50f-9e6f2ba51eff.png?format=webp&quality=lossless&width=1342&height=671);
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+}
+
+.overwriteA {
+    height: 100%;
+}
+
+.product-card {
+    top: 5rem;
+    position: relative;
+    max-height: 35rem;
+    max-width: 20rem;
+}
+
+.button-box {
+    border-radius: 1rem;
+    height: auto;
+    width: 10rem;
+    border: 1rem white;
+    padding: 1rem;
+    margin: 1rem;
+    background-color: white;
+}
+
+.button-container {
+    margin-right: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.test.Hover {
+    background-color: black;
+}

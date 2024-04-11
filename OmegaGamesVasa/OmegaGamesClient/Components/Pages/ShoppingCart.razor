@@ -2,67 +2,63 @@
 @using OmegaGamesAPI.Services
 @using Common.DTO
 @using System.Runtime.InteropServices
+@using OmegaGamesClient.Components.Account.Pages
 @rendermode InteractiveServer
 @inject CustomerService customerService
 @inject NavigationManager NavigationManager
 
-<div class="text-center">
-    <h3>ShoppingCart</h3>
-</div>
 
+<div class="shopping-cart-image">
+</div>
 
 @if (message != null)
 {
     <p>@message</p>
+
 }
 else
 {
-    <div class="container text-center">
-        <div class="row">
-            <Virtualize Items="ProductsInCart" Context="Products">
-                <div class="col-md-3 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <label>Product Name</label>
-                            <h5 class="card-title">@Products.ProductName</h5>
-                            <label>Product Description</label>
-                            <p class="card-text">@Products.Description</p>
-                            <label>Price</label>
-                            <p class="card-text">@Math.Round(Products.Price,2)</p>
-                            <label>Category</label>
-                            <p class="card-text">@Products.Category</p>
-                            <label>Amount</label>
-                            <div class="input-group mb-3">
-                                <button class="btn btn-outline-secondary" type="button" @onclick="() => IncrementAmount(Products)">+</button>
-                                <input type="number" class="form-control" @bind="Products.Amount" />
-                                <button class="btn btn-outline-secondary" type="button" @onclick="() => DecrementAmount(Products)">-</button>
-                            </div>
-                            <button type="button" class="btn btn-primary" @onclick="() => RemoveAllFromCart(Products)">Ta bort från kundvagn</button>
+    <div class="container text-center product-container">
+        <div class="row justify-content-center mb-5 mt-5">
+            @foreach (var Product in Products.DistinctBy(p => p.Id))
+            {
+                <div class="card btn shadow-sm col-md-3 col-sm-6 m-2 product-card">
+                    <img class="card-img-top" src="@Product.Image" alt="@Product.ProductName">
+                    <div class="card-body">
+                        <h4 class="card-title">@Product.ProductName</h4>
+                        <div class="card-text">@Product.Price kr</div>
+                    </div>
+                    <div class="card-footer">
+                        <label>Amount</label>
+                        <div class="input-group">
+                            <button class="btn btn-primary btn-outline-secondary" type="button" @onclick="() => IncrementAmount(Product)">+</button>
+                            <textarea class="amount-box" disabled="true">@Products.Count(p => p.Id == Product.Id)</textarea>
+                            <button class="btn btn-primary btn-outline-secondary" type="button" @onclick="() => DecrementAmount(Product)">-</button>
                         </div>
+                        <button type="button" class="btn btn-primary" @onclick="() => RemoveAllFromCart(Product)">Ta bort från kundvagn</button>
                     </div>
                 </div>
-            </Virtualize>
+            }
+        </div>
+        <div class="justify-content-center mt-5">
+            <div class="text-center pt-5">
+                <label>Cart total</label>
+                <textbox disabled="true">
+                    @Math.Round(@price, 2)
+                </textbox>
+            </div>
+            <div class="row text-center mb-5">
+                <button type="button" class="btn btn-primary" @onclick="() => ClearCart()">Clear Cart</button>
+                <button type="button" class="btn btn-primary" @onclick="() => GotoCheck()">Go to checkout</button>
+            </div>
         </div>
     </div>
+
 }
 
-<div class="text-center">
-    <label>Cart total</label>
-    <textbox disabled="true">
-
-        @Math.Round(@price,2)
-    </textbox>
-</div>
-<div class="text-center">
-    <button type="button" class="btn btn-primary" @onclick="() => ClearCart()">Clear Cart</button>
-    <button type="button" class="btn btn-primary" @onclick="() => GotoCheck()">Go to checkout</button>
-</div>
 
 @code {
     private List<ProductDTO> Products { get; set; } = new();
-    private List<ProductInCartDTO> ProductsInCart { get; set; } = new();
-
-    
 
     private string message;
 
@@ -70,56 +66,46 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-
         if (customerService.Customer.Cart.Count == 0)
         {
             message = "Your cart is empty";
         }
         else
         {
-            ProductsInCart.Clear();
             Products.AddRange(await customerService.GetShoppingCart());
 
-            ConvertProductsToProductsInCart();
         }
         CalculateTotalCost();
     }
 
-    private async Task DecrementAmount(ProductInCartDTO product)
+    private async Task DecrementAmount(ProductDTO product)
     {
-            product.Amount--;
-            await RemoveOneFromCart(product);
+        await RemoveOneFromCart(product);
     }
 
-    private async Task IncrementAmount(ProductInCartDTO product)
+    private async Task IncrementAmount(ProductDTO product)
     {
-        product.Amount++;
         await UpdateCart(product);
     }
 
-    private async Task UpdateCart(ProductInCartDTO product)
+    private async Task UpdateCart(ProductDTO product)
     {
-        var foundProduct = Products.FirstOrDefault(p => p.Id == product.Id);
-        await customerService.AddToCart(foundProduct);
+        await customerService.AddToCart(product);
         Products.Clear();
         Products.AddRange(await customerService.GetShoppingCart());
-        ConvertProductsToProductsInCart();
         CalculateTotalCost();
     }
 
-    private async Task RemoveAllFromCart(ProductInCartDTO product)
+    private async Task RemoveAllFromCart(ProductDTO product)
     {
-        var foundProduct = Products.FirstOrDefault(p => p.Id == product.Id);
         while (Products.Exists(p => p.Id == product.Id))
         {
-            await customerService.RemoveFromCart(foundProduct);
-            Products.Remove(foundProduct);
+            await customerService.RemoveFromCart(product);
+            Products.Remove(product);
         }
         Products.Clear();
         Products.AddRange(await customerService.GetShoppingCart());
-        ConvertProductsToProductsInCart();
         CalculateTotalCost();
-        //TODO: Kanske behöver vara await + metoden en Task
 
         if (customerService.Customer.Cart.Count == 0)
         {
@@ -128,13 +114,11 @@ else
         }
     }
 
-    private async Task RemoveOneFromCart(ProductInCartDTO product)
+    private async Task RemoveOneFromCart(ProductDTO product)
     {
-        var foundProduct = Products.FirstOrDefault(p => p.Id == product.Id);
-        await customerService.RemoveFromCart(foundProduct);
+        await customerService.RemoveFromCart(product);
         Products.Clear();
         Products.AddRange(await customerService.GetShoppingCart());
-        ConvertProductsToProductsInCart();
         CalculateTotalCost();
 
         if (customerService.Customer.Cart.Count == 0)
@@ -146,7 +130,7 @@ else
 
     private void CalculateTotalCost()
     {
-        price = ProductsInCart.Sum(item => item.Price * item.Amount);
+        price = Products.Sum(item => item.Price);
     }
 
     private async Task ClearCart()
@@ -160,35 +144,5 @@ else
     private void GotoCheck()
     {
         NavigationManager.NavigateTo("/OrderPage");
-    }
-
-    private void ConvertProductsToProductsInCart()
-    {
-        ProductsInCart.Clear();
-
-        foreach (var product in Products)
-        {
-            if (ProductsInCart.Exists(p => p.Id == product.Id))
-            {
-                var foundProduct = ProductsInCart.FirstOrDefault(p => p.Id == product.Id);
-                foundProduct.Amount++;
-            }
-            else
-            {
-                var newProduct = new ProductInCartDTO()
-                    {
-                        AgeRestriction = product.AgeRestriction,
-                        Amount = 1,
-                        Category = product.Category,
-                        Description = product.Description,
-                        Genre = product.Genre,
-                        Id = product.Id,
-                        Image = product.Image,
-                        Price = product.Price,
-                        ProductName = product.ProductName
-                    };
-                ProductsInCart.Add(newProduct);
-            }
-        }
     }
 }
