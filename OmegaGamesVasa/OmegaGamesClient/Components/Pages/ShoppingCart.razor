@@ -22,11 +22,11 @@ else
         <div class="row justify-content-center mb-5 mt-5">
             @foreach (var Product in Products.DistinctBy(p => p.Id))
             {
-                <div class="card btn shadow-sm col-md-3 col-sm-6 m-2 product-card">
+                <div class="card shadow-sm col-md-3 col-sm-6 m-2 product-card">
                     <img class="card-img-top" src="@Product.Image" alt="@Product.ProductName">
                     <div class="card-body">
                         <h4 class="card-title">@Product.ProductName</h4>
-                        <div class="card-text">@Product.Price kr</div>
+                        <div class="card-text product-price">@Product.Price kr</div>
                     </div>
                     <div class="card-footer">
                         <label>Amount</label>
