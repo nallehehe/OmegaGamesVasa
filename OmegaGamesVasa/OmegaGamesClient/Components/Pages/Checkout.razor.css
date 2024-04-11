@@ -9,3 +9,6 @@
     background-position: center;
     z-index: -1;
 }
+.checkout-opacity {
+    opacity: 0.95;
+}
