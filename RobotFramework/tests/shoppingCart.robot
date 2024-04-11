@@ -8,6 +8,7 @@ Library    Collections
 Resource    common.resource
 Suite Setup    Open browser and maximize
 Suite Teardown    Close All Browsers
+Test Teardown    Clear Cart
 
 *** Variables ***
 
@@ -64,12 +65,12 @@ Clear cart with single product
 
 *** Keywords ***
 the user goes to the shopping cart page
-    Go To    ${BASE_URL}/${SHOPPING_CART_PAGE}
-    Wait Until Page Contains    ${shoppingCartHeaderText}
+    Go to shopping cart page
+    Wait Until Page Contains Element    ${shoppingCartImage}
 
 the page should display the shopping cart page
     Wait Until Location Contains    ${SHOPPING_CART_PAGE}
-    Wait Until Page Contains    ${shoppingCartHeaderText}
+    Wait Until Page Contains Element    ${shoppingCartImage}
 
 the page should display an empty cart message
     Wait Until Page Contains    Your cart is empty
@@ -102,18 +103,18 @@ Add second product to cart
     Log To Console    ${productDictList}
 
 Wait until shopping cart renders items
-    Wait Until Page Contains    ${shoppingCartHeaderText}
+    Wait Until Page Contains Element    ${shoppingCartImage}
     Wait Until Page Contains Element    //div[contains(@class, 'container text-center')]
 
 the shopping cart page should display the added product
-    Go To    ${BASE_URL}/${SHOPPING_CART_PAGE}
+    Go to shopping cart page
     Wait until shopping cart renders items
     ${product}=    Get From List    ${productDictList}    0
     Wait Until Page Contains  ${product}[productName]
     Go To    ${BASE_URL}/${SHOPPING_CART_PAGE}
 
 the shopping cart page should display all added products
-    Go To    ${BASE_URL}/${SHOPPING_CART_PAGE}
+    Go to shopping cart page
     Wait until shopping cart renders items
     FOR    ${product}    IN    @{productDictList}
         Log To Console    ${product}[productName]
@@ -121,5 +122,14 @@ the shopping cart page should display all added products
     END
     
 the user clicks the clear cart button
+    Wait Until Page Contains Element    //button[text()='Clear Cart']
+    Click Button    //button[text()='Clear Cart']
+
+Clear Cart
+    Go to shopping cart page
+    ${emptyCartCount}=    Get Element Count    //p[text()='Your cart is empty']
+    IF    ${emptyCartCount} > 0
+        Pass Execution    Cart is already empty
+    END
     Wait Until Page Contains Element    //button[text()='Clear Cart']
     Click Button    //button[text()='Clear Cart']
