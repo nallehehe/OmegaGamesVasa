@@ -13,6 +13,11 @@ public class CustomerService
         Customer = new CustomerDTO();
     }
 
+    //public async Task<CustomerDTO> GetCustomer()
+    //{
+    //   return Customer;
+    //}
+
     public async Task<IEnumerable<ProductDTO>> GetShoppingCart()
     {
         return Customer.Cart;
