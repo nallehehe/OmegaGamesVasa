@@ -1,0 +1,61 @@
+﻿@page "/Checkout"
+@using OmegaGamesAPI.Services
+@using Common.DTO
+@inject CustomerService customerService
+@rendermode InteractiveServer
+
+
+<div class="shopping-cart-image">
+</div>
+<div class="container text-center product-container">
+<div class="row justify-content-center mb-5 mt-5">
+    @foreach (var Product in Products.DistinctBy(p => p.Id))
+    {
+        <div class="card shadow-sm col-md-3 col-sm-6 m-2 product-card">
+            <img class="card-img-top" src="@Product.Image" alt="@Product.ProductName">
+            <div class="card-body">
+                <h4 class="card-title">@Product.ProductName</h4>
+                <div class="card-text product-price">@Product.Price kr</div>
+            </div>
+            <div class="card-footer">
+            </div>
+        </div>
+    }
+</div>
+</div>
+<div class="input-group"></div>
+<EditForm FormName="EnterDetails" Model="newCustomer" OnValidSubmit="AddCustomer">
+    <label>FirstName</label>
+    <InputText @bind-Value="newCustomer!.FirstName"></InputText>
+    <label>LastName</label>
+    <InputText @bind-Value="newCustomer!.LastName"></InputText>
+    <label>Address</label>
+    <InputText @bind-Value="newCustomer!.Address"></InputText>
+    <label>Zip Code</label>
+    <InputText @bind-Value="newCustomer!.ZipCode"></InputText>
+    <label>City</label>
+    <InputText @bind-Value="newCustomer!.City"></InputText>
+    <label>Country</label>
+    <InputText @bind-Value="newCustomer!.Country"></InputText>
+    <label>Email</label>
+    <InputText @bind-Value="newCustomer!.Email"></InputText>
+    <label>PhoneNumber</label>
+    <InputText @bind-Value="newCustomer!.Phone"></InputText>
+    <button class="btn btn-primary" type="submit">Add</button>
+</EditForm>
+
+@code {
+    private List<ProductDTO> Products { get; set; } = new();
+    private CustomerDTO? newCustomer { get; set; }
+
+    protected override void OnInitialized()
+    {
+        newCustomer = customerService.Customer;
+        Products = customerService.Customer.Cart;
+    }
+
+    private void AddCustomer()
+    {
+        customerService.Customer = newCustomer;
+    }
+}
