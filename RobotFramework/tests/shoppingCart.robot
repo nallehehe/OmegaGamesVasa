@@ -8,12 +8,10 @@ Library    Collections
 Resource    common.resource
 Suite Setup    Open browser and maximize
 Suite Teardown    Close All Browsers
+Test Setup    Create Product List
 Test Teardown    Clear Cart
 
 *** Variables ***
-
-@{productDictList}
-
 ${firstProductTitle}=    //div[contains(@class, 'product-card')][1]//h4
 ${secondProductTitle}=    //div[contains(@class, 'product-card')][2]//h4
 ${firstProductRemoveButton}    //button[contains(@class, 'remove-from-cart-btn')][1]
@@ -23,6 +21,10 @@ ${shoppingCartCard}=    //div[contains(@class, 'card-registration')]
 
 ${increaseButton}=    //button[contains(@class, 'increase-amount-btn')]
 ${decreaseButton}=    //button[contains(@class, 'decrease-amount-btn')]
+
+${totalPriceElement}=    //h5[contains(@class, 'total-price')]/span
+${firstProductPrice}=    (//div[contains(@class, 'product-price')][1])[1]/span
+${secondProductPrice}=    (//div[contains(@class, 'product-price')][1])[2]/span
 
 ${emptyCartMessage}=    Kundvagnen är tom!
 
@@ -37,7 +39,7 @@ Shopping cart renders
 Empty shopping cart displays message
     [Documentation]    Test case for checking that the shopping cart page shows a message
     ...    if the shopping cart is empty
-    [Tags]    shopping-cart    expected-fail
+    [Tags]    shopping-cart
     Given the user is on the OmegaGames website
     When the user goes to the shopping cart page
     Then the page should display the shopping cart page
@@ -97,6 +99,24 @@ Clear cart with single product
     When the user clicks the clear cart button
     Then the page should display an empty cart message
 
+Cart displays correct price for single product
+    [Documentation]    Test case for checking that the total price of the cart is correct for single product
+    [Tags]    shopping-cart
+    Given the user is on the products page
+    And the products page is displaying products
+    And the user adds a product to the shopping cart
+    When the user goes to the shopping cart page
+    Then the page should display the correct price
+
+Cart displays correct price for multiple products
+    [Documentation]    Test case for checking that the total price of the cart is correct for single product
+    [Tags]    shopping-cart
+    Given the user is on the products page
+    And the products page is displaying products
+    And the user adds two products to the shopping cart
+    When the user goes to the shopping cart page
+    Then the page should display the correct price
+
 *** Keywords ***
 the user goes to the shopping cart page
     Go to shopping cart page
@@ -119,8 +139,11 @@ the user adds two products to the shopping cart
 Add first product to cart
     Wait Until Page Contains Element    ${firstProductTitle}
     ${productTitle}=    Get Text    ${firstProductTitle}
+    Wait Until Page Contains Element    ${firstProductPrice}
+    ${productPrice}=    Get Text    ${firstProductPrice}
     &{productDict}=    Create Dictionary
     Set To Dictionary    ${productDict}    productName=${productTitle}
+    Set To Dictionary    ${productDict}    productPrice=${productPrice}
     ${buttonPath}=    Set Variable    ${firstProductTitle}/parent::*/parent::*//button[contains(@class, 'add-to-cart-button')]
     Wait Until Page Contains Element    ${buttonPath}
     Click Button    ${buttonPath}
@@ -129,12 +152,14 @@ Add second product to cart
     Wait Until Page Contains Element    ${secondProductTitle}
     ${productTitle}=    Get Text    ${secondProductTitle}
     &{productDict}=    Create Dictionary
+    Wait Until Page Contains Element    ${secondProductPrice}
+    ${productPrice}=    Get Text    ${secondProductPrice}
     Set To Dictionary    ${productDict}    productName=${productTitle}
+    Set To Dictionary    ${productDict}    productPrice=${productPrice}
     ${buttonPath}=    Set Variable    ${secondProductTitle}/parent::*/parent::*//button[contains(@class, 'add-to-cart-button')]
     Wait Until Page Contains Element    ${buttonPath}
     Click Button    ${buttonPath}
     Append To List    ${productDictList}    ${productDict}
-    Log To Console    ${productDictList}
 
 Wait until shopping cart renders items
     Wait Until Page Contains Element    ${shoppingCartImage}
@@ -151,7 +176,6 @@ the shopping cart page should display all added products
     Go to shopping cart page
     Wait until shopping cart renders items
     FOR    ${product}    IN    @{productDictList}
-        Log To Console    ${product}[productName]
         Wait Until Page Contains    ${product}[productName]
     END
     
@@ -201,3 +225,18 @@ Clear Cart
     Return From Keyword If    ${emptyCartCount} > 0
     Wait Until Page Contains Element    ${emptyCartButton}
     Click Button    ${emptyCartButton}
+    Wait Until Page Contains    ${emptyCartMessage}
+
+the page should display the correct price
+    Wait Until Page Contains Element    ${totalPriceElement}
+    ${totalPrice}=    Get Text    ${totalPriceElement}
+    ${sum}=    Set Variable    ${0}
+    FOR    ${product}    IN    @{productDictList}
+        ${productPrice}=    Set Variable   ${product}[productPrice] 
+        ${sum}=    Set Variable    ${${sum}+${productPrice}}
+    END
+    Should Be Equal As Integers    ${totalPrice}    ${sum}
+
+Create Product List
+    @{productDictList}=    Create List
+    Set Test Variable    ${productDictList}
