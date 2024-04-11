@@ -14,10 +14,17 @@ Test Teardown    Clear Cart
 
 @{productDictList}
 
-${firstProductTitle}=    (//h4[contains(@class, 'card-title')])[1]
-${secondProductTitle}=    (//h4[contains(@class, 'card-title')])[2]
-${firstProductRemoveButton}    (//div[contains(@class, 'card')]//button[text()='Ta bort från kundvagn'])[1]
-${secondProductRemoveButton}    (//div[contains(@class, 'card')]//button[text()='Ta bort från kundvagn'])[2]
+${firstProductTitle}=    //div[contains(@class, 'product-card')][1]//h4
+${secondProductTitle}=    //div[contains(@class, 'product-card')][2]//h4
+${firstProductRemoveButton}    //button[contains(@class, 'remove-from-cart-btn')][1]
+${secondProductRemoveButton}    //button[contains(@class, 'remove-from-cart-btn')][2]
+${emptyCartButton}=    id:clear-cart-btn
+${shoppingCartCard}=    //div[contains(@class, 'card-registration')]
+
+${increaseButton}=    //button[contains(@class, 'increase-amount-btn')]
+${decreaseButton}=    //button[contains(@class, 'decrease-amount-btn')]
+
+${emptyCartMessage}=    Kundvagnen är tom!
 
 *** Test Cases ***
 Shopping cart renders
@@ -52,16 +59,43 @@ Add multiple products to cart
     When the user adds two products to the shopping cart
     Then the shopping cart page should display all added products
 
+Remove product from cart
+    [Documentation]    Test case for removing product from cart
+    [Tags]    shopping-cart
+    Given the user is on the products page
+    And the products page is displaying products
+    And the user adds a product to the shopping cart
+    When the user removes the product from the shopping cart
+    Then the page should display an empty cart message
+
+Increment product in cart
+    [Documentation]    Test case for incrementing product amount in cart
+    [Tags]    shopping-cart
+    Given the user is on the products page
+    And the products page is displaying products
+    And the user adds a product to the shopping cart
+    When the user increments the amount of the product
+    Then the product should have an incremented amount
+
+Decrement product in cart
+    [Documentation]    Test case for decrementing product amount in cart
+    [Tags]    shopping-cart
+    Given the user is on the products page
+    And the products page is displaying products
+    And the user adds a product to the shopping cart
+    And the user increments the amount of the product twice
+    When the user decrements the amount of the product
+    Then the product should have an decremented amount
+
 Clear cart with single product
     [Documentation]    Test case for clearing cart
     [Tags]    shopping-cart
     Given the user is on the products page
     And the products page is displaying products
-    And the user adds two products to the shopping cart
+    And the user adds a product to the shopping cart
     And the user goes to the shopping cart page
     When the user clicks the clear cart button
     Then the page should display an empty cart message
-    
 
 *** Keywords ***
 the user goes to the shopping cart page
@@ -73,7 +107,7 @@ the page should display the shopping cart page
     Wait Until Page Contains Element    ${shoppingCartImage}
 
 the page should display an empty cart message
-    Wait Until Page Contains    Your cart is empty
+    Wait Until Page Contains    Kundvagnen är tom!
 
 the user adds a product to the shopping cart
     Add first product to cart
@@ -104,7 +138,7 @@ Add second product to cart
 
 Wait until shopping cart renders items
     Wait Until Page Contains Element    ${shoppingCartImage}
-    Wait Until Page Contains Element    //div[contains(@class, 'container text-center')]
+    Wait Until Page Contains Element    ${shoppingCartCard}
 
 the shopping cart page should display the added product
     Go to shopping cart page
@@ -122,14 +156,48 @@ the shopping cart page should display all added products
     END
     
 the user clicks the clear cart button
-    Wait Until Page Contains Element    //button[text()='Clear Cart']
-    Click Button    //button[text()='Clear Cart']
+    Wait Until Page Contains Element    ${emptyCartButton}
+    Click Button    ${emptyCartButton}
+
+the user removes the product from the shopping cart
+    Go to shopping cart page
+    Wait Until Page Contains Element    ${firstProductRemoveButton}
+    Click Button    ${firstProductRemoveButton}
+
+the user increments the amount of the product
+    Go to shopping cart page
+    ${product}=    Get From List    ${productDictList}    0
+    Wait Until Page Contains  ${product}[productName]
+    Wait Until Page Contains Element    ${increaseButton}
+    Click Button    ${increaseButton}
+
+the user increments the amount of the product twice
+    Go to shopping cart page
+    ${product}=    Get From List    ${productDictList}    0
+    Wait Until Page Contains  ${product}[productName]
+    Wait Until Page Contains Element    ${increaseButton}
+    Click Button    ${increaseButton}
+    Click Button    ${increaseButton}
+
+the user decrements the amount of the product
+    ${product}=    Get From List    ${productDictList}    0
+    Wait Until Page Contains  ${product}[productName]
+    Wait Until Page Contains Element    ${decreaseButton}
+    Click Button    ${decreaseButton}
+
+the product should have an incremented amount
+    Wait Until Page Contains Element    identifier:quantity
+    ${amountCountText}=    Get Value    identifier:quantity
+    Should Be Equal As Integers    2    ${amountCountText}
+
+the product should have an decremented amount
+    Wait Until Page Contains Element    identifier:quantity
+    ${amountCountText}=    Get Value    identifier:quantity
+    Should Be Equal As Integers    2    ${amountCountText}
 
 Clear Cart
     Go to shopping cart page
-    ${emptyCartCount}=    Get Element Count    //p[text()='Your cart is empty']
-    IF    ${emptyCartCount} > 0
-        Pass Execution    Cart is already empty
-    END
-    Wait Until Page Contains Element    //button[text()='Clear Cart']
-    Click Button    //button[text()='Clear Cart']
+    ${emptyCartCount}=    SeleniumLibrary.Get Element Count    //p[text()='Your cart is empty']
+    Return From Keyword If    ${emptyCartCount} > 0
+    Wait Until Page Contains Element    ${emptyCartButton}
+    Click Button    ${emptyCartButton}
