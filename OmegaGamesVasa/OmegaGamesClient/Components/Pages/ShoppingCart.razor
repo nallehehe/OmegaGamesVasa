@@ -100,8 +100,9 @@ else
     {
         while (Products.Exists(p => p.Id == product.Id))
         {
-            await customerService.RemoveFromCart(product);
-            Products.Remove(product);
+            var selectedProduct = Products.FirstOrDefault(p => p.Id == product.Id);
+            await customerService.RemoveFromCart(selectedProduct);
+            Products.Remove(selectedProduct);
         }
         Products.Clear();
         Products.AddRange(await customerService.GetShoppingCart());
