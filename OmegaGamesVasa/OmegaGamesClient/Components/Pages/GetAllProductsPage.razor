@@ -2,7 +2,7 @@
 @using Common.DTO
 @using Common.Interface
 @using OmegaGamesAPI.Services
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender:false))
 @inject IProductService<ProductDTO> ProductService
 
 <div class="page-image"></div>
