@@ -2,14 +2,14 @@
 Library    SeleniumLibrary
 
 *** Variables ***
-${SLEEP_TIME}=    600ms
+${SLEEP_TIME}=    800ms
 ${BROWSER}    Chrome
-${PRODUCTS_PAGE}    GetAllProductsPage
+${PRODUCTS_PAGE}    ProductPage
 ${SHOPPING_CART_PAGE}    ShoppingCart
 ${BASE_URL}    https://localhost:7149
 
 ${productsXpath}    //div[contains(@class, 'product-card')]
-${firstProductXpath}    //div[contains(@class, 'card')][1]
+${firstProductXpath}    //div[contains(@class, 'product-card')][1]
 ${firstProductNamePath}    //h4[contains(@class, 'card-title')][1]
 ${addFirstProductButtonPath}    //button[contains(@class, 'add-to-cart-button')][1]
 ${productsContainerElement}    //div[contains(@class, 'product-container')]
@@ -23,7 +23,7 @@ Open browser and maximize
     Set Selenium Speed    0.1
 
 Get all products on page
-    Wait Until Page Contains Element    ${productsXpath}
+    Wait Until Page Contains Element    ${firstProductXpath}    10s
     ${products}=    Get WebElements    ${productsXpath}
     ${productsCount}=    Get Length    ${products}
     RETURN    ${products}
@@ -53,3 +53,13 @@ the products page is displaying products
 
 the user is on the shopping cart page
     Go to shopping cart page
+
+the user has a browser open
+    @{browserIds}=    Get Browser Ids    
+    ${browserIdLength}=    Get Length    ${browserIds}
+    Return From Keyword If    ${browserIdLength} > 0
+
+the user goes to the OmegaGames website
+    Go To    ${BASE_URL}
+    Sleep    ${SLEEP_TIME}
+    
