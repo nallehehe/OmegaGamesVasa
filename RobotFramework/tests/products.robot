@@ -9,7 +9,6 @@ Suite Teardown    Close All Browsers
 
 *** Variables ***
 
-
 *** Test Cases ***
 Products page renders correctly
     [Documentation]    Test case for rendering products page
@@ -26,17 +25,5 @@ Products page displays multiple products
     Then the website should display multiple products
 
 *** Keywords ***
-Open browser and maximize
-    Open Browser    browser=${BROWSER}
-    Maximize Browser Window
-    Set Selenium Speed    0.1
-
-the user goes to the products page
-    Go To    ${BASE_URL}/${PRODUCTS_PAGE}
-
-the website should display the products page
-    Wait Until Location Contains    ${PRODUCTS_PAGE}
-    Wait Until Page Contains Element    ${productsContainerElement}
-
 the website should display multiple products
     Products are displaying

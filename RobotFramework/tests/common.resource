@@ -18,7 +18,7 @@ ${shoppingCartImage}    //div[contains(@class, 'shopping-cart-image')]
 
 *** Keywords ***
 Open browser and maximize
-    Open Browser    browser=${BROWSER}    options=add_argument("--incognito")
+    Open Browser    browser=${BROWSER}
     Maximize Browser Window
     Set Selenium Speed    0.1
 
@@ -37,11 +37,11 @@ the user is on the OmegaGames website
     Go To    ${BASE_URL}
 
 Go to products page
-    Go To    ${BASE_URL}/${PRODUCTS_PAGE}
+    Click Link    /ProductPage
     Sleep    ${SLEEP_TIME}
 
 Go to shopping cart page
-    Go To    ${BASE_URL}/${SHOPPING_CART_PAGE}
+    Click Link    /ShoppingCart
     Sleep    ${SLEEP_TIME}
 
 the user is on the products page
@@ -62,4 +62,11 @@ the user has a browser open
 the user goes to the OmegaGames website
     Go To    ${BASE_URL}
     Sleep    ${SLEEP_TIME}
+
+the user goes to the products page
+    Go to products page
+
+the website should display the products page
+    Wait Until Location Contains    ${PRODUCTS_PAGE}
+    Wait Until Page Contains Element    ${productsContainerElement}
     

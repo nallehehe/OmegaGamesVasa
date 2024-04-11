@@ -20,7 +20,6 @@ Landing page renders
     When the user goes to the OmegaGames website
     Then the website should display the landing page
 
-
 *** Keywords ***
 the website should display the landing page
     Wait Until Page Contains Element    ${topSection}
