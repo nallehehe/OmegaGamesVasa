@@ -5,7 +5,7 @@
 
 <div class="page">
     <main>
-        <nav class="navbar navbar-position fixed-top fw-bold navbar-dark navbar-expand-lg">
+        <nav class="navbar navbar-position fixed-top fw-bold navbar-dark navbar-expand-lg" id="navbar">
           <div class="container-fluid">
             <NavLink class="navbar-brand me-auto fs-2" href="/">Omega Games</NavLink>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#top-navbar" aria-controls="top-navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,6 +43,23 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+<script>
+    window.addEventListener('scroll', function () {
+        var navbar = document.getElementById('navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('navbar-scrolled');
+        } else {
+            navbar.classList.remove('navbar-scrolled');
+        }
+    });
+</script>
+
+<style>
+    .navbar-scrolled {
+        background-color: black;
+    }
+</style>
 
 @code {
 }
