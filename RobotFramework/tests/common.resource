@@ -2,26 +2,28 @@
 Library    SeleniumLibrary
 
 *** Variables ***
+${SLEEP_TIME}=    800ms
 ${BROWSER}    Chrome
-${PRODUCTS_PAGE}    GetAllProductsPage
+${PRODUCTS_PAGE}    ProductPage
 ${SHOPPING_CART_PAGE}    ShoppingCart
 ${BASE_URL}    https://localhost:7149
 
-${productsXpath}    //div[contains(@class, 'product-container')]//div[contains(@class, 'card')]
-${firstProductXpath}    //div[contains(@class, 'card')][1]
+${productsXpath}    //div[contains(@class, 'product-card')]
+${firstProductXpath}    //div[contains(@class, 'product-card')][1]
 ${firstProductNamePath}    //h4[contains(@class, 'card-title')][1]
 ${addFirstProductButtonPath}    //button[contains(@class, 'add-to-cart-button')][1]
 ${productsContainerElement}    //div[contains(@class, 'product-container')]
-${shoppingCartHeaderText}    ShoppingCart
+
+${shoppingCartImage}    //div[contains(@class, 'shopping-cart-image')]
 
 *** Keywords ***
 Open browser and maximize
     Open Browser    browser=${BROWSER}
     Maximize Browser Window
-    Set Selenium Speed    0.2
+    Set Selenium Speed    0.1
 
 Get all products on page
-    Wait Until Page Contains Element    ${productsXpath}
+    Wait Until Page Contains Element    ${firstProductXpath}    10s
     ${products}=    Get WebElements    ${productsXpath}
     ${productsCount}=    Get Length    ${products}
     RETURN    ${products}
@@ -34,13 +36,37 @@ Products are displaying
 the user is on the OmegaGames website
     Go To    ${BASE_URL}
 
+Go to products page
+    Click Link    /ProductPage
+    Sleep    ${SLEEP_TIME}
+
+Go to shopping cart page
+    Click Link    /ShoppingCart
+    Sleep    ${SLEEP_TIME}
+
 the user is on the products page
-    Go To    ${BASE_URL}/${PRODUCTS_PAGE}
+    Go to products page
     Wait Until Page Contains Element    ${productsContainerElement}
 
 the products page is displaying products
     Products are displaying
 
 the user is on the shopping cart page
-    Go To    ${BASE_URL}/${SHOPPING_CART_PAGE}
-    Wait Until Page Contains    ${shoppingCartHeaderText}
+    Go to shopping cart page
+
+the user has a browser open
+    @{browserIds}=    Get Browser Ids    
+    ${browserIdLength}=    Get Length    ${browserIds}
+    Return From Keyword If    ${browserIdLength} > 0
+
+the user goes to the OmegaGames website
+    Go To    ${BASE_URL}
+    Sleep    ${SLEEP_TIME}
+
+the user goes to the products page
+    Go to products page
+
+the website should display the products page
+    Wait Until Location Contains    ${PRODUCTS_PAGE}
+    Wait Until Page Contains Element    ${productsContainerElement}
+    

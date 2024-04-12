@@ -5,15 +5,15 @@
 @rendermode InteractiveServer
 @inject CustomerService customerService
 
-<div class="card btn shadow-sm col-md-3 mb-4 col-sm-6 m-2 product-card">
-    <img class="card-img-top" src="@Product.Image" alt="@Product.ProductName">
+<div class="card shadow-sm col-md-3 mb-4 col-sm-6 m-2 product-card card-opacity">
+    <img class="card-img-top pt-3 img-size" src="@Product.Image" alt="@Product.ProductName">
     <div class="card-body">
         <h4 class="card-title">@Product.ProductName</h4>
         <span class="card-subtitle">@Product.Description</span>
-        <div class="card-text">@Product.Price kr</div>
     </div>
     <div class="card-footer">
-        <button type="button" class="btn btn-primary add-to-cart-button" @onclick="() => AddToCart()" >Köp nu</button>
+        <div class="card-text product-price"><span>@Product.Price</span> kr</div>
+        <button type="button" class="btn btn-primary add-to-cart-button" @onclick="() => AddToCart()">Köp nu</button>
     </div>
 </div>
 
