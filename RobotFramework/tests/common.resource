@@ -7,7 +7,6 @@ ${BROWSER}    Chrome
 ${PRODUCTS_PAGE}    ProductPage
 ${SHOPPING_CART_PAGE}    ShoppingCart
 ${BASE_URL}    https://localhost:7149
-@{BROWSER_IDS}
 
 ${productsXpath}    //div[contains(@class, 'product-card')]
 ${firstProductXpath}    //div[contains(@class, 'product-card')][1]
