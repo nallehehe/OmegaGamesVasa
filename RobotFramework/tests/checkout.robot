@@ -8,6 +8,7 @@ Resource    common.resource
 Suite Setup    Open browser and maximize
 Suite Teardown    Close All Browsers
 Test Setup    Create Product List
+Test Teardown    Clear Cart
 
 *** Test Cases ***
 Go to checkout with product in cart
@@ -16,6 +17,13 @@ Go to checkout with product in cart
     Given the user has products in the cart
     And the user is on the shopping cart page
     When the user goes to the checkout page
+    Then the page should display the checkout page
     
+Go to checkout without products
+    [Documentation]    Test case for going to checkout with no products
+    [Tags]    checkout
+    Given the user is on the shopping cart page
+    When the user goes to the checkout page
+    Then the checkout page should display an empty cart message
     
 
