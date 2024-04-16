@@ -1,6 +1,8 @@
 ﻿@page "/Checkout"
 @using OmegaGamesAPI.Services
 @using Common.DTO
+@using System.ComponentModel.DataAnnotations
+@using OmegaGamesClient.Components.Account.Pages.Manage
 @inject CustomerService customerService
 @rendermode InteractiveServer
 
@@ -70,7 +72,7 @@
                                         <InputText id="LastName" @bind-Value="newCustomer.LastName" class="form-control"/>
                                         <ValidationMessage For="@(() => newCustomer.LastName)"/>
 
-                                        <label for="Address">Address:</label>
+@*                                         <label for="Address">Address:</label>
                                         <InputText id="Address" @bind-Value="newCustomer.Address" class="form-control"/>
                                         <ValidationMessage For="@(() => newCustomer.Address)"/>
 
@@ -84,11 +86,15 @@
 
                                         <label for="Country">Land:</label>
                                         <InputText id="Country" @bind-Value="newCustomer.Country" class="form-control"/>
-                                        <ValidationMessage For="@(() => newCustomer.Country)"/>
+                                        <ValidationMessage For="@(() => newCustomer.Country)"/> *@
 
                                         <label for="Email">Email:</label>
                                         <InputText id="Email" @bind-Value="newCustomer.Email" class="form-control"/>
                                         <ValidationMessage For="@(() => newCustomer.Email)"/>
+                                        
+                                        <label for="VerifiedEmailAddress">Validera Email:</label>
+                                        <InputText id="EmailVali" @bind-Value="newCustomer.VerifiedEmailAddress" class="form-control" />
+                                        <ValidationMessage For="@(() => newCustomer.VerifiedEmailAddress)"/>
 
                                         <label for="Phone">Telefonnummer:</label>
                                         <InputText id="Phone" @bind-Value="newCustomer.Phone" class="form-control"/>
