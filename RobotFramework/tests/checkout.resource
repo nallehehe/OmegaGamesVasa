@@ -31,3 +31,5 @@ the page should display the checkout page
     Wait Until Page Contains Element    ${emailConfirmInput}
     Wait Until Page Contains Element    ${phoneInput}
     
+the checkout page should display an empty cart message
+    Wait Until Page Contains    Lägg till produkter i kundvagnen för att gå till kassan
