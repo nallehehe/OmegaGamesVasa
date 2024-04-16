@@ -3,6 +3,7 @@
 @using Common.DTO
 @using System.Runtime.InteropServices
 @using OmegaGamesClient.Components.Account.Pages
+@using System.ComponentModel.DataAnnotations
 @rendermode InteractiveServer
 @inject CustomerService customerService
 @inject NavigationManager NavigationManager
@@ -211,6 +212,12 @@
 
     private void GotoCheck()
     {
+        if(customerService.Customer.Cart.Count == 0)
+        {
+           message = "Kundvagnen är tom! Lägg till produkter i kundvagnen för att gå till kassan";
+            return;
+        }
+
         NavigationManager.NavigateTo("/Checkout");
     }
 }
