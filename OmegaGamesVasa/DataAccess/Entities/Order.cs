@@ -6,7 +6,7 @@ namespace DataAccess.Entities;
 public class Order
 {
     public ObjectId Id { get; set; }
-    public List<Product> Cart { get; set; } = new();
+    public List<Product> CustomerCart { get; set; } = new();
     public int? CustomerId { get; set; }
     public string CustomerEmail { get; set; }
     public string CustomerAddress { get; set; }

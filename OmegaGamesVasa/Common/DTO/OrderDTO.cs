@@ -9,6 +9,6 @@ public class OrderDTO
     public string CustomerFirstName { get; set; }
     public string CustomerLastName { get; set; }
     public string CustomerPhone { get; set; }
-    public string OrderDate { get; set; }
+    public DateTime OrderDate { get; set; }
     public double TotalCost { get; set; }
 }
