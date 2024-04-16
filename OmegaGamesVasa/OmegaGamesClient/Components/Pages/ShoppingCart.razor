@@ -3,6 +3,7 @@
 @using Common.DTO
 @using System.Runtime.InteropServices
 @using OmegaGamesClient.Components.Account.Pages
+@using System.ComponentModel.DataAnnotations
 @rendermode InteractiveServer
 @inject CustomerService customerService
 @inject NavigationManager NavigationManager
@@ -87,8 +88,8 @@
                                     </div>
                                     <h5 class="text-uppercase mb-3">Frakt</h5>
                                     <div class="mb-4 pb-2">
-                                        <select class="select">
-                                            <option value="1">Hämta hos Börje</option>
+                                        <select disabled="true" class="select">
+                                            <option value="1">Få digital kod</option>
                                             <option value="2">Bring</option>
                                             <option value="3">PostNord</option>
                                             <option value="4">Drönare</option>
@@ -211,6 +212,12 @@
 
     private void GotoCheck()
     {
+        if(customerService.Customer.Cart.Count == 0)
+        {
+           message = "Kundvagnen är tom! Lägg till produkter i kundvagnen för att gå till kassan";
+            return;
+        }
+
         NavigationManager.NavigateTo("/Checkout");
     }
 }
