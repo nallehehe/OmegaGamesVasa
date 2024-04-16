@@ -1,5 +1,7 @@
 *** Settings ***
 Library    SeleniumLibrary
+Resource    shoppingCart.resource
+Resource    checkout.resource
 
 *** Variables ***
 ${SLEEP_TIME}=    800ms
