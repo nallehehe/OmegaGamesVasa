@@ -3,7 +3,7 @@
 public class OrderDTO
 {
     public List<ProductDTO> CustomerCart { get; set; } = new List<ProductDTO>();
-    public int CustomerId { get; set; }
+    public int? CustomerId { get; set; }
     public string CustomerEmail { get; set; }
     public string CustomerAddress { get; set; }
     public string CustomerFirstName { get; set; }
