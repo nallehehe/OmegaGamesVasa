@@ -117,6 +117,16 @@ Cart displays correct price for multiple products
     When the user goes to the shopping cart page
     Then the page should display the correct price
 
+Cart only shows products added in current browser
+    [Documentation]    Test case for making sure shopping cart isn't shared between browsers
+    [Tags]    shopping-cart
+    Given two browsers are open
+    And the user is on the products page
+    And the user adds a product to the shopping cart
+    And the user switches browser
+    When the user goes to the shopping cart page
+    Then the page should display an empty cart message
+
 *** Keywords ***
 the user goes to the shopping cart page
     Go to shopping cart page
