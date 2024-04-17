@@ -5,7 +5,7 @@ using DataAccess.Entities;
 using FastEndpoints;
 using Order = DataAccess.Entities.Order;
 
-namespace OmegaGamesAPI.Endpoints.Products.Get.GetAllOrders;
+namespace OmegaGamesAPI.Endpoints.Orders.Get.GetAllOrders;
 
 public class GetAllOrdersHandler(IOrderRepository<Order> repo) : Endpoint<EmptyRequest, IEnumerable<Order>>
 {
