@@ -14,7 +14,7 @@ Test Teardown    Clear Cart
 Go to checkout with product in cart
     [Documentation]    Test case for going to checkout with a product added to the cart
     [Tags]    checkout    happy-path
-    Given the user has products in the cart
+    Given the user has a product in the cart
     And the user is on the shopping cart page
     When the user goes to the checkout page
     Then the page should display the checkout page
@@ -25,5 +25,14 @@ Go to checkout without products
     Given the user is on the shopping cart page
     When the user goes to the checkout page
     Then the checkout page should display an empty cart message
+
+Checkout price is correct for one product
+    [Documentation]    Test case for checking that the price is correct for one product
+    [Tags]    checkout
+    Given the user has a product in the cart
+    And the user is on the shopping cart page
+    When the user goes to the checkout page
+    Then the checkout page should display the correct price
+
     
 

@@ -15,7 +15,7 @@ Go to checkout page
     Go to shopping cart page
     Wait Until Page Contains Element    ${goToCheckoutButton}
     Click Button    ${goToCheckoutButton}
-the user has products in the cart
+Given the user has a product in the cart
     Go to products page
     Products are displaying
     Add first product to cart
@@ -33,3 +33,14 @@ the page should display the checkout page
     
 the checkout page should display an empty cart message
     Wait Until Page Contains    Lägg till produkter i kundvagnen för att gå till kassan
+
+the checkout page should display the correct price
+    Wait Until Page Contains Element    ${totalPriceElement}
+    ${totalPrice}=    Get Text    ${totalPriceElement}
+    ${sum}=    Set Variable    ${0}
+    FOR    ${product}    IN    @{productDictList}
+        ${productPrice}=    Set Variable   ${product}[productPrice] 
+        ${sum}=    Set Variable    ${${sum}+${productPrice}}
+    END
+    Should Be Equal As Integers    ${totalPrice}    ${sum}
+    
