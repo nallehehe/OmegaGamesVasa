@@ -1,5 +1,7 @@
 *** Settings ***
 Library    SeleniumLibrary
+Resource    shoppingCart.resource
+Resource    checkout.resource
 
 *** Variables ***
 ${SLEEP_TIME}=    800ms
@@ -21,6 +23,12 @@ Open browser and maximize
     Open Browser    browser=${BROWSER}
     Maximize Browser Window
     Set Selenium Speed    0.1
+    Go To    ${BASE_URL}
+
+Open incognito browser
+    Open Browser    browser=${BROWSER}    options=add_argument("--incognito")
+    Maximize Browser Window
+    Go To    ${BASE_URL}
 
 Get all products on page
     Wait Until Page Contains Element    ${firstProductXpath}    10s
@@ -69,4 +77,10 @@ the user goes to the products page
 the website should display the products page
     Wait Until Location Contains    ${PRODUCTS_PAGE}
     Wait Until Page Contains Element    ${productsContainerElement}
+
+two browsers are open
+    Open incognito browser
+    
+the user switches browser
+    Switch Browser    1
     
