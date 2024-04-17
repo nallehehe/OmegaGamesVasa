@@ -50,6 +50,10 @@
                                         }
                                     }
                                     <hr class="my-4">
+                                    <div class="d-flex justify-content-between mb-5">
+                                        <h5 class="text-uppercase">Totalt pris</h5>
+                                        <h5 class="total-price"><span>@price</span> kr</h5>
+                                    </div>
                                     <div class="pt-5">
                                         <h6 class="mb-0">
                                             <a href="/ProductPage" class="text-body">
@@ -57,6 +61,7 @@
                                             </a>
                                         </h6>
                                     </div>
+                                    
                                 </div>
                             </div>
                             <div class="col-lg-4 bg-grey">
@@ -115,12 +120,13 @@
     private List<ProductDTO> Products { get; set; } = new();
     private CustomerDTO? newCustomer { get; set; }
     private string? message;
-    private decimal price;
+    private double price;
 
     protected override void OnInitialized()
     {
         newCustomer = customerService.Customer;
         Products = customerService.Customer.Cart;
+        CalculateTotalCost();
     }
 
     private void AddCustomer()
@@ -128,5 +134,9 @@
         customerService.Customer = newCustomer;
         message = "Tack för ditt köp!";
         customerService.Customer.Cart.Clear();
+    }
+    private void CalculateTotalCost()
+    {
+        price = Products.Sum(item => item.Price);
     }
 }
