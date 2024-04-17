@@ -1,7 +1,6 @@
 ﻿using Common.DTO;
 using Common.Interface;
 using DataAccess.Entities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
@@ -46,8 +45,8 @@ public class OrderRepository: IOrderRepository<Order>
         return allProducts;
     }
 
-    public Task AddOrderAsync(Order product)
+    public async Task AddOrderAsync(Order order)
     {
-        throw new NotImplementedException();
+        await _orders.InsertOneAsync(order);
     }
 }
