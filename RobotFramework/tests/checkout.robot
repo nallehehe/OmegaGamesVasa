@@ -17,7 +17,7 @@ Go to checkout with product in cart
     Given the user has a product in the cart
     And the user is on the shopping cart page
     When the user goes to the checkout page
-    Then the page should display the checkout page
+    Then the page should display the checkout page with a product
     
 Go to checkout without products
     [Documentation]    Test case for going to checkout with no products
@@ -34,5 +34,12 @@ Checkout price is correct for one product
     When the user goes to the checkout page
     Then the checkout page should display the correct price
 
+Go to checkout with multiple of same product
+    [Documentation]    Test case for going to checkout with multiple amount of same product
+    [Tags]    checkout
+    Given the user has multiple of one product in the cart
+    And the user is on the shopping cart page
+    When the user goes to the checkout page
+    Then the checkout page should display the correct price and amount
     
 

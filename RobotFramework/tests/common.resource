@@ -2,6 +2,7 @@
 Library    SeleniumLibrary
 Resource    shoppingCart.resource
 Resource    checkout.resource
+Resource    products.resource
 
 *** Variables ***
 ${SLEEP_TIME}=    800ms
@@ -83,4 +84,9 @@ two browsers are open
     
 the user switches browser
     Switch Browser    1
+
+the user has multiple of one product in the cart
+    Go to products page
+    Add Product    1
+    Add Product    1
     
