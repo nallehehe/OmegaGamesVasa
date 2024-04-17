@@ -6,17 +6,33 @@
 @inject IOrderRepository<OrderDTO> OrderService
 
 
-<h3>All Orders</h3>
+<h3 class="d-flex justify-content-center">All Orders</h3>
 
 <div class="container text-center product-container">
     <ul class="list-group mt-5">
         @foreach (var order in AllOrders)
         {
-            <li class="list-group-item">
-                <div>@order.Id</div>
-                <div>@order.CustomerFirstName</div>
-                <div>@order.OrderDate</div>
-            </li>
+            <div class="card text-center">
+                <div class="card-header">
+                    Ordernumber: @order.Id
+                </div>
+                <div class="card-body">
+                    <h5>CustomerId: @order.CustomerId</h5>
+                    <p>
+                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            Button with data-target
+                        </button>
+                    </p>
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body">
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-muted">
+                    Orderdate: @order.OrderDate
+                </div>
+            </div>
         }
     </ul>
 </div>
