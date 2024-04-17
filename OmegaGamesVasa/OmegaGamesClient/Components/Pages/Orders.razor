@@ -1,0 +1,34 @@
+﻿@page "/Orders"
+@using OmegaGamesAPI.Services
+@using Common.DTO
+@using Common.Interface
+@rendermode InteractiveServer
+@inject IOrderRepository<OrderDTO> OrderService
+
+
+<h3>All Orders</h3>
+
+<div class="container text-center product-container">
+    <ul class="list-group mt-5">
+        @foreach (var order in AllOrders)
+        {
+            <li class="list-group-item">
+                <div>@order.Id</div>
+                <div>@order.CustomerFirstName</div>
+                <div>@order.OrderDate</div>
+            </li>
+        }
+    </ul>
+</div>
+
+
+
+@code {
+    public List<OrderDTO> AllOrders { get; set; } = new();
+
+    override protected async Task OnInitializedAsync()
+    {
+        AllOrders.AddRange(await OrderService.GetAllOrders());
+    }
+
+}
