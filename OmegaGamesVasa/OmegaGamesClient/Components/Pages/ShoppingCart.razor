@@ -49,7 +49,7 @@
                                                     </button>
 
                                                     <input id="form1" min="0" name="quantity" text="bold" disabled="true" inputmode="numeric" value="@Products.Count(p => p.Id == product.Id)" type="number"
-                                                           class="form-control form-control-sm text-center" />
+                                                           class="form-control form-control-sm text-center product-amount" />
 
                                                     <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2 btn-primary increase-amount-btn"
                                                             @onclick="() => IncrementAmount(product)">
