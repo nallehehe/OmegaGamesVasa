@@ -1,13 +1,12 @@
 ﻿using Common.DTO;
 using Common.Interface;
 using DataAccess.Entities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
 namespace DataAccess;
 
-public class OrderRepository
+public class OrderRepository: IOrderRepository<Order>
 {
     private readonly IMongoCollection<Order> _orders;
 
@@ -25,7 +24,7 @@ public class OrderRepository
         _orders = database.GetCollection<Order>("Orders", new MongoCollectionSettings() { AssignIdOnInsert = true });
     }
 
-    public async Task<IEnumerable<OrderDTO>> GetAllOrders()
+    public async Task<IEnumerable<Order>> GetAllOrders()
     {
 
         var filter = Builders<Order>.Filter.Empty;
@@ -43,11 +42,11 @@ public class OrderRepository
                         TotalCost = p.TotalPrice
                     }
             );
-        return selectedProducts;
+        return allProducts;
     }
 
-    public Task AddOrderAsync(Order product)
+    public async Task AddOrderAsync(Order order)
     {
-        throw new NotImplementedException();
+        await _orders.InsertOneAsync(order);
     }
 }

@@ -42,7 +42,9 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 builder.Services.AddHttpClient("OmegaGamesAPI", client => client.BaseAddress = new Uri(builder.Configuration["OmegaGamesAPIBaseAdress"]));
 
 builder.Services.AddScoped<IProductService<ProductDTO>, ProductService>();
+builder.Services.AddScoped<IOrderRepository<OrderDTO>, OrderService>();
 builder.Services.AddScoped<CustomerService>();
+builder.Services.AddScoped<OrderService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

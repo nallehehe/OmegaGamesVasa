@@ -3,10 +3,11 @@ using Common.Interface;
 using DataAccess;
 using DataAccess.Entities;
 using FastEndpoints;
+using Order = DataAccess.Entities.Order;
 
-namespace OmegaGamesAPI.Endpoints.Products.Get.GetAllOrders;
+namespace OmegaGamesAPI.Endpoints.Orders.Get.GetAllOrders;
 
-public class GetAllOrdersHandler(OrderRepository repo) : Endpoint<EmptyRequest, IEnumerable<OrderDTO>>
+public class GetAllOrdersHandler(IOrderRepository<Order> repo) : Endpoint<EmptyRequest, IEnumerable<Order>>
 {
 
     public override void Configure()
