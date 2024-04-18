@@ -19,6 +19,15 @@ ${phoneInput}=    //input[@id='Phone']
 
 ${orderSubmitButton}=    //button[contains(@class, 'submit-button')]
 
+${firstNameValidation}=    id:first-name-validation
+${lastNameValidation}=    id:last-name-validation
+${emailValidation}=    id:email-validation
+${phoneValidation}=    id:phone-validation
+
+${requiredMessage}=    Kan inte lämnas tomt
+${successfulOrderMessage}=    Din order gick igenom!
+    
+
 *** Keywords ***
 Go to checkout page
     Go to shopping cart page
@@ -109,4 +118,37 @@ the user finalizes the order
     Click Button    ${orderSubmitButton}
     
 the page should display an order confirmation
-    Wait Until Page Contains    Tack för ditt köp!
+    Wait Until Page Contains    ${successfulOrderMessage}
+
+the user enters invalid information
+    Enter firstname    ${EMPTY}
+    Enter lastname    ${EMPTY}
+    Enter email    ${EMPTY}
+    Enter email confirm    ${EMPTY}
+    Enter phone    ${EMPTY}
+
+Firstname validation shows required message
+    Wait Until Page Contains Element    ${firstNameValidation}
+    ${validationMessage}=    Get Text    ${firstNameValidation}
+    Should Be Equal As Strings    ${validationMessage}    ${requiredMessage}
+
+Lastname validation shows required message
+    Wait Until Page Contains Element    ${lastNameValidation}
+    ${validationMessage}=    Get Text    ${lastNameValidation}
+    Should Be Equal As Strings    ${validationMessage}    ${requiredMessage}
+
+Email validation shows required message
+    Wait Until Page Contains Element    ${emailValidation}
+    ${validationMessage}=    Get Text    ${emailValidation}
+    Should Be Equal As Strings    ${validationMessage}    ${requiredMessage}
+
+Phone validation shows required message
+    Wait Until Page Contains Element    ${phoneValidation}
+    ${validationMessage}=    Get Text    ${phoneValidation}
+    Should Be Equal As Strings    ${validationMessage}    ${requiredMessage}
+
+the page should display error messages for required fields
+    Firstname validation shows required message
+    Lastname validation shows required message
+    Email validation shows required message
+    Phone validation shows required message

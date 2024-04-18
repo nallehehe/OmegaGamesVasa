@@ -52,3 +52,11 @@ Enter valid checkout information
     Then the page should display an order confirmation
     And the shopping cart should be empty
 
+Required fields show errors when empty
+    [Documentation]    Test case for that required fields show correct error when empty
+    [Tags]    checkout
+    Given the user has a product in the cart
+    And the user is on the checkout page
+    When the user enters invalid information
+    And the user finalizes the order
+    Then the page should display error messages for required fields
