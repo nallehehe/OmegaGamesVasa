@@ -2,8 +2,11 @@
 @using OmegaGamesAPI.Services
 @using Common.DTO
 @using Common.Interface
+@using Microsoft.AspNetCore.Authorization
 @rendermode InteractiveServer
 @inject IOrderRepository<OrderDTO> OrderService
+
+@attribute [Authorize(Roles = "Admin")]
 
 <div class="page-image"></div>
 
