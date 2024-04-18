@@ -42,4 +42,13 @@ Go to checkout with multiple of same product
     When the user goes to the checkout page
     Then the checkout page should display the correct price and amount
     
+Enter valid checkout information
+    [Documentation]    Test case for entering valid customer information
+    [Tags]    checkout    happy-path
+    Given the user has a product in the cart
+    And the user is on the checkout page
+    When the user enters valid customer information
+    And the user finalizes the order
+    Then the page should display an order confirmation
+    And the shopping cart should be empty
 

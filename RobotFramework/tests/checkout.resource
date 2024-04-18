@@ -11,6 +11,14 @@ ${emailConfirmInput}    //input[@id='EmailVali']
 ${phoneInput}    //input[@id='Phone']
 ${productAmountCheckout}    //h6[contains(@class, 'product-amount')]
 
+${firstNameInput}=    //input[@id='FirstName']
+${lastNameInput}=    //input[@id='LastName']
+${emailInput}=    //input[@id='Email']
+${emailConfirmInput}=    //input[@id='EmailVali']
+${phoneInput}=    //input[@id='Phone']
+
+${orderSubmitButton}=    //button[contains(@class, 'submit-button')]
+
 *** Keywords ***
 Go to checkout page
     Go to shopping cart page
@@ -60,4 +68,45 @@ the checkout page should display the correct price and amount
     Should Be Equal As Strings    ${productAmountCheckoutText}    x ${productAmount}
     Log To Console    ${productAmount}
     
+the user is on the checkout page
+    Go to shopping cart page
+    Go to checkout page
+
+the user enters valid customer information
+    Enter firstname    Testare
+    Enter lastname    Testsson
+    Enter email    test@example.com
+    Enter email confirm    test@example.com
+    Enter phone    070-1740635
+
+Enter firstname
+    [Arguments]    ${firstName}
+    Wait Until Page Contains Element    ${firstNameInput}
+    Input Text    ${firstNameInput}    ${firstName}
+
+Enter lastname
+    [Arguments]    ${lastName}
+    Wait Until Page Contains Element    ${lastNameInput}
+    Input Text    ${lastNameInput}    ${lastName}
     
+Enter email
+    [Arguments]    ${email}
+    Wait Until Page Contains Element    ${emailInput}
+    Input Text    ${emailInput}    ${email}
+
+Enter email confirm
+    [Arguments]    ${emailConfirm}
+    Wait Until Page Contains Element    ${emailConfirmInput}
+    Input Text    ${emailConfirmInput}    ${emailConfirm}
+
+Enter phone
+    [Arguments]    ${phone}
+    Wait Until Page Contains Element    ${phoneInput}
+    Input Text    ${phoneInput}    ${phone}
+
+the user finalizes the order
+    Wait Until Page Contains Element    ${orderSubmitButton}
+    Click Button    ${orderSubmitButton}
+    
+the page should display an order confirmation
+    Wait Until Page Contains    Tack för ditt köp!
