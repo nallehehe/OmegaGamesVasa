@@ -60,3 +60,12 @@ Required fields show errors when empty
     When the user enters invalid information
     And the user finalizes the order
     Then the page should display error messages for required fields
+
+Invalid email format shows error
+    [Documentation]    Test case for checking that an email in an invalid format shows an error message
+    [Tags]    checkout
+    Given the user has a product in the cart
+    And the user is on the checkout page
+    When the user enters an email in an invalid format
+    And the user finalizes the order
+    Then the page should display an error message for an invalid email format

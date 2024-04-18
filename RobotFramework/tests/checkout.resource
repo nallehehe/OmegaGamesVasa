@@ -147,8 +147,19 @@ Phone validation shows required message
     ${validationMessage}=    Get Text    ${phoneValidation}
     Should Be Equal As Strings    ${validationMessage}    ${requiredMessage}
 
+Email validation shows invalid message
+    Wait Until Page Contains Element    ${emailValidation}
+    ${validationMessage}=    Get Text    ${emailValidation}
+    Should Match    ${validationMessage}    Inte giltig E-post adress
+
 the page should display error messages for required fields
     Firstname validation shows required message
     Lastname validation shows required message
     Email validation shows required message
     Phone validation shows required message
+
+the user enters an email in an invalid format
+    Enter email    abc123
+
+the page should display an error message for an invalid email format
+    Wait Until Page Contains Element    ${emailValidation}
