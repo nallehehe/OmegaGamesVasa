@@ -7,10 +7,14 @@ public class OrderService : IOrderRepository<OrderDTO>
 {
 
     private readonly HttpClient _httpClient;
+    private readonly HttpClient _emailHttpClient;
+    private readonly IConfiguration _configuration;
 
-    public OrderService(IHttpClientFactory factory)
+    public OrderService(IHttpClientFactory factory, IConfiguration configuration)
     {
         _httpClient = factory.CreateClient("OmegaGamesAPI");
+        _emailHttpClient = factory.CreateClient("EmailLogicAppClient");
+        _configuration = configuration;
     }
 
     public async Task<IEnumerable<OrderDTO>> GetAllOrders()
@@ -26,17 +30,25 @@ public class OrderService : IOrderRepository<OrderDTO>
         return result ?? Enumerable.Empty<OrderDTO>();
     }
 
-    public async Task<bool> AddOrderAsync(OrderDTO order)
+    public async Task<OrderDTO> AddOrderAsync(OrderDTO order)
     {
-        var response = await _httpClient.PostAsJsonAsync("https://prod-252.westeurope.logic.azure.com:443/workflows/1d02d2cc74c944248d19897ea4d05f3a/triggers/When_a_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=qGcXA-u9OyVqIlKcGtLW3VFIAhJCmdgP-CYZTJZsDcs", order);
-
+        var response = await _httpClient.PostAsJsonAsync("orders", order);
+        var addedOrder = response.Content.ReadFromJsonAsync<OrderDTO>().Result;
+        
         if (!response.IsSuccessStatusCode)
         {
-            return false;
+            return null;
         }
         else
         {
-            return true;
+            var emailDisabled = _configuration.GetValue<bool>("DisableLogicApp");
+            if (!emailDisabled)
+            {
+                var content = JsonContent.Create(addedOrder);
+                await content.LoadIntoBufferAsync();
+                var response2 = await _emailHttpClient.PostAsync("", content);
+            }
+            return addedOrder;
         }
     }
 }
