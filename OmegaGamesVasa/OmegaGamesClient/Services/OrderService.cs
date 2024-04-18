@@ -26,13 +26,17 @@ public class OrderService : IOrderRepository<OrderDTO>
         return result ?? Enumerable.Empty<OrderDTO>();
     }
 
-    public async Task AddOrderAsync(OrderDTO order)
+    public async Task<bool> AddOrderAsync(OrderDTO order)
     {
         var response = await _httpClient.PostAsJsonAsync("orders", order);
 
         if (!response.IsSuccessStatusCode)
         {
-            return;
+            return false;
+        }
+        else
+        {
+            return true;
         }
     }
 }
