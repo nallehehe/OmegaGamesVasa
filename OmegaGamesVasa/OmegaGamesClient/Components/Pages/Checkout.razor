@@ -75,11 +75,11 @@
                                         <DataAnnotationsValidator/>
                                         <label for="FirstName">Förnamn:</label>
                                         <InputText id="FirstName" @bind-Value="newCustomer.FirstName" class="form-control"/>
-                                        <ValidationMessage For="@(() => newCustomer.FirstName)"/>
+                                        <ValidationMessage id="first-name-validation" For="@(() => newCustomer.FirstName)"/>
 
                                         <label for="LastName">Efternamn:</label>
                                         <InputText id="LastName" @bind-Value="newCustomer.LastName" class="form-control"/>
-                                        <ValidationMessage For="@(() => newCustomer.LastName)"/>
+                                        <ValidationMessage id="last-name-validation" For="@(() => newCustomer.LastName)"/>
 
 @*                                         <label for="Address">Address:</label>
                                         <InputText id="Address" @bind-Value="newCustomer.Address" class="form-control"/>
@@ -99,15 +99,15 @@
 
                                         <label for="Email">Email:</label>
                                         <InputText id="Email" @bind-Value="newCustomer.Email" class="form-control"/>
-                                        <ValidationMessage For="@(() => newCustomer.Email)"/>
+                                        <ValidationMessage id="email-validation" For="@(() => newCustomer.Email)"/>
                                         
                                         <label for="VerifiedEmailAddress">Validera Email:</label>
                                         <InputText id="EmailVali" @bind-Value="newCustomer.VerifiedEmailAddress" class="form-control" />
-                                        <ValidationMessage For="@(() => newCustomer.VerifiedEmailAddress)"/>
+                                        <ValidationMessage id="email-confirm-validation" For="@(() => newCustomer.VerifiedEmailAddress)"/>
 
                                         <label for="Phone">Telefonnummer:</label>
                                         <InputText id="Phone" @bind-Value="newCustomer.Phone" class="form-control"/>
-                                        <ValidationMessage For="@(() => newCustomer.Phone)"/>
+                                        <ValidationMessage id="phone-validation" For="@(() => newCustomer.Phone)"/>
                                         <button type="submit" class="btn btn-primary mt-4 submit-button" @onclick="() => FinalizeOrder()">Slutför köp</button>
                                     </EditForm>
                                 </div>
