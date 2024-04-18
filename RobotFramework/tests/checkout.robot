@@ -69,3 +69,12 @@ Invalid email format shows error
     When the user enters an email in an invalid format
     And the user finalizes the order
     Then the page should display an error message for an invalid email format
+
+Invalid phone format shows error
+    [Documentation]    Test case for checking that entering a phone number with invalid format shows an error message
+    [Tags]    checkout
+    Given the user has a product in the cart
+    And the user is on the checkout page
+    When the user enters a phone number in an invalid format
+    And the user finalizes the order
+    Then the page should display an error message for an invalid phone number format

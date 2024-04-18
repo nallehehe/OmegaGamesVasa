@@ -26,6 +26,7 @@ ${phoneValidation}=    id:phone-validation
 
 ${requiredMessage}=    Kan inte lämnas tomt
 ${successfulOrderMessage}=    Din order gick igenom!
+${invalidPhoneFormatMessage}=    Fel format på telefonnummer
     
 
 *** Keywords ***
@@ -147,10 +148,15 @@ Phone validation shows required message
     ${validationMessage}=    Get Text    ${phoneValidation}
     Should Be Equal As Strings    ${validationMessage}    ${requiredMessage}
 
-Email validation shows invalid message
+Email validation shows invalid format message
     Wait Until Page Contains Element    ${emailValidation}
     ${validationMessage}=    Get Text    ${emailValidation}
     Should Match    ${validationMessage}    Inte giltig E-post adress
+
+Phone validation shows invalid format message
+    Wait Until Page Contains Element    ${phoneValidation}
+    ${validationMessage}=    Get Text    ${phoneValidation}
+    Should Be Equal As Strings    ${validationMessage}    ${invalidPhoneFormatMessage}
 
 the page should display error messages for required fields
     Firstname validation shows required message
@@ -162,4 +168,10 @@ the user enters an email in an invalid format
     Enter email    abc123
 
 the page should display an error message for an invalid email format
-    Wait Until Page Contains Element    ${emailValidation}
+    Email validation shows invalid format message
+
+the user enters a phone number in an invalid format
+    Enter phone    asdfqwe
+
+the page should display an error message for an invalid phone number format
+    Phone validation shows invalid format message
