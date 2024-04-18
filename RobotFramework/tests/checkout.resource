@@ -22,11 +22,13 @@ ${orderSubmitButton}=    //button[contains(@class, 'submit-button')]
 ${firstNameValidation}=    id:first-name-validation
 ${lastNameValidation}=    id:last-name-validation
 ${emailValidation}=    id:email-validation
+${emailConfirmValidation}=    id:email-confirm-validation
 ${phoneValidation}=    id:phone-validation
 
 ${requiredMessage}=    Kan inte lämnas tomt
 ${successfulOrderMessage}=    Din order gick igenom!
 ${invalidPhoneFormatMessage}=    Fel format på telefonnummer
+${differentEmailsValidationMessage}=    Mailen matchar inte!
     
 
 *** Keywords ***
@@ -175,3 +177,11 @@ the user enters a phone number in an invalid format
 
 the page should display an error message for an invalid phone number format
     Phone validation shows invalid format message
+
+the user enters different emails in the email and confirm email field
+    Enter email    test@example.com
+    Enter email confirm    test2@example.com
+the page should display an error message for different emails
+    Wait Until Page Contains Element    ${emailConfirmValidation}
+    ${validationMessage}=    Get Text    ${emailConfirmValidation}
+    Should Be Equal As Strings    ${validationMessage}    ${differentEmailsValidationMessage}
