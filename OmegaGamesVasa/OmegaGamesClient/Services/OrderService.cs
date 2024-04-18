@@ -42,7 +42,7 @@ public class OrderService : IOrderRepository<OrderDTO>
         else
         {
             var emailDisabled = _configuration.GetValue<bool>("DisableLogicApp");
-            var customerEmail = addedOrder.CustomerEmail;
+            var customerEmail = order.CustomerEmail;
             if (!emailDisabled && customerEmail != "test@example.com")
             {
                 var content = JsonContent.Create(addedOrder);

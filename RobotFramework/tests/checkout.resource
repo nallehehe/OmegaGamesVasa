@@ -29,6 +29,8 @@ ${requiredMessage}=    Kan inte lämnas tomt
 ${successfulOrderMessage}=    Din order gick igenom!
 ${invalidPhoneFormatMessage}=    Fel format på telefonnummer
 ${differentEmailsValidationMessage}=    Mailen matchar inte!
+
+${testEmailAddress}=    test@example.com
     
 
 *** Keywords ***
@@ -87,8 +89,8 @@ the user is on the checkout page
 the user enters valid customer information
     Enter firstname    Testare
     Enter lastname    Testsson
-    Enter email    test@example.com
-    Enter email confirm    test@example.com
+    Enter email    ${testEmailAddress}
+    Enter email confirm    ${testEmailAddress}
     Enter phone    070-1740635
 
 Enter firstname
@@ -179,7 +181,7 @@ the page should display an error message for an invalid phone number format
     Phone validation shows invalid format message
 
 the user enters different emails in the email and confirm email field
-    Enter email    test@example.com
+    Enter email    ${testEmailAddress}
     Enter email confirm    test2@example.com
 the page should display an error message for different emails
     Wait Until Page Contains Element    ${emailConfirmValidation}
