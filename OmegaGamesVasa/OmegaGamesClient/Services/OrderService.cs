@@ -33,7 +33,7 @@ public class OrderService : IOrderRepository<OrderDTO>
     public async Task<OrderDTO> AddOrderAsync(OrderDTO order)
     {
         var response = await _httpClient.PostAsJsonAsync("orders", order);
-        var addedOrder = response.Content.ReadFromJsonAsync<OrderDTO>().Result;
+        
         
         if (!response.IsSuccessStatusCode)
         {
@@ -41,6 +41,7 @@ public class OrderService : IOrderRepository<OrderDTO>
         }
         else
         {
+            var addedOrder = response.Content.ReadFromJsonAsync<OrderDTO>().Result;
             var emailDisabled = _configuration.GetValue<bool>("DisableLogicApp");
             var customerEmail = order.CustomerEmail;
             if (!emailDisabled && customerEmail != "test@example.com")
