@@ -12,13 +12,13 @@ public class CustomerDTO
     public string LastName { get; set; }
     [Required(ErrorMessage = "Kan inte lämnas tomt")]
     [EmailAddress(ErrorMessage = "Inte giltig E-post adress")]
-    [StringLength(254, MinimumLength = 5, ErrorMessage = "För kort epostadress")]
+    [StringLength(254, MinimumLength = 5, ErrorMessage = "Eposten måste vara mellan 5 och 254 tecken lång")]
     public string Email { get; set; }
     [Compare(nameof(Email), ErrorMessage = "Mailen matchar inte!")]
     public string VerifiedEmailAddress { get; set; }
     [Required(ErrorMessage = "Kan inte lämnas tomt")]
     [Phone(ErrorMessage = "Fel format på telefonnummer")]
-    [StringLength(15, MinimumLength = 1, ErrorMessage = "För kort telefonnummer")]
+    [StringLength(15, MinimumLength = 1, ErrorMessage = "Telefonnummer för långt")]
     public string Phone { get; set; }
     public string Address { get; set; }
     public string City { get; set; }
