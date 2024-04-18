@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectStringLocal = builder.Configuration.GetConnectionString("OmegaGamesVasa");
 var connectionStringAzure = builder.Configuration.GetConnectionString("OmegaGamesVasaAzure");
 
-builder.Services.Configure<OmegaGamesMongoDbSettings>(builder.Configuration.GetSection("OmegaGamesDatabase"));
+builder.Services.Configure<OmegaGamesMongoDbSettings>(builder.Configuration.GetSection("OmegaGamesDatabaseAzure"));
 
 builder.Services.AddSingleton<IOrderRepository<Order>, OrderRepository>();
 
