@@ -106,3 +106,12 @@ main {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+.active-user {
+    background-color: green;
+    cursor: default;
+}
+.active-user:hover{
+    background-color: green;
+    cursor: default;
+}
