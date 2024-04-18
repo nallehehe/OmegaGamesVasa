@@ -7,7 +7,7 @@ using Order = DataAccess.Entities.Order;
 
 namespace OmegaGamesAPI.Endpoints.Orders.Post.AddNewOrder;
 
-public class AddOrderHandler(IOrderRepository<Order> repo) : Endpoint<OrderDTO, EmptyResponse>
+public class AddOrderHandler(IOrderRepository<Order> repo) : Endpoint<OrderDTO, Order>
 {
 
     public override void Configure()
@@ -47,9 +47,9 @@ public class AddOrderHandler(IOrderRepository<Order> repo) : Endpoint<OrderDTO, 
             newOrder.TotalPrice += product.Price;
         }
 
-        await repo.AddOrderAsync(newOrder);
+        var addedOrder = await repo.AddOrderAsync(newOrder);
 
-        SendAsync(new EmptyResponse(), cancellation: ct);
+        await SendAsync(addedOrder, cancellation: ct);
     }
 
 }

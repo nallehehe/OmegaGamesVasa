@@ -160,7 +160,7 @@
 
     private void AddCustomer()
     {
-        
+
     }
     private void CalculateTotalCost()
     {
@@ -185,7 +185,7 @@
             CustomerId = 0
         };
         isSubmitting = true;
-        var addSuccess = await orderService.AddOrderAsync(newOrder);
+        var addSuccess = await orderService.AddOrderAsync(newOrder) != null;
         isSubmitting = false;
 
         if (!addSuccess)

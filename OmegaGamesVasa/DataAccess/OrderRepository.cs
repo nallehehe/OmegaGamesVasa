@@ -45,10 +45,10 @@ public class OrderRepository: IOrderRepository<Order>
         return allProducts;
     }
 
-    public async Task<bool> AddOrderAsync(Order order)
+    public async Task<Order> AddOrderAsync(Order order)
     {
         await _orders.InsertOneAsync(order);
 
-        return true;
+        return order;
     }
 }
