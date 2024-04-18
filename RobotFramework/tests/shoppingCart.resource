@@ -19,6 +19,7 @@ ${firstProductPrice}=    (//div[contains(@class, 'product-price')][1])[1]/span
 ${secondProductPrice}=    (//div[contains(@class, 'product-price')][1])[2]/span
 
 ${emptyCartMessage}=    Kundvagnen är tom!
+${productAmount}    //input[contains(@class, 'product-amount')]
 
 *** Keywords ***
 the user goes to the shopping cart page
@@ -38,31 +39,11 @@ the user adds a product to the shopping cart
 the user adds two products to the shopping cart
     Add first product to cart
     Add second product to cart
-    
+
 Add first product to cart
-    Wait Until Page Contains Element    ${firstProductTitle}
-    ${productTitle}=    Get Text    ${firstProductTitle}
-    Wait Until Page Contains Element    ${firstProductPrice}
-    ${productPrice}=    Get Text    ${firstProductPrice}
-    &{productDict}=    Create Dictionary
-    Set To Dictionary    ${productDict}    productName=${productTitle}
-    Set To Dictionary    ${productDict}    productPrice=${productPrice}
-    ${buttonPath}=    Set Variable    ${firstProductTitle}/parent::*/parent::*//button[contains(@class, 'add-to-cart-button')]
-    Wait Until Page Contains Element    ${buttonPath}
-    Click Button    ${buttonPath}
-    Append To List    ${productDictList}    ${productDict}
+    Add Product    1
 Add second product to cart
-    Wait Until Page Contains Element    ${secondProductTitle}
-    ${productTitle}=    Get Text    ${secondProductTitle}
-    &{productDict}=    Create Dictionary
-    Wait Until Page Contains Element    ${secondProductPrice}
-    ${productPrice}=    Get Text    ${secondProductPrice}
-    Set To Dictionary    ${productDict}    productName=${productTitle}
-    Set To Dictionary    ${productDict}    productPrice=${productPrice}
-    ${buttonPath}=    Set Variable    ${secondProductTitle}/parent::*/parent::*//button[contains(@class, 'add-to-cart-button')]
-    Wait Until Page Contains Element    ${buttonPath}
-    Click Button    ${buttonPath}
-    Append To List    ${productDictList}    ${productDict}
+    Add Product    2
 
 Wait until shopping cart renders items
     Wait Until Page Contains Element    ${shoppingCartImage}
@@ -71,14 +52,15 @@ Wait until shopping cart renders items
 the shopping cart page should display the added product
     Go to shopping cart page
     Wait until shopping cart renders items
-    ${product}=    Get From List    ${productDictList}    0
+    ${product}=    Get From Dictionary    ${productsDict}    1    default
     Wait Until Page Contains  ${product}[productName]
     Go To    ${BASE_URL}/${SHOPPING_CART_PAGE}
 
 the shopping cart page should display all added products
     Go to shopping cart page
     Wait until shopping cart renders items
-    FOR    ${product}    IN    @{productDictList}
+    @{productList}=    Get Dictionary Values    ${productsDict}
+    FOR    ${product}    IN    @{productList}
         Wait Until Page Contains    ${product}[productName]
     END
     
@@ -93,28 +75,28 @@ the user removes the product from the shopping cart
 
 the user increments the amount of the product
     Go to shopping cart page
-    ${product}=    Get From List    ${productDictList}    0
+    ${product}=    Get From Dictionary    ${productsDict}    1    default
     Wait Until Page Contains  ${product}[productName]
     Wait Until Page Contains Element    ${increaseButton}
     Click Button    ${increaseButton}
 
 the user increments the amount of the product twice
     Go to shopping cart page
-    ${product}=    Get From List    ${productDictList}    0
+    ${product}=    Get From Dictionary    ${productsDict}    1    default
     Wait Until Page Contains  ${product}[productName]
     Wait Until Page Contains Element    ${increaseButton}
     Click Button    ${increaseButton}
     Click Button    ${increaseButton}
 
 the user decrements the amount of the product
-    ${product}=    Get From List    ${productDictList}    0
+    ${product}=    Get From Dictionary    ${productsDict}    1    default
     Wait Until Page Contains  ${product}[productName]
     Wait Until Page Contains Element    ${decreaseButton}
     Click Button    ${decreaseButton}
 
 the product should have an incremented amount
-    Wait Until Page Contains Element    identifier:quantity
-    ${amountCountText}=    Get Value    identifier:quantity
+    Wait Until Page Contains Element    ${productAmount}
+    ${amountCountText}=    Get Value    ${productAmount}
     Should Be Equal As Integers    2    ${amountCountText}
 
 the product should have an decremented amount
@@ -134,12 +116,17 @@ the page should display the correct price
     Wait Until Page Contains Element    ${totalPriceElement}
     ${totalPrice}=    Get Text    ${totalPriceElement}
     ${sum}=    Set Variable    ${0}
-    FOR    ${product}    IN    @{productDictList}
+    @{productList}=    Get Dictionary Values    ${productsDict}
+    FOR    ${product}    IN    @{productList}
+        Log To Console    ${product}
         ${productPrice}=    Set Variable   ${product}[productPrice] 
-        ${sum}=    Set Variable    ${${sum}+${productPrice}}
+        ${productAmount}=    Set Variable    ${product}[productAmount]
+        ${sum}=    Evaluate    ${sum}+(${productPrice}*${productAmount})
     END
     Should Be Equal As Integers    ${totalPrice}    ${sum}
 
 Create Product List
+    &{productsDict}=    Create Dictionary
+    Set Test Variable    ${productsDict}
     @{productDictList}=    Create List
     Set Test Variable    ${productDictList}
