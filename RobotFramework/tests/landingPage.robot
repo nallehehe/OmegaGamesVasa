@@ -12,7 +12,7 @@ Suite Teardown    Close All Browsers
 ${topSection}=    class:frontpage2
 ${carousel}=    class:carousel
 ${section3}=    class:section3
-${welcomeText}=    HEY THERE, WELCOME TO OMEGA GAMES!
+${welcomeText}=    Välkommen till Omega Games!
 
 *** Test Cases ***
 Landing page renders
