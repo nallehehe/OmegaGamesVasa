@@ -1,0 +1,20 @@
+﻿.product-container {
+    position: relative;
+    top: 5rem;
+}
+
+.page-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(https://teamvasastorage.blob.core.windows.net/images/pic22-twostiffs_evening_on_avenyn_gothenburg_in_the_comic_style_of_lo_8a28f2e1-52da-4290-8614-9bfe9107851c.jpg);
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+}
+
+.card-opacity {
+    opacity: 0.95;
+}
