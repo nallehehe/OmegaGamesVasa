@@ -89,4 +89,8 @@ the user has multiple of one product in the cart
     Go to products page
     Add Product    1
     Add Product    1
+
+the shopping cart should be empty
+    Go to shopping cart page
+    the page should display an empty cart message
     

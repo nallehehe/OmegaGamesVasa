@@ -11,6 +11,28 @@ ${emailConfirmInput}    //input[@id='EmailVali']
 ${phoneInput}    //input[@id='Phone']
 ${productAmountCheckout}    //h6[contains(@class, 'product-amount')]
 
+${firstNameInput}=    //input[@id='FirstName']
+${lastNameInput}=    //input[@id='LastName']
+${emailInput}=    //input[@id='Email']
+${emailConfirmInput}=    //input[@id='EmailVali']
+${phoneInput}=    //input[@id='Phone']
+
+${orderSubmitButton}=    //button[contains(@class, 'submit-button')]
+
+${firstNameValidation}=    id:first-name-validation
+${lastNameValidation}=    id:last-name-validation
+${emailValidation}=    id:email-validation
+${emailConfirmValidation}=    id:email-confirm-validation
+${phoneValidation}=    id:phone-validation
+
+${requiredMessage}=    Kan inte lämnas tomt
+${successfulOrderMessage}=    Din order gick igenom!
+${invalidPhoneFormatMessage}=    Fel format på telefonnummer
+${differentEmailsValidationMessage}=    Mailen matchar inte!
+
+${testEmailAddress}=    test@example.com
+    
+
 *** Keywords ***
 Go to checkout page
     Go to shopping cart page
@@ -60,4 +82,108 @@ the checkout page should display the correct price and amount
     Should Be Equal As Strings    ${productAmountCheckoutText}    x ${productAmount}
     Log To Console    ${productAmount}
     
+the user is on the checkout page
+    Go to shopping cart page
+    Go to checkout page
+
+the user enters valid customer information
+    Enter firstname    Testare
+    Enter lastname    Testsson
+    Enter email    ${testEmailAddress}
+    Enter email confirm    ${testEmailAddress}
+    Enter phone    070-1740635
+
+Enter firstname
+    [Arguments]    ${firstName}
+    Wait Until Page Contains Element    ${firstNameInput}
+    Input Text    ${firstNameInput}    ${firstName}
+
+Enter lastname
+    [Arguments]    ${lastName}
+    Wait Until Page Contains Element    ${lastNameInput}
+    Input Text    ${lastNameInput}    ${lastName}
     
+Enter email
+    [Arguments]    ${email}
+    Wait Until Page Contains Element    ${emailInput}
+    Input Text    ${emailInput}    ${email}
+
+Enter email confirm
+    [Arguments]    ${emailConfirm}
+    Wait Until Page Contains Element    ${emailConfirmInput}
+    Input Text    ${emailConfirmInput}    ${emailConfirm}
+
+Enter phone
+    [Arguments]    ${phone}
+    Wait Until Page Contains Element    ${phoneInput}
+    Input Text    ${phoneInput}    ${phone}
+
+the user finalizes the order
+    Wait Until Page Contains Element    ${orderSubmitButton}
+    Click Button    ${orderSubmitButton}
+    
+the page should display an order confirmation
+    Wait Until Page Contains    ${successfulOrderMessage}
+
+the user enters invalid information
+    Enter firstname    ${EMPTY}
+    Enter lastname    ${EMPTY}
+    Enter email    ${EMPTY}
+    Enter email confirm    ${EMPTY}
+    Enter phone    ${EMPTY}
+
+Firstname validation shows required message
+    Wait Until Page Contains Element    ${firstNameValidation}
+    ${validationMessage}=    Get Text    ${firstNameValidation}
+    Should Be Equal As Strings    ${validationMessage}    ${requiredMessage}
+
+Lastname validation shows required message
+    Wait Until Page Contains Element    ${lastNameValidation}
+    ${validationMessage}=    Get Text    ${lastNameValidation}
+    Should Be Equal As Strings    ${validationMessage}    ${requiredMessage}
+
+Email validation shows required message
+    Wait Until Page Contains Element    ${emailValidation}
+    ${validationMessage}=    Get Text    ${emailValidation}
+    Should Be Equal As Strings    ${validationMessage}    ${requiredMessage}
+
+Phone validation shows required message
+    Wait Until Page Contains Element    ${phoneValidation}
+    ${validationMessage}=    Get Text    ${phoneValidation}
+    Should Be Equal As Strings    ${validationMessage}    ${requiredMessage}
+
+Email validation shows invalid format message
+    Wait Until Page Contains Element    ${emailValidation}
+    ${validationMessage}=    Get Text    ${emailValidation}
+    Should Match    ${validationMessage}    Inte giltig E-post adress
+
+Phone validation shows invalid format message
+    Wait Until Page Contains Element    ${phoneValidation}
+    ${validationMessage}=    Get Text    ${phoneValidation}
+    Should Be Equal As Strings    ${validationMessage}    ${invalidPhoneFormatMessage}
+
+the page should display error messages for required fields
+    Firstname validation shows required message
+    Lastname validation shows required message
+    Email validation shows required message
+    Phone validation shows required message
+
+the user enters an email in an invalid format
+    Enter email    abc123
+
+the page should display an error message for an invalid email format
+    Email validation shows invalid format message
+
+the user enters a phone number in an invalid format
+    Enter phone    asdfqwe
+
+the page should display an error message for an invalid phone number format
+    Phone validation shows invalid format message
+
+the user enters different emails in the email and confirm email field
+    Enter email    ${testEmailAddress}
+    Enter email confirm    test2@example.com
+the page should display an error message for different emails
+    Wait Until Page Contains Element    ${emailConfirmValidation}
+    ${validationMessage}=    Get Text    ${emailConfirmValidation}
+    Should Be Equal As Strings    ${validationMessage}    ${differentEmailsValidationMessage}
