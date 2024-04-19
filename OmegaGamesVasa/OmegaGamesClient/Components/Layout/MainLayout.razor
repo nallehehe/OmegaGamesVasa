@@ -22,15 +22,25 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" href="#" Match="NavLinkMatch.Prefix">Events</a>
                         </li>
+                        <AuthorizeView Roles="Admin">
+                            <Authorized>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" href="/Orders" Match="NavLinkMatch.Prefix">Ordrar</a>
+                                </li>
+                            </Authorized>
+                        </AuthorizeView>
                     </ul>
                     <ul class="navbar-nav ms-auto me-5">
                         <AuthorizeView>
-                        <li class="nav-item">
-                            <div class="btn btn-success active-user">
-                                Administrator<span></span>
-                            </div>
-                        </li>
+                            <li class="nav-item">
+                                <div class="btn btn-success active-user">
+                                    Administrator<span></span>
+                                </div>
+                            </li>
                         </AuthorizeView>
+                        <li class="nav-item">
+                            <NavLink class="nav-link text-white" href="/Account/Login" Match="NavLinkMatch.Prefix">Logga in</NavLink>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" href="/ShoppingCart" Match="NavLinkMatch.Prefix">
                                 Kundvagn <span>@customerService.Customer.Cart.Count</span>
