@@ -32,8 +32,10 @@ public class OrderService : IOrderRepository<OrderDTO>
 
     public async Task<OrderDTO> AddOrderAsync(OrderDTO order)
     {
-        var response = await _httpClient.PostAsJsonAsync("orders", order);
+
         
+        var response = await _httpClient.PostAsJsonAsync("orders", order);
+
         
         if (!response.IsSuccessStatusCode)
         {
@@ -41,7 +43,10 @@ public class OrderService : IOrderRepository<OrderDTO>
         }
         else
         {
-            var addedOrder = response.Content.ReadFromJsonAsync<OrderDTO>().Result;
+            
+            var addedOrder = response.Content.ReadFromJsonAsync<OrderDTO>().Result; 
+            var productsAndProductCodes = await GetCodesFromOrder(order);
+            addedOrder.ProductCodes = productsAndProductCodes;
             var emailDisabled = _configuration.GetValue<bool>("DisableLogicApp");
             var customerEmail = order.CustomerEmail;
             if (!emailDisabled && customerEmail != "test@example.com")
@@ -53,4 +58,39 @@ public class OrderService : IOrderRepository<OrderDTO>
             return addedOrder;
         }
     }
+
+    private async Task<Dictionary<int, List<string>>> GetCodesFromOrder(OrderDTO orderDto)
+    {
+        var keyDict = new Dictionary<int, List<string>>();
+
+        foreach (var product in orderDto.CustomerCart)
+        {
+            if (!keyDict.ContainsKey(product.Id))
+            {
+                keyDict.Add(product.Id, new List<string>());
+            }
+
+            var productCode = await GetProductCode(product);
+            keyDict[product.Id].Add(productCode);
+        }
+        return keyDict;
+    }
+
+
+    private async Task<string> GetProductCode(ProductDTO productDto)
+    {
+        var response = await _httpClient.GetAsync($"products/code/{productDto.Id}");
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return null;
+        }
+
+        var result = await response.Content.ReadAsStringAsync();
+        char[] charsToTrim = {'\\', '"'};
+        result = result.Trim(charsToTrim);
+
+        return result;
+    }
+
 }
