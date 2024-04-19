@@ -18,7 +18,7 @@ builder.Services.AddSingleton<IOrderRepository<Order>, OrderRepository>();
 
 builder.Services.AddSingleton("OmegaGamesOrders");
 
-builder.Services.AddDbContext<OmegaGamesDbContext>(options => options.UseSqlServer(connectionStringAzure));
+builder.Services.AddDbContext<OmegaGamesDbContext>(options => options.UseSqlServer(connectStringLocal));
 
 builder.Services.AddScoped<IProductService<Product>, ProductRepository>();
 
