@@ -1,3 +1,5 @@
+using Common.DTO;
+using Common.Interface;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -24,12 +26,13 @@ builder.Services.AddAuthentication(options =>
     })
     .AddIdentityCookies();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString("OmegaGamesVasaAzure") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
@@ -38,9 +41,12 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 
 //TODO: Ändra URI så att det inte kollar mot local host utan mot Azure
 builder.Services.AddHttpClient("OmegaGamesAPI", client => client.BaseAddress = new Uri(builder.Configuration["OmegaGamesAPIBaseAdress"]));
+builder.Services.AddHttpClient("EmailLogicAppClient", client => client.BaseAddress = new Uri(builder.Configuration["EmailLogicAppAddress"]));
 
-builder.Services.AddScoped<ProductService, ProductService>();
-
+builder.Services.AddScoped<IProductService<ProductDTO>, ProductService>();
+builder.Services.AddScoped<IOrderRepository<OrderDTO>, OrderService>();
+builder.Services.AddScoped<CustomerService>();
+builder.Services.AddScoped<OrderService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,24 +1,36 @@
-﻿<h3>ProductCard</h3>
-
+﻿@using OmegaGamesAPI.Services
+@using Common.DTO
+@using Microsoft.AspNetCore.Identity.Data
+@using OmegaGamesClient.Components.Layout
 @rendermode InteractiveServer
+@inject CustomerService customerService
 
-<Card>
-    <CardBody>
-        <CardTitle Size="3">
-            @Name
-        </CardTitle>
-        <CardText>
-            @ShortDescription
-            @Price kr
-        </CardText>
-    </CardBody>
-</Card> 
+<div class="card shadow-sm col-md-3 mb-4 col-sm-6 m-2 product-card card-opacity">
+    <img class="card-img-top pt-3 img-size" src="@Product.Image" alt="@Product.ProductName">
+    <div class="card-body">
+        <h4 class="card-title">@Product.ProductName</h4>
+        <span class="card-subtitle">@Product.Description</span>
+    </div>
+    <div class="card-footer">
+        <div class="card-text product-price"><span>@Product.Price</span> kr</div>
+        <button type="button" class="btn btn-primary add-to-cart-button" @onclick="() => AddToCart()">Köp nu</button>
+    </div>
+</div>
 
 @code {
-    [Parameter] public string Name { get; set; }
-    [Parameter] public string ShortDescription { get; set; }
-    [Parameter] public string Description { get; set; }
-    [Parameter] public double Price { get; set; }
 
-    
+    [Parameter] public ProductDTO Product { get; set; }
+
+    public string Image { get; set; }
+
+    private async Task AddToCart()
+    {
+        await customerService.AddToCart(Product);
+    }
+
+    protected override void OnInitialized()
+    {
+        Image = Product.Image;
+        base.OnInitialized();
+    }
 }

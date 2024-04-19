@@ -1,0 +1,30 @@
+﻿@page "/ProductPage"
+@using Common.DTO
+@using Common.Interface
+@using OmegaGamesAPI.Services
+@rendermode @(new InteractiveServerRenderMode(prerender:false))
+@inject IProductService<ProductDTO> ProductService
+
+<div class="page-image"></div>
+
+<div class="container text-center product-container">
+    <div class="row justify-content-center">
+        @foreach (var product in Products)
+        {
+            <ProductCard Product="product"/>
+        }
+    </div>
+</div>
+
+
+@code {
+
+    private List<ProductDTO> Products { get; set; } = new List<ProductDTO>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        //TODO: Ändra ProductService till namnet på vår service och hämta listan med produkter därifrån
+        Products.AddRange(await ProductService.GetAllProducts());
+    }
+
+}
