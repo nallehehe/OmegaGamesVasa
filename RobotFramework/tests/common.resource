@@ -3,6 +3,7 @@ Library    SeleniumLibrary
 Resource    shoppingCart.resource
 Resource    checkout.resource
 Resource    products.resource
+Resource    adminLogin.resource
 
 *** Variables ***
 ${SLEEP_TIME}=    800ms
@@ -51,6 +52,10 @@ Go to products page
 
 Go to shopping cart page
     Click Link    /ShoppingCart
+    Sleep    ${SLEEP_TIME}
+
+Go to admin login page
+    Go To    ${BASE_URL}/auth
     Sleep    ${SLEEP_TIME}
 
 the user is on the products page
