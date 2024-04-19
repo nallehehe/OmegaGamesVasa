@@ -1,0 +1,223 @@
+﻿@page "/ShoppingCart"
+@using OmegaGamesAPI.Services
+@using Common.DTO
+@using System.Runtime.InteropServices
+@using OmegaGamesClient.Components.Account.Pages
+@using System.ComponentModel.DataAnnotations
+@rendermode InteractiveServer
+@inject CustomerService customerService
+@inject NavigationManager NavigationManager
+
+
+<div class="shopping-cart-image">
+</div>
+
+<section class="h-100 h-custom shoppingcart-opacity pt-5">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12">
+                <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                    <div class="card-body p-0">
+                        <div class="row g-0">
+                            <div class="col-lg-8">
+                                <div class="p-5">
+                                    <div class="d-flex justify-content-between align-items-center mb-5">
+                                        <h1 class="fw-bold mb-0 text-black">Kundvagn</h1>
+                                    </div>
+                                    <hr class="my-4">
+                                    @if (message != null)
+                                    {
+                                        <h2>@message</h2>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var product in Products.DistinctBy(p => p.Id))
+                                        {
+                                            <div class="row mb-4 d-flex justify-content-between align-items-center product-in-cart">
+                                                <div class="col-md-2 col-lg-2 col-xl-2">
+                                                    <img src="@product.Image"
+                                                         class="img-fluid rounded-3" alt="Product image">
+                                                </div>
+                                                <div class="col-md-3 col-lg-3 col-xl-3">
+                                                    <h6 class="text-muted">@product.ProductName</h6>
+                                                    <h6 class="text-black mb-0">@product.Category</h6>
+                                                </div>
+                                                <div class="col-md-3 col-lg-3 col-xl-2 d-flex m-6">
+                                                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2 btn-primary decrease-amount-btn"
+                                                            @onclick="() => DecrementAmount(product)">
+                                                        <i class="fas fa-minus">-</i>
+                                                    </button>
+
+                                                    <input id="form1" min="0" name="quantity" text="bold" disabled="true" inputmode="numeric" value="@Products.Count(p => p.Id == product.Id)" type="number"
+                                                           class="form-control form-control-sm text-center product-amount" />
+
+                                                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2 btn-primary increase-amount-btn"
+                                                            @onclick="() => IncrementAmount(product)">
+                                                        <i class="fas fa-plus ">+</i>
+                                                    </button>
+                                                </div>
+
+                                                <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                                    <h6 class="mb-0">@product.Price kr</h6>
+                                                </div>
+                                                <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                                    <button data-mdb-button-init data-mdb-ripple-init class="btn px-2 btn-danger remove-from-cart-btn"
+                                                            @onclick="() => RemoveAllFromCart(product)">
+                                                        <i class="fas fa-plus">X</i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    <hr class="my-4">
+                                    <div class="pt-5">
+                                        <h6 class="mb-0">
+                                            <a href="/ProductPage" class="text-body">
+                                                <i class="fas fa-long-arrow-alt-left me-2"></i>Fortsätt handla
+                                            </a>
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 bg-grey">
+                                <div class="p-5">
+                                    <h3 class="fw-bold mb-5 mt-2 pt-1">Översikt</h3>
+                                    <hr class="my-4">
+                                    <div class="d-flex justify-content-between mb-4">
+                                        <h5 class="text-uppercase">Antal: @Products.Count</h5>
+                                    </div>
+                                    <h5 class="text-uppercase mb-3">Frakt</h5>
+                                    <div class="mb-4 pb-2">
+                                        <select disabled="true" class="select">
+                                            <option value="1">Få digital kod</option>
+                                            <option value="2">Bring</option>
+                                            <option value="3">PostNord</option>
+                                            <option value="4">Drönare</option>
+                                        </select>
+                                    </div>
+                                    <h5 class="text-uppercase mb-3">Värdekod</h5>
+                                    <div class="mb-5">
+                                        <div data-mdb-input-init class="form-outline">
+                                            <input type="text" id="DiscountCode" disabled="true" class="form-control form-control-lg" />
+                                            <label class="form-label" for="DiscountCode">Ange rabattkod</label>
+                                        </div>
+                                    </div>
+                                    <hr class="my-4">
+                                    <div class="d-flex justify-content-between mb-5">
+                                        <h5 class="text-uppercase">Totalt pris</h5>
+                                        <h5 class="total-price"><span>@price</span> kr</h5>
+                                    </div>
+                                    <button id="clear-cart-btn" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-block btn-lg"
+                                            data-mdb-ripple-color="dark" @onclick="() => ClearCart()">
+                                        Töm varukorg
+                                    </button>
+                                    <button id="go-to-checkout-btn" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-block btn-lg"
+                                            data-mdb-ripple-color="dark" @onclick="() => GotoCheck()">
+                                        Gå till kassan
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    private List<ProductDTO> Products { get; set; } = new();
+
+    private string message;
+
+    private double price;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (customerService.Customer.Cart.Count == 0)
+        {
+            message = "Kundvagnen är tom!";
+        }
+        else
+        {
+            Products.AddRange(await customerService.GetShoppingCart());
+
+        }
+        CalculateTotalCost();
+    }
+
+    private async Task DecrementAmount(ProductDTO product)
+    {
+        await RemoveOneFromCart(product);
+    }
+
+    private async Task IncrementAmount(ProductDTO product)
+    {
+        await UpdateCart(product);
+    }
+
+    private async Task UpdateCart(ProductDTO product)
+    {
+        await customerService.AddToCart(product);
+        Products.Clear();
+        Products.AddRange(await customerService.GetShoppingCart());
+        CalculateTotalCost();
+    }
+
+    private async Task RemoveAllFromCart(ProductDTO product)
+    {
+        while (Products.Exists(p => p.Id == product.Id))
+        {
+            var selectedProduct = Products.FirstOrDefault(p => p.Id == product.Id);
+            await customerService.RemoveFromCart(selectedProduct);
+            Products.Remove(selectedProduct);
+        }
+        Products.Clear();
+        Products.AddRange(await customerService.GetShoppingCart());
+        CalculateTotalCost();
+
+        if (customerService.Customer.Cart.Count == 0)
+        {
+            message = "Kundvagnen är tom!";
+            price = 0;
+        }
+    }
+
+    private async Task RemoveOneFromCart(ProductDTO product)
+    {
+        await customerService.RemoveFromCart(product);
+        Products.Clear();
+        Products.AddRange(await customerService.GetShoppingCart());
+        CalculateTotalCost();
+
+        if (customerService.Customer.Cart.Count == 0)
+        {
+            message = "Kundvagnen är tom!";
+            price = 0;
+        }
+    }
+
+    private void CalculateTotalCost()
+    {
+        price = Products.Sum(item => item.Price);
+    }
+
+    private async Task ClearCart()
+    {
+        await customerService.ClearCart();
+        Products.Clear();
+        price = 0;
+        message = "Kundvagnen är tom!";
+    }
+
+    private void GotoCheck()
+    {
+        if(customerService.Customer.Cart.Count == 0)
+        {
+           message = "Kundvagnen är tom! Lägg till produkter i kundvagnen för att gå till kassan";
+            return;
+        }
+
+        NavigationManager.NavigateTo("/Checkout");
+    }
+}
