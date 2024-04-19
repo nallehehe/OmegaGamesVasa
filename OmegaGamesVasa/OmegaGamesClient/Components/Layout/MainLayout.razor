@@ -25,12 +25,15 @@
                     </ul>
                     <ul class="navbar-nav ms-auto me-5">
                         <AuthorizeView>
-                        <li class="nav-item">
-                            <div class="btn btn-success active-user">
-                                Administrator<span></span>
-                            </div>
-                        </li>
+                            <li class="nav-item">
+                                <div class="btn btn-success active-user">
+                                    Administrator<span></span>
+                                </div>
+                            </li>
                         </AuthorizeView>
+                        <li class="nav-item">
+                            <NavLink class="nav-link text-white" href="/Account/Login" Match="NavLinkMatch.Prefix">Logga in</NavLink>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" href="/ShoppingCart" Match="NavLinkMatch.Prefix">
                                 Kundvagn <span>@customerService.Customer.Cart.Count</span>
