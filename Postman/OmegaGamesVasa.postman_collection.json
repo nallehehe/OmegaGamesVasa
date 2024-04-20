@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6924ecb6-253c-4270-a676-77dacef9d6b6",
+		"_postman_id": "9ba05f0f-f0db-407b-a43f-32d60ad3ad65",
 		"name": "OmegaGamesVasa",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "7374966"
@@ -25,7 +25,15 @@
 									"});\r",
 									"\r",
 									"pm.test(\"Product contains correct fields\", function () {\r",
-									"    pm.expect(pm.response.json()[0]).to.have.all.keys('id', 'productName','description','price','category','stock','image','genre','ageRestriction');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('id');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('productName');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('description');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('price');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('category');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('stock');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('image');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('genre');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('ageRestriction');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -68,11 +76,18 @@
 									"});\r",
 									"\r",
 									"pm.test(\"Order contains correct fields\", function () {\r",
-									"    pm.expect(pm.response.json()[0]).to.have.all.keys('customerCart', 'customerId','customerEmail','customerAddress','customerFirstName','customerLastName','customerPhone','orderDate','totalPrice');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('customerCart');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('customerId');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('customerEmail');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('customerAddress');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('customerFirstName');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('customerLastName');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('customerPhone');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('orderDate');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('totalPrice');\r",
 									"});"
 								],
-								"type": "text/javascript",
-								"packages": {}
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -104,11 +119,10 @@
 									"\r",
 									"pm.test(\"Your test name\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.id).to.not.be.empty();\r",
+									"    pm.expect(jsonData.id).to.be.a.string;\r",
 									"});"
 								],
-								"type": "text/javascript",
-								"packages": {}
+								"type": "text/javascript"
 							}
 						}
 					],
