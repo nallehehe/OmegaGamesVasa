@@ -12,5 +12,5 @@ public class OrderDTO
     public string CustomerLastName { get; set; }
     public string CustomerPhone { get; set; }
     public DateTime OrderDate { get; set; }
-    public double TotalCost { get; set; }
+    public double TotalPrice { get; set; }
 }
