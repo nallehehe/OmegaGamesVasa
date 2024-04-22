@@ -12,7 +12,7 @@
 
 <div class="container product-container">
     <ul class="list-group mt-5">
-        <h3 class="d-flex justify-content-center">All Orders</h3>
+        <h3 class="d-flex justify-content-center text-light">All Orders</h3>
         @foreach (var order in AllOrders)
         {
             <div class="card mt-1 card-opacity">
@@ -78,7 +78,9 @@
 
     override protected async Task OnInitializedAsync()
     {
-        AllOrders.AddRange(await OrderService.GetAllOrders());
+        var orders = await OrderService.GetAllOrders();
+        var sortedOrders = orders.OrderByDescending(o => o.OrderDate).ToList();
+        AllOrders.AddRange(sortedOrders);
     }
 
 }
