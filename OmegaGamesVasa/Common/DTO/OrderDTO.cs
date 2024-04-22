@@ -2,8 +2,7 @@
 
 public class OrderDTO
 {
-    public List<ProductDTO> CustomerCart { get; set; } = new List<ProductDTO>();
-    public Dictionary<int, List<string>> ProductCodes { get; set; } = new();
+    public List<ProductInCartDTO> CustomerCart { get; set; } = new ();
     public string Id { get; set; }
     public int? CustomerId { get; set; }
     public string CustomerEmail { get; set; }

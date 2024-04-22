@@ -25,7 +25,19 @@
 
     private async Task AddToCart()
     {
-        await customerService.AddToCart(Product);
+        var productInCart = new ProductInCartDTO()
+        {
+            AgeRestriction = Product.AgeRestriction,
+            Category = Product.Category,
+            Description = Product.Description,
+            Genre = Product.Genre,
+            Id = Product.Id,
+            Image = Product.Image,
+            Price = Product.Price,
+            ProductKey = "",
+            ProductName = Product.ProductName
+        };
+        await customerService.AddToCart(productInCart);
     }
 
     protected override void OnInitialized()

@@ -18,17 +18,17 @@ public class CustomerService
     //   return Customer;
     //}
 
-    public async Task<IEnumerable<ProductDTO>> GetShoppingCart()
+    public async Task<IEnumerable<ProductInCartDTO>> GetShoppingCart()
     {
         return Customer.Cart;
     }
 
-    public async Task AddToCart(ProductDTO product)
+    public async Task AddToCart(ProductInCartDTO product)
     { 
         Customer.Cart.Add(product);
     }
 
-    public async Task RemoveFromCart(ProductDTO product)
+    public async Task RemoveFromCart(ProductInCartDTO product)
     {
         Customer.Cart.Remove(product);
     }
