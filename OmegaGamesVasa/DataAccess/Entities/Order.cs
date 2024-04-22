@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using Common.DTO;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -9,7 +10,7 @@ public class Order
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; }
-    public List<Product> CustomerCart { get; set; } = new();
+    public List<ProductInCartDTO> CustomerCart { get; set; } = new();
     public int? CustomerId { get; set; }
     public string CustomerEmail { get; set; }
     public string CustomerAddress { get; set; }

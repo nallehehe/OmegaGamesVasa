@@ -126,7 +126,7 @@
 </section>
 
 @code {
-    private List<ProductDTO> Products { get; set; } = new();
+    private List<ProductInCartDTO> Products { get; set; } = new();
 
     private string message;
 
@@ -146,17 +146,17 @@
         CalculateTotalCost();
     }
 
-    private async Task DecrementAmount(ProductDTO product)
+    private async Task DecrementAmount(ProductInCartDTO product)
     {
         await RemoveOneFromCart(product);
     }
 
-    private async Task IncrementAmount(ProductDTO product)
+    private async Task IncrementAmount(ProductInCartDTO product)
     {
         await UpdateCart(product);
     }
 
-    private async Task UpdateCart(ProductDTO product)
+    private async Task UpdateCart(ProductInCartDTO product)
     {
         await customerService.AddToCart(product);
         Products.Clear();
@@ -164,7 +164,7 @@
         CalculateTotalCost();
     }
 
-    private async Task RemoveAllFromCart(ProductDTO product)
+    private async Task RemoveAllFromCart(ProductInCartDTO product)
     {
         while (Products.Exists(p => p.Id == product.Id))
         {
@@ -183,7 +183,7 @@
         }
     }
 
-    private async Task RemoveOneFromCart(ProductDTO product)
+    private async Task RemoveOneFromCart(ProductInCartDTO product)
     {
         await customerService.RemoveFromCart(product);
         Products.Clear();
