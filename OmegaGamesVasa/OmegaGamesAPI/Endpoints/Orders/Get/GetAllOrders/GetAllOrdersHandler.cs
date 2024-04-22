@@ -21,7 +21,7 @@ public class GetAllOrdersHandler(IOrderRepository<Order> repo) : Endpoint<EmptyR
     {
         var orders = await repo.GetAllOrders();
 
-        SendAsync(orders, cancellation: ct);
+        await SendAsync(orders, cancellation: ct);
     }
 
 }
