@@ -1,4 +1,8 @@
-﻿.shopping-cart-image {
+﻿.page-container {
+    position: relative;
+}
+
+.page-image {
     position: fixed;
     top: 0;
     left: 0;
@@ -9,6 +13,17 @@
     background-position: center;
     z-index: -1;
 }
-.checkout-opacity {
+
+.textcontainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1rem;
     opacity: 0.95;
+    z-index: 1;
+    max-width: 400px;
+    width: 90%;
 }
