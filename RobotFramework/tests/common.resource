@@ -4,6 +4,7 @@ Resource    shoppingCart.resource
 Resource    checkout.resource
 Resource    products.resource
 Resource    adminLogin.resource
+Resource    orderPage.resource
 
 *** Variables ***
 ${SLEEP_TIME}=    800ms
