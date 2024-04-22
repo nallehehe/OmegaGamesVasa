@@ -1,0 +1,34 @@
+﻿@page "/Logout"
+@using Microsoft.AspNetCore.Identity
+@using OmegaGamesClient.Data
+@rendermode InteractiveServer
+@inject NavigationManager navigationManager
+@inject SignInManager<ApplicationUser> signInManager
+
+<div class="page-container">
+    <div class="page-image">
+        <div class="textcontainer">
+            <h1>Du är utloggad!</h1>
+            <p>Klicka på OK för att återgå till startsidan.</p>
+            <button class="btn btn-primary" @onclick="NavigateToHome">OK</button>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        LogoutMethod();
+    }
+
+    private async Task LogoutMethod()
+    {
+        await signInManager.SignOutAsync();
+    }
+
+    private void NavigateToHome()
+    {
+        navigationManager.NavigateTo("/");
+    }
+}
