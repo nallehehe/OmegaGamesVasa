@@ -19,7 +19,7 @@
             <div class="col-md-4 form-floating">
                 <section>
                     <StatusMessage Message="@errorMessage" />
-                    <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
+                    <EditForm Model="Input" id="login-form" method="post" OnValidSubmit="LoginUser" FormName="login">
                         <DataAnnotationsValidator />
                         <h2 class="text-center">Vänligen logga in med ditt konto</h2>
                         <hr />

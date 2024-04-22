@@ -11,6 +11,8 @@ ${loginButton}=    //button[@id='login-button']
 ${userBadge}=    //div[contains(@class, 'active-user')]
 ${loginErrorDiv}=    //div[@role='alert']
 
+${loginForm}=    //form[@id='login-form']
+
 *** Keywords ***
 the user is on the admin login page
     Go to admin login page
@@ -35,11 +37,24 @@ the user enters invalid admin login
     Enter password    WrongPassword123!
 
 the user clicks the login button
-    Wait Until Page Contains Element    ${loginButton}
-    Click Button    ${loginButton}
+    Click login button
 
 the page should display successful login
     Wait Until Page Contains Element   ${userBadge}
 
 the page should display a login error message
     Wait Until Page Contains Element    ${loginErrorDiv}
+
+Click login button
+    Wait Until Page Contains Element    ${loginButton}
+    Click Button    ${loginButton}
+
+Sign in
+    [Arguments]    ${loginEmail}    ${loginPassword}
+    Enter username    ${loginEmail}
+    Enter password    ${loginPassword}
+    Click login button
+
+Sign in as admin
+    Sign in    ${adminUsername}    ${adminPassword}
+    Wait Until Page Contains Element    ${userBadge}
