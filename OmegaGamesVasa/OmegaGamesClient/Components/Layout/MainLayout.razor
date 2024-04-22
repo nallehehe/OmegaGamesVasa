@@ -1,6 +1,10 @@
 ﻿@using OmegaGamesAPI.Services
+@using OmegaGamesClient.Data
+@using Microsoft.AspNetCore.Identity
 @inherits LayoutComponentBase
 @inject CustomerService customerService
+@inject NavigationManager navigationManager
+@inject SignInManager<ApplicationUser> signInManager
 
 <div class="page">
     <main>
