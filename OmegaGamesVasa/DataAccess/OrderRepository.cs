@@ -39,7 +39,7 @@ public class OrderRepository: IOrderRepository<Order>
                         CustomerEmail = p.CustomerEmail,
                         CustomerFirstName = p.CustomerFirstName,
                         CustomerLastName = p.CustomerLastName,
-                        TotalCost = p.TotalPrice
+                        TotalPrice = p.TotalPrice
                     }
             );
         return allProducts;
