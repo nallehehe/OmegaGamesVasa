@@ -42,6 +42,7 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 //TODO: Ändra URI så att det inte kollar mot local host utan mot Azure
 builder.Services.AddHttpClient("OmegaGamesAPI", client => client.BaseAddress = new Uri(builder.Configuration["OmegaGamesAPIBaseAdress"]));
 builder.Services.AddHttpClient("EmailLogicAppClient", client => client.BaseAddress = new Uri(builder.Configuration["EmailLogicAppAddress"]));
+builder.Services.AddHttpClient("KlarnaPlayground", client => client.BaseAddress = new Uri(builder.Configuration["KlarnaPlayground"]));
 
 builder.Services.AddScoped<IProductService<ProductDTO>, ProductService>();
 builder.Services.AddScoped<IOrderRepository<OrderDTO>, OrderService>();
