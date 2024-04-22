@@ -9,25 +9,34 @@ public class OrderService : IOrderRepository<OrderDTO>
     private readonly HttpClient _httpClient;
     private readonly HttpClient _emailHttpClient;
     private readonly IConfiguration _configuration;
+    private readonly ILogger _logger;
 
-    public OrderService(IHttpClientFactory factory, IConfiguration configuration)
+    public OrderService(IHttpClientFactory factory, IConfiguration configuration, ILogger<OrderService> logger)
     {
         _httpClient = factory.CreateClient("OmegaGamesAPI");
         _emailHttpClient = factory.CreateClient("EmailLogicAppClient");
         _configuration = configuration;
+        _logger = logger;
     }
 
     public async Task<IEnumerable<OrderDTO>> GetAllOrders()
     {
-        var response = await _httpClient.GetAsync("orders");
-
-        if (!response.IsSuccessStatusCode)
+        try
         {
-            return Enumerable.Empty<OrderDTO>();
-        }
+			var response = await _httpClient.GetAsync("orders");
 
-        var result = await response.Content.ReadFromJsonAsync<IEnumerable<OrderDTO>>();
-        return result ?? Enumerable.Empty<OrderDTO>();
+			if (!response.IsSuccessStatusCode)
+			{
+				return Enumerable.Empty<OrderDTO>();
+			}
+			var result = await response.Content.ReadFromJsonAsync<IEnumerable<OrderDTO>>();
+			return result ?? Enumerable.Empty<OrderDTO>();
+		} catch (Exception ex)
+        {
+            _logger.LogError(ex.Message);
+            return Enumerable.Empty<OrderDTO>();
+		}
+        
     }
 
     public async Task<OrderDTO> AddOrderAsync(OrderDTO order)
@@ -43,7 +52,6 @@ public class OrderService : IOrderRepository<OrderDTO>
         }
         else
         {
-            
             var addedOrder = response.Content.ReadFromJsonAsync<OrderDTO>().Result; 
             var productsAndProductCodes = await GetCodesFromOrder(order);
             addedOrder.ProductCodes = productsAndProductCodes;
