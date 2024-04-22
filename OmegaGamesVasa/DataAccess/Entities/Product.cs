@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using DataAccess.Entities.Codes;
 
 namespace DataAccess.Entities;
 
@@ -14,4 +15,5 @@ public class Product
     public string Image { get; set; }
     public string? Genre { get; set; }
     public int? AgeRestriction { get; set; }
+    public List<ProductCode> Codes { get; set; }
 }

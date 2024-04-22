@@ -35,4 +35,9 @@ public class ProductService : IProductService<ProductDTO>
             return;
         }
     }
+
+    public Task<string> GetAndUseProductCode(int productId)
+    {
+        throw new NotImplementedException();
+    }
 }
