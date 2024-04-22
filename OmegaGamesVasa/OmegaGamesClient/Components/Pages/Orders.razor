@@ -3,7 +3,7 @@
 @using Common.DTO
 @using Common.Interface
 @using Microsoft.AspNetCore.Authorization
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender:false))
 @inject IOrderRepository<OrderDTO> OrderService
 
 @attribute [Authorize(Roles = "Admin")]
