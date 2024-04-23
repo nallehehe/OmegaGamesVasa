@@ -1,4 +1,5 @@
 ﻿using Common.DTO;
+using Common.DTO.Klarna;
 using Common.Interface;
 using OmegaGamesAPI.Services;
 namespace OmegaGamesClient.Services
@@ -25,7 +26,7 @@ namespace OmegaGamesClient.Services
                 order_tax_amount = 4545,
                 order_lines = new()
                 {
-                    new KlarnaOrderItemDTO {
+                    new KlarnaOrderProductDTO {
                         type = "physical",
                         reference = "1",
                         name = "White Cotton T-Shirt",
@@ -38,7 +39,7 @@ namespace OmegaGamesClient.Services
                         total_tax_amount = 4545
                     }
                 },
-                merchant_urls = new KlarnaMerchantURLsDTO
+                merchant_urls = new KlarnaMerchantUrlsDTO
                 {
                     terms = "https://www.example.com/terms.html",
                     checkout = "https://www.example.com/checkout.html",
