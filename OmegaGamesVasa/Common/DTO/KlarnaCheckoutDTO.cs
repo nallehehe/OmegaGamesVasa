@@ -13,12 +13,12 @@ namespace Common.DTO
         public string purchase_country { get; set; }
         public string purchase_currency { get; set; }
         public string locale { get; set; }
-        public string status { get; set; }  
+        public string status { get; set; }
         public int order_amount { get; set; }
         public int order_tax_amount { get; set; }
-        public List<KlarnaOrderItemDTO> order_lines {  get; set; }
+        public List<KlarnaOrderItemDTO> order_lines { get; set; }
         public string? merchant_reference1 { get; set; }
-        
+        public KlarnaMerchantURLsDTO merchant_urls { get; set; }
     }
 
     public class KlarnaOrderItemDTO
@@ -46,17 +46,18 @@ namespace Common.DTO
         public string? organization_registration_id { get; set; }
         public string? vat_id { get; set; }
     }
-    
+
     public class KlarnaMerchantURLsDTO
     {
         public string terms { get; set; }
         public string checkout { get; set; }
-        public string confirmation {  get; set; }
-        public string push {  get; set; }
+        public string confirmation { get; set; }
+        public string push { get; set; }
         public string? validation { get; set; }
-        public string? notification {  get; set; }
-        public string? cancellation_terms {  get; set; }
-        public string? shipping_option_update {  get; set; }
-        public string? address_update {  get; set; }
-        public string? country_change {  get; set; }
+        public string? notification { get; set; }
+        public string? cancellation_terms { get; set; }
+        public string? shipping_option_update { get; set; }
+        public string? address_update { get; set; }
+        public string? country_change { get; set; }
+    }
 }
