@@ -1,0 +1,38 @@
+﻿@page "/OrderConfirm"
+@using Common.DTO.Klarna
+@using Common.Interface
+@inject ICheckoutService KlarnaCheckoutService
+@rendermode @(new InteractiveServerRenderMode(prerender:false))
+@inject NavigationManager NavigationManager
+
+<div class="shopping-cart-image">
+</div>
+<section class="h-100 h-custom checkout-opacity pt-5">
+<div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div>
+        @if (klarnaHtmlSnippet != null)
+        {
+            @klarnaHtmlSnippet
+        }
+            </div>
+    </div>
+</div>
+</section>
+
+
+@code {
+
+    [SupplyParameterFromQuery(Name = "order_id")] public string? OrderId { get; set; }
+
+    public KlarnaOrderDTO KlarnaOrder { get; set; }
+    private MarkupString? klarnaHtmlSnippet = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        KlarnaOrder = await KlarnaCheckoutService.GetOrder(OrderId);
+
+        klarnaHtmlSnippet = new MarkupString(KlarnaOrder.html_snippet);
+        await InvokeAsync(StateHasChanged);
+    }
+}
