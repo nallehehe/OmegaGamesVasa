@@ -20,5 +20,6 @@ namespace Common.DTO
         public List<KlarnaOrderProductDTO> order_lines { get; set; }
         public string? merchant_reference1 { get; set; }
         public KlarnaMerchantUrlsDTO merchant_urls { get; set; }
+        public KlarnaAddressDTO billing_address { get; set; }
     }
 }
