@@ -150,6 +150,7 @@
     private string? successMessage;
     private double price;
     private bool isSubmitting = false;
+    private bool addSuccess = false;
 
     protected override void OnInitialized()
     {
@@ -184,9 +185,12 @@
             CustomerAddress = "Dummy address",
             CustomerId = 0
         };
-        isSubmitting = true;
-        var addSuccess = await orderService.AddOrderAsync(newOrder) != null;
-        isSubmitting = false;
+        if (!isSubmitting)
+        {
+            isSubmitting = true;
+            addSuccess = await orderService.AddOrderAsync(newOrder) != null;
+            isSubmitting = false;
+        }
 
         if (!addSuccess)
         {
