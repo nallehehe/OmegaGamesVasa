@@ -10,3 +10,14 @@
     z-index: -1;
     filter: brightness(50%);
 }
+.bottomright {
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+    font-size: 18px;
+}
+
+.img-size {
+    min-height: 250px;
+    object-fit: cover;
+}

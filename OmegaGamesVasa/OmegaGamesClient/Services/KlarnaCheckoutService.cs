@@ -1,6 +1,7 @@
 ﻿using Common.DTO;
 using Common.DTO.Klarna;
 using Common.Interface;
+using Microsoft.AspNetCore.Components;
 using OmegaGamesAPI.Services;
 namespace OmegaGamesClient.Services
 {
@@ -9,55 +10,89 @@ namespace OmegaGamesClient.Services
         private readonly ILogger _logger;
         private readonly IConfiguration _configuration;
         private readonly HttpClient _httpClient;
-        public KlarnaCheckoutService(IHttpClientFactory factory, IConfiguration configuration, ILogger<KlarnaCheckoutService> logger) {
+        private readonly NavigationManager _navigationManager;
+        public KlarnaCheckoutService(IHttpClientFactory factory, IConfiguration configuration, ILogger<KlarnaCheckoutService> logger, NavigationManager navigationManager) {
             _configuration = configuration;
             _logger = logger;
             _httpClient = factory.CreateClient("KlarnaPlayground");
+            _navigationManager = navigationManager;
         }
 
-        public async Task<string> CreateOrder()
+        public int GetTaxAmount(int totalAmount, int taxRate)
         {
+            double realTaxRate = (double)taxRate / (double)100;
+            double changeFactor = 100.0 / (100.0 + realTaxRate);
+            return Convert.ToInt32(totalAmount - (totalAmount * changeFactor));
+        }
+
+        public async Task<string> CreateOrder(OrderDTO order)
+        {
+            var baseUrl = _navigationManager.BaseUri;
+            var apiUrl = new Uri(_configuration["OmegaGamesAPIBaseAdress"]);
+            var orderAmount = order.CustomerCart.Sum(p => p.Price);
+            var klarnaProducts = new List<KlarnaOrderProductDTO>();
+            var taxRate = 2500; // TODO: Change to variable from product category when applicable
+            foreach (var p in order.CustomerCart.DistinctBy(p => p.Id))
+            {
+                var totalAmount = order.CustomerCart.Count(c => c.Id == p.Id) * Convert.ToInt32(p.Price * 100);
+                var totalTaxAmount = GetTaxAmount(totalAmount, taxRate);
+                klarnaProducts.Add(new KlarnaOrderProductDTO {
+                    type = "digital", // TODO: Change to variable from product category when applicable
+                    reference = p.Id.ToString(),
+                    name = p.ProductName,
+                    quantity = order.CustomerCart.Count(c => c.Id == p.Id),
+                    quantity_unit = "st",
+                    unit_price = Convert.ToInt32(p.Price * 100),
+                    tax_rate = taxRate,
+                    total_amount = totalAmount,
+                    total_discount_amount = 0,
+                    total_tax_amount = totalTaxAmount,
+                    image_url = p.Image
+                });
+            }
+
+            var customerAddress = new KlarnaAddressDTO
+            {
+                given_name = order.CustomerFirstName,
+                family_name = order.CustomerLastName,
+                email = order.CustomerEmail,
+                phone = order.CustomerPhone
+            };
+
+            var totalOrderAmount = Convert.ToInt32(order.TotalPrice * 100);
             var checkoutDTO = new KlarnaCheckoutDTO
             {
                 purchase_country = "SE",
                 purchase_currency = "SEK",
                 locale = "sv",
-                order_amount = 50000,
-                order_tax_amount = 4545,
-                order_lines = new()
-                {
-                    new KlarnaOrderProductDTO {
-                        type = "physical",
-                        reference = "1",
-                        name = "White Cotton T-Shirt",
-                        quantity = 5,
-                        quantity_unit = "pcs",
-                        unit_price = 10000,
-                        tax_rate = 1000,
-                        total_amount = 50000,
-                        total_discount_amount = 0,
-                        total_tax_amount = 4545
-                    }
-                },
+                order_amount = totalOrderAmount,
+                order_tax_amount = GetTaxAmount(totalOrderAmount, taxRate),
+                order_lines = klarnaProducts,
                 merchant_urls = new KlarnaMerchantUrlsDTO
                 {
-                    terms = "https://www.example.com/terms.html",
-                    checkout = "https://www.example.com/checkout.html",
-                    confirmation = "https://www.example.com/confirmation.html",
-                    push = "https://www.example.com/api/push"
-                }
+                    terms = $"{baseUrl}OrderTerms",
+                    checkout = $"{baseUrl}Checkout?order_id={{checkout.order.id}}",
+                    confirmation = $"{baseUrl}OrderConfirm?order_id={{checkout.order.id}}",
+                    push = $"{apiUrl}KlarnaOrderPush"
+                },
+                billing_address = customerAddress
             };
 
             var checkoutDTOContent = JsonContent.Create(checkoutDTO);
             Console.WriteLine(checkoutDTOContent.ToString());
 
             var response = await _httpClient.PostAsJsonAsync("/checkout/v3/orders", checkoutDTO);
-            var result = await response.Content.ReadAsStringAsync();
-            var responseDTO = await response.Content.ReadFromJsonAsync<KlarnaResponseDTO>();
-            var htmlSnippet = responseDTO.html_snippet;
-
-            return htmlSnippet;
-
+            
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            } else
+            {
+                var result = await response.Content.ReadAsStringAsync();
+                var responseDTO = await response.Content.ReadFromJsonAsync<KlarnaResponseDTO>();
+                var htmlSnippet = responseDTO.html_snippet;
+                return htmlSnippet;
+            }
         }
 
         public async Task<KlarnaOrderDTO> GetOrder(string order_id)
