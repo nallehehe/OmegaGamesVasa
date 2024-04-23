@@ -1,6 +1,21 @@
-﻿@page "/KlarnaOrderPage"
+﻿@page "/OrderConfirm"
+@using Common.DTO.Klarna
+@using Common.Interface
+@inject ICheckoutService KlarnaCheckoutService
+@inject NavigationManager NavigationManager
 <h3>KlarnaOrderPage</h3>
 
+<div>@KlarnaOrder.order_id</div>
+<div>@KlarnaOrder.billing_address</div>
+
 @code {
-    
+
+    [SupplyParameterFromQuery(Name = "order_id")] public string? OrderId { get; set; }
+
+    public KlarnaOrderDTO KlarnaOrder { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        KlarnaOrder = await KlarnaCheckoutService.GetOrder(OrderId);
+    }
 }

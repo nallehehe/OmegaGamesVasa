@@ -60,6 +60,13 @@ namespace OmegaGamesClient.Services
 
         }
 
+        public async Task<KlarnaOrderDTO> GetOrder(string order_id)
+        {
+            KlarnaOrderDTO order = new KlarnaOrderDTO();
+            var response = await _httpClient.GetAsync($"/checkout/v3/orders/{order_id}");
+            var result = await response.Content.ReadFromJsonAsync<KlarnaOrderDTO>();
 
+            return result;
+        }
     }
 }
