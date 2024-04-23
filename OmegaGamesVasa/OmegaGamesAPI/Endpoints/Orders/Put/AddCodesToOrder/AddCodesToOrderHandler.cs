@@ -2,17 +2,17 @@
 using Common.Interface;
 using DataAccess.Entities;
 using FastEndpoints;
+using OmegaGamesAPI.Endpoints.Products.Get.GetAndUseProductCode;
 using Order = DataAccess.Entities.Order;
 
+namespace OmegaGamesAPI.Endpoints.Orders.Put.AddCodesToOrder;
 
-namespace OmegaGamesAPI.Endpoints.Orders.Post.AddNewOrder;
-
-public class AddOrderHandler(IOrderRepository<Order> repo) : Endpoint<OrderDTO, Order>
+public class AddCodesToOrderHandler(IOrderRepository<Order> repo) : Endpoint<OrderDTO, Order>
 {
 
     public override void Configure()
     {
-        Post("/orders");
+        Put("/orders");
         AllowAnonymous();
     }
 
@@ -41,15 +41,16 @@ public class AddOrderHandler(IOrderRepository<Order> repo) : Endpoint<OrderDTO, 
                 Genre = product.Genre,
                 Id = product.Id,
                 Image = product.Image,
-                Price = product.Price,
+                Price = product.Price, 
                 ProductKey = product.ProductKey
-        });
+            });
             newOrder.TotalPrice += product.Price;
         }
 
-        var addedOrder = await repo.AddOrderAsync(newOrder);
+        var addedOrder = await repo.UpdateOrderAsync(newOrder);
 
         await SendAsync(addedOrder, cancellation: ct);
     }
+
 
 }

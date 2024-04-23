@@ -24,5 +24,5 @@ public class CustomerDTO
     public string City { get; set; }
     public string ZipCode { get; set; }
     public string Country { get; set; }
-    public List<ProductDTO> Cart { get; set; } = new List<ProductDTO>();
+    public List<ProductInCartDTO> Cart { get; set; } = new ();
 }

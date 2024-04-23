@@ -51,4 +51,11 @@ public class OrderRepository: IOrderRepository<Order>
 
         return order;
     }
+
+    public async Task<Order> UpdateOrderAsync(Order order)
+    {
+        var filter = Builders<Order>.Filter.Where(r => r.Id == order.Id);
+        await _orders.ReplaceOneAsync(filter, order);
+        return order;
+    }
 }

@@ -23,69 +23,78 @@ public class OrderService : IOrderRepository<OrderDTO>
     {
         try
         {
-			var response = await _httpClient.GetAsync("orders");
+            var response = await _httpClient.GetAsync("orders");
 
-			if (!response.IsSuccessStatusCode)
-			{
-				return Enumerable.Empty<OrderDTO>();
-			}
-			var result = await response.Content.ReadFromJsonAsync<IEnumerable<OrderDTO>>();
-			return result ?? Enumerable.Empty<OrderDTO>();
-		} catch (Exception ex)
+            if (!response.IsSuccessStatusCode)
+            {
+                return Enumerable.Empty<OrderDTO>();
+            }
+            var result = await response.Content.ReadFromJsonAsync<IEnumerable<OrderDTO>>();
+            return result ?? Enumerable.Empty<OrderDTO>();
+        }
+        catch (Exception ex)
         {
             _logger.LogError(ex.Message);
             return Enumerable.Empty<OrderDTO>();
-		}
-        
+        }
+
     }
 
     public async Task<OrderDTO> AddOrderAsync(OrderDTO order)
     {
-
-        
+        var productsWithCodes = await GetCodesFromCustomerCart(order.CustomerCart);
+        order.CustomerCart = productsWithCodes;
         var response = await _httpClient.PostAsJsonAsync("orders", order);
 
-        
         if (!response.IsSuccessStatusCode)
         {
             return null;
         }
         else
         {
-            var addedOrder = response.Content.ReadFromJsonAsync<OrderDTO>().Result; 
-            var productsAndProductCodes = await GetCodesFromOrder(order);
-            addedOrder.ProductCodes = productsAndProductCodes;
             var emailDisabled = _configuration.GetValue<bool>("DisableLogicApp");
             var customerEmail = order.CustomerEmail;
             if (!emailDisabled && customerEmail != "test@example.com")
             {
-                var content = JsonContent.Create(addedOrder);
+                var content = JsonContent.Create(order);
                 await content.LoadIntoBufferAsync();
                 var response2 = await _emailHttpClient.PostAsync("", content);
             }
-            return addedOrder;
         }
+        return order;
     }
 
-    private async Task<Dictionary<int, List<string>>> GetCodesFromOrder(OrderDTO orderDto)
+    public async Task<OrderDTO> UpdateOrderAsync(OrderDTO order)
     {
-        var keyDict = new Dictionary<int, List<string>>();
+        var updatedOrder = await _httpClient.PutAsJsonAsync("orders", order);
+        if (updatedOrder.IsSuccessStatusCode)
+        {
+            return order;
+        }
 
+        return null;
+    }
+
+    private async Task GetCodesFromOrder(OrderDTO orderDto)
+    {
         foreach (var product in orderDto.CustomerCart)
         {
-            if (!keyDict.ContainsKey(product.Id))
-            {
-                keyDict.Add(product.Id, new List<string>());
-            }
-
-            var productCode = await GetProductCode(product);
-            keyDict[product.Id].Add(productCode);
+            product.ProductKey = await GetProductCode(product);
         }
-        return keyDict;
+    }
+
+    private async Task<List<ProductInCartDTO>> GetCodesFromCustomerCart(List<ProductInCartDTO> products)
+    {
+        foreach (var product in products)
+        {
+            product.ProductKey = await GetProductCode(product);
+        }
+
+        return products;
     }
 
 
-    private async Task<string> GetProductCode(ProductDTO productDto)
+    private async Task<string> GetProductCode(ProductInCartDTO productDto)
     {
         var response = await _httpClient.GetAsync($"products/code/{productDto.Id}");
 
@@ -95,7 +104,7 @@ public class OrderService : IOrderRepository<OrderDTO>
         }
 
         var result = await response.Content.ReadAsStringAsync();
-        char[] charsToTrim = {'\\', '"'};
+        char[] charsToTrim = { '\\', '"' };
         result = result.Trim(charsToTrim);
 
         return result;
