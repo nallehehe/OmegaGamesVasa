@@ -126,10 +126,10 @@
                                                  @successMessage
                                              </div>
                                          }
-                                        <button type="submit" class="btn btn-primary mt-4 submit-button">
+                                        <button type="submit" class="btn btn-primary mt-4 submit-button" disabled=@isSubmitting>
                                             @if (isSubmitting)
                                             {
-                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                <span class="spinner-border spinner-border-sm" role="status"  aria-hidden="true"></span>
                                                 <span>Slutför köp</span>
                                             }
                                             else
