@@ -1,10 +1,13 @@
 ﻿@page "/Checkout"
 @using OmegaGamesAPI.Services
+@using OmegaGamesClient.Services;
+@using Common.Interface;
 @using Common.DTO
 @using System.ComponentModel.DataAnnotations
 @using OmegaGamesClient.Components.Account.Pages.Manage
 @inject CustomerService customerService
 @inject OrderService orderService
+@inject ICheckoutService klarnaCheckoutService;
 @rendermode InteractiveServer
 
 
@@ -26,6 +29,9 @@
                                     @if (message != null)
                                     {
                                         <h2>@message</h2>
+                                    } else if (klarnaHtmlSnippet != null)
+                                    {
+                                        @klarnaHtmlSnippet
                                     }
                                     else
                                     {
@@ -150,7 +156,7 @@
     private string? successMessage;
     private double price;
     private bool isSubmitting = false;
-    private bool addSuccess = false;
+    private MarkupString? klarnaHtmlSnippet = null;
 
     protected override void OnInitialized()
     {
@@ -185,14 +191,22 @@
             CustomerAddress = "Dummy address",
             CustomerId = 0
         };
-        if (!isSubmitting)
+        isSubmitting = true;
+        var klarnaHtmlSnippetString = await klarnaCheckoutService.CreateOrder(newOrder);
+        var klarnaSuccess = klarnaHtmlSnippetString != null;
+        if (!klarnaSuccess)
         {
-            isSubmitting = true;
-            addSuccess = await orderService.AddOrderAsync(newOrder) != null;
+            errorMessage = "Din order gick inte igenom!";
             isSubmitting = false;
+            await InvokeAsync(StateHasChanged);
+            return;
         }
+        klarnaHtmlSnippet = new MarkupString(await klarnaCheckoutService.CreateOrder(newOrder));
 
-        if (!addSuccess)
+        var addSuccess = await orderService.AddOrderAsync(newOrder) != null;
+        isSubmitting = false;
+
+        if (!addSuccess || !klarnaSuccess)
         {
             errorMessage = "Din order gick inte igenom!";
         }
