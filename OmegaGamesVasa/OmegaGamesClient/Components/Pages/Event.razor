@@ -1,0 +1,59 @@
+﻿@page "/Event"
+@using Common.DTO
+@using Common.Interface
+@using OmegaGamesAPI.Services
+@rendermode @(new InteractiveServerRenderMode(prerender:false))
+@inject IProductService<ProductDTO> ProductService
+
+
+<div class="event-image"></div>
+<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="d-flex flex-column align-items-center">
+        <div class="card mb-3" style="max-width: 840px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="https://teamvasastorage.blob.core.windows.net/images/eventimage-twostiffs_excited_and_happy_pacman_and_ghosts_playing_arcade_ga_3c7ba5a9-dbce-4998-86dc-f44582c29177-2.png" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Get ready to level up your gaming experience at our LAN event! Join us for an adrenaline-fueled day filled with intense competitions, thrilling tournaments, and plenty of opportunities to connect with fellow gamers. Don't miss out on the chance to win amazing prizes and make memories that will last a lifetime. See you there!</p>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-3" style="max-width: 840px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="https://teamvasastorage.blob.core.windows.net/images/eventpage1-twostiffs_a_excited_and_happy_group_of_luchadores_playing_com_ffafbb76-74fe-4725-8a4f-b484cd32de14_1.jpg" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Dive into the world of gaming like never before at our LAN event! Whether you're a hardcore gamer or just looking to have some fun, our event has something for everyone. Compete against friends and rivals, discover new games, and enjoy an epic day of gaming excitement. Get your tickets now!</p>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-3" style="max-width: 840px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="https://teamvasastorage.blob.core.windows.net/images/eventpage2-twostiffs_excited_but_cool_teens_playing_video_games_and_bein_29b1fe0e-9d87-4db1-8fc5-3348311d77df_3.jpg" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Calling all gamers! Don't miss our LAN event, where the gaming community comes together for an unforgettable experience. With exciting tournaments, friendly competitions, and a lively atmosphere, it's the perfect opportunity to showcase your skills and meet fellow gamers. Get ready for an epic day of gaming action!</p>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+}
