@@ -31,6 +31,9 @@ ${invalidPhoneFormatMessage}=    Fel format på telefonnummer
 ${differentEmailsValidationMessage}=    Mailen matchar inte!
 
 ${testEmailAddress}=    test@example.com
+${testFirstName}=    Test
+${testLastName}=    RobotFramework
+${klarnaCheckoutContainer}=    //div[@id='klarna-checkout-container']
     
 
 *** Keywords ***
@@ -87,8 +90,8 @@ the user is on the checkout page
     Go to checkout page
 
 the user enters valid customer information
-    Enter firstname    Testare
-    Enter lastname    Testsson
+    Enter firstname    ${testFirstName}
+    Enter lastname    ${testLastName}
     Enter email    ${testEmailAddress}
     Enter email confirm    ${testEmailAddress}
     Enter phone    070-1740635
@@ -187,3 +190,6 @@ the page should display an error message for different emails
     Wait Until Page Contains Element    ${emailConfirmValidation}
     ${validationMessage}=    Get Text    ${emailConfirmValidation}
     Should Be Equal As Strings    ${validationMessage}    ${differentEmailsValidationMessage}
+
+the page should display klarna checkout page
+    Wait Until Page Contains Element    ${klarnaCheckoutContainer}

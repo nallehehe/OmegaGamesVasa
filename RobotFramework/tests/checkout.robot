@@ -49,7 +49,7 @@ Enter valid checkout information
     And the user is on the checkout page
     When the user enters valid customer information
     And the user finalizes the order
-    Then the page should display an order confirmation
+    Then the page should display klarna checkout page
     And the shopping cart should be empty
 
 Required fields show errors when empty

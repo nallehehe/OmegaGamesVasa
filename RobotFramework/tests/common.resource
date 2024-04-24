@@ -29,7 +29,7 @@ Open browser and maximize
     Go To    ${BASE_URL}
 
 Open incognito browser
-    Open Browser    browser=${BROWSER}    options=add_argument("--incognito");add-argument("--ignore-certificate-errors")
+    Open Browser    browser=${BROWSER}    options=add_argument("--incognito");add_argument("--ignore-certificate-errors")
     Maximize Browser Window
     Go To    ${BASE_URL}
 
