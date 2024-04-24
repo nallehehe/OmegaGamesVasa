@@ -115,3 +115,11 @@ main {
     background-color: green;
     cursor: default;
 }
+
+#navbar:has(.collapse.show) {
+    background-color: #000;
+}
+
+#navbar:has(.collapsing) {
+    background-color: #000;
+}
