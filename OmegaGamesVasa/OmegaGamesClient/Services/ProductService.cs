@@ -24,7 +24,19 @@ public class ProductService : IProductService<ProductDTO>
 
         var result = await response.Content.ReadFromJsonAsync<IEnumerable<ProductDTO>>();
         return result ?? Enumerable.Empty<ProductDTO>();
-    }   
+    }
+    public async Task<IEnumerable<ProductDTO>> GetAllGames()
+    {
+        var response = await _httpClient.GetAsync("products/games");
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return Enumerable.Empty<ProductDTO>();
+        }
+
+        var result = await response.Content.ReadFromJsonAsync<IEnumerable<ProductDTO>>();
+        return result ?? Enumerable.Empty<ProductDTO>();
+    }
 
     public async Task AddProductAsync(ProductDTO product)
     {

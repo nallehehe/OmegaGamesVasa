@@ -7,6 +7,10 @@ using OmegaGamesAPI.Services;
 using OmegaGamesClient.Components;
 using OmegaGamesClient.Components.Account;
 using OmegaGamesClient.Data;
+using OmegaGamesClient.Services;
+using System.Net.Http.Headers;
+using System.Text;
+using OmegaGamesApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,15 +44,31 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
 //TODO: Ändra URI så att det inte kollar mot local host utan mot Azure
-builder.Services.AddHttpClient("OmegaGamesAPI", client => client.BaseAddress = new Uri(builder.Configuration["OmegaGamesAPIBaseAdress"]));
+builder.Services.AddHttpClient("OmegaGamesAPI", client => {
+    client.BaseAddress = new Uri(builder.Configuration["OmegaGamesAPIBaseAdress"]);
+    }).ConfigurePrimaryHttpMessageHandler(() =>
+    {
+        var handler = new HttpClientHandler();
+        if (builder.Environment.IsDevelopment())
+        {
+            handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+        }
+        return handler;
+    });
+
 builder.Services.AddHttpClient("EmailLogicAppClient", client => client.BaseAddress = new Uri(builder.Configuration["EmailLogicAppAddress"]));
-builder.Services.AddHttpClient("HyggligApi",
-    client => client.BaseAddress = new Uri(builder.Configuration["https://sb-checkout.hygglig.com/"]));
+builder.Services.AddHttpClient("KlarnaPlayground", c => {
+    c.BaseAddress = new Uri(builder.Configuration["KlarnaPlayground"]);
+    c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
+        Convert.ToBase64String(Encoding.UTF8.GetBytes($"{builder.Configuration["KlarnaAPICredentials:Username"]}:{builder.Configuration["KlarnaAPICredentials:Password"]}")));
+    });
 
 builder.Services.AddScoped<IProductService<ProductDTO>, ProductService>();
 builder.Services.AddScoped<IOrderRepository<OrderDTO>, OrderService>();
+builder.Services.AddScoped<IEventService<EventDTO>, EventService>();
 builder.Services.AddScoped<CustomerService>();
 builder.Services.AddScoped<OrderService>();
+builder.Services.AddScoped<ICheckoutService, KlarnaCheckoutService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
