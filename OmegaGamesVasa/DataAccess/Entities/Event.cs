@@ -1,12 +1,17 @@
-﻿namespace Common.DTO;
+﻿using System.ComponentModel.DataAnnotations;
+using DataAccess.Entities.Codes;
 
-public class EventDTO
+namespace DataAccess.Entities;
+
+public class Event
 {
+    [Key]
     public int Id { get; set; }
     public string Image { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
-    public int TicketId { get; set; }
+    public Product Ticket { get; set; }
+
 }
