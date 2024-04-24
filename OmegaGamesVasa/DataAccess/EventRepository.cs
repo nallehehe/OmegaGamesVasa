@@ -8,7 +8,7 @@ public class EventRepository(OmegaGamesDbContext _context) : IEventService<Event
 {
     public async Task<IEnumerable<Event>> GetAllEvents()
     {
-        return await _context.Events.ToListAsync();
+        return await _context.Events.Include(e => e.Ticket).ToListAsync();
     }
 
     public async Task AddEventAsync(Event e)

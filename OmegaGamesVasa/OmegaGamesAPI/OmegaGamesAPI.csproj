@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="Endpoints\Events\Post\" />
+    <Folder Include="Endpoints\ProductCodes\Post\AddProductCode\" />
   </ItemGroup>
 
 </Project>

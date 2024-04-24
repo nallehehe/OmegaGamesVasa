@@ -1,18 +1,25 @@
 ﻿@using Common.DTO
+@using OmegaGamesAPI.Services
+@rendermode InteractiveServer
+@inject CustomerService customerService
+
+
+
+
 <div class="card mb-3" style="max-width: 840px;">
     <div class="row g-0">
         <div class="col-md-4">
-            <img src="@Event.Image" class="img-fluid rounded-start img-size" alt="...">
+            <img src="@selectedEvent.Image" class="img-fluid rounded-start img-size" alt="...">
         </div>
         <div class="col-md-8">
             <div class="card-body d-flex flex-column justify-content-between h-100">
                 <div>
-                    <h5 class="card-title">@Event.Title</h5>
-                    <p class="card-text">@Event.Description</p>
-                    <p class="card-text text-end" style="font-weight: bold; margin-bottom: 20px;">@Event.StartDate</p>
+                    <h5 class="card-title">@selectedEvent.Title</h5>
+                    <p class="card-text">@selectedEvent.Description</p>
+                    <p class="card-text text-end" style="font-weight: bold; margin-bottom: 20px;">@selectedEvent.StartDate</p>
                 </div>
                 <div class="mb-3">
-                    <button class="align-bottom align-content-end bottomright btn btn-primary">Boka biljett</button>
+                    <button class="align-bottom align-content-end bottomright btn btn-primary" @onclick="() => AddToCart()">Boka biljett</button>
                 </div>
             </div>
         </div>
@@ -20,5 +27,22 @@
 </div>
 
 @code {
-    [Parameter] public EventDTO Event { get; set; }
+    [Parameter] public EventDTO selectedEvent { get; set; } = new ();
+
+    private async Task AddToCart()
+    {
+        var productInCart = new ProductInCartDTO()
+            {
+                AgeRestriction = selectedEvent.Ticket.AgeRestriction,
+                Category = selectedEvent.Ticket.Category,
+                Description = selectedEvent.Ticket.Description,
+                Genre = selectedEvent.Ticket.Genre,
+                Id = selectedEvent.Ticket.Id,
+                Image = selectedEvent.Ticket.Image,
+                Price = selectedEvent.Ticket.Price,
+                ProductKey = "",
+                ProductName = selectedEvent.Ticket.ProductName
+            };
+        await customerService.AddToCart(productInCart);
+    }
 }
