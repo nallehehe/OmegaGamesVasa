@@ -10,6 +10,7 @@ using OmegaGamesClient.Data;
 using OmegaGamesClient.Services;
 using System.Net.Http.Headers;
 using System.Text;
+using OmegaGamesApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,6 +65,7 @@ builder.Services.AddHttpClient("KlarnaPlayground", c => {
 
 builder.Services.AddScoped<IProductService<ProductDTO>, ProductService>();
 builder.Services.AddScoped<IOrderRepository<OrderDTO>, OrderService>();
+builder.Services.AddScoped<IEventService<EventDTO>, EventService>();
 builder.Services.AddScoped<CustomerService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<ICheckoutService, KlarnaCheckoutService>();

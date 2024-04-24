@@ -42,7 +42,7 @@
                             <span>Leveransadress: @order.CustomerAddress</span>
                         </div>
 
-                        @foreach (var product in order.CustomerCart)
+                        @foreach (var product in order.CustomerCart.DistinctBy(p => p.Id))
                         {
                             <li class="d-flex list-group-item">
                                 <div class="col">
@@ -67,7 +67,7 @@
                     </ul>
                 </div>
                 <div class="card-footer text-muted text-center">
-                    Orderdatum: @order.OrderDate.ToString(CultureInfo.CurrentCulture)
+                    Orderdatum: @order.OrderDate.ToLocalTime().ToString(CultureInfo.CurrentCulture)
                 </div>
             </div>
         }

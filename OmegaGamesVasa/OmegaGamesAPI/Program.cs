@@ -24,6 +24,7 @@ builder.Services.AddDbContext<OmegaGamesDbContext>(options => options.UseSqlServ
 
 builder.Services.AddScoped<IProductService<Product>, ProductRepository>();
 builder.Services.AddScoped<IProductCodeService<ProductCode>, ProductCodeRepository>();
+builder.Services.AddScoped<IEventService<Event>, EventRepository>();
 
 builder.Services.AddFastEndpoints();
 
