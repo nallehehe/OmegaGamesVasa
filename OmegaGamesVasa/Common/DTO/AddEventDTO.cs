@@ -1,6 +1,6 @@
 ﻿namespace Common.DTO;
 
-public class EventDTO
+public class AddEventDTO
 {
     public int Id { get; set; }
     public string Image { get; set; }
@@ -8,5 +8,5 @@ public class EventDTO
     public string Description { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
-    public int TicketId { get; set; }
+    public double Price { get; set; }
 }

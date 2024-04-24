@@ -12,6 +12,11 @@ public class ProductRepository(OmegaGamesDbContext _context) : IProductService<P
     {
         return await _context.Products.ToListAsync();
     }
+    public async Task<IEnumerable<Product>> GetAllGames()
+    {
+        var games = await _context.Products.Where(g => g.Category == "Games").ToListAsync();
+        return games;
+    }
 
     public async Task AddProductAsync(Product product)
     {
