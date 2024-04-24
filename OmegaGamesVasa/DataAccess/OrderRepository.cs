@@ -3,6 +3,7 @@ using Common.Interface;
 using DataAccess.Entities;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace DataAccess;
 
