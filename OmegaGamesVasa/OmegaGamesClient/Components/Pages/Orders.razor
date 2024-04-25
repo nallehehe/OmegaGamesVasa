@@ -18,17 +18,32 @@
         {
             <div class="card mt-1 card-opacity order-card">
                 <div class="d-flex row card-body text-center justify-content-between align-items-center">
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                        <h6>Kundnummer: @order.CustomerId</h6>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 align-items-center">
+                        <h6 style="margin: 0;">Kundnummer: @order.CustomerId</h6>
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 align-items-center">
                         <h6>Ordernummer: @order.Id</h6>
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div class="col-lg-1 col-md-4 col-sm-4 col-xs-4 align-items-center">
+                        @if (order.OrderStatus == "ORDER_CREATED")
+                        {
+                            <span class="badge bg-warning text-dark">Skapad</span>
+                        }
+                        else if (order.OrderStatus == "ORDER_CONFIRMED")
+                        {
+                            <span class="badge bg-success">Betalad</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Ingen status</span>
+                        }
+                    </div>
+                    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
                         <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="@($"#collapseExample_{order.Id}")" aria-expanded="false" aria-controls="collapseExample">
                             Orderdetaljer
                         </button>
                     </div>
+                    
                 </div>
                 <div class="collapse" id="@($"collapseExample_{order.Id}")">
                     <ul class="card-body border-top">
