@@ -106,7 +106,7 @@ the product should have an decremented amount
 
 Clear Cart
     Go to shopping cart page
-    ${emptyCartCount}=    SeleniumLibrary.Get Element Count    //p[text()='Your cart is empty']
+    ${emptyCartCount}=    SeleniumLibrary.Get Element Count    //p[text()='Kundvagnen är tom!']
     Return From Keyword If    ${emptyCartCount} > 0
     Wait Until Page Contains Element    ${emptyCartButton}
     Click Button    ${emptyCartButton}
