@@ -4,6 +4,15 @@
 @using OmegaGamesClient.Components.Layout
 @rendermode InteractiveServer
 @inject CustomerService customerService
+@inject IJSRuntime JSRuntime
+
+<script>
+    window.showBootstrapToast = function () {
+        var toast = document.getElementById('myToast');
+        var bsToast = new bootstrap.Toast(toast);
+        bsToast.show();
+    }
+</script>
 
 <div class="card shadow-sm col-md-3 mb-4 col-sm-6 m-2 product-card card-opacity">
     <img class="card-img-top pt-3 img-size" src="@Product.Image" alt="@Product.ProductName">
@@ -16,6 +25,10 @@
         <button type="button" class="btn btn-primary add-to-cart-button" @onclick="() => AddToCart()">Köp nu</button>
     </div>
 </div>
+
+
+
+
 
 @code {
 
@@ -38,6 +51,8 @@
             ProductName = Product.ProductName
         };
         await customerService.AddToCart(productInCart);
+
+        await JSRuntime.InvokeVoidAsync("showBootstrapToast");
     }
 
     protected override void OnInitialized()
