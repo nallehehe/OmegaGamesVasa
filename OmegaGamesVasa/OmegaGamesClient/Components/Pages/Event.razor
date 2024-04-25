@@ -9,9 +9,13 @@
 <div class="event-image"></div>
 <div class="container d-flex justify-content-center align-items-center" >
     <div class="d-flex flex-column align-items-center" style="margin-top: 7rem;">
-        @foreach (var e in Events)
+        
+        @if (Events.Count > 0)
         {
-            <EventElement Event=e />
+            @foreach (var e in Events)
+            {
+                <EventElement selectedEvent=e />
+            }
         }
     </div>
 </div>
