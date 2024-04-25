@@ -151,6 +151,55 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "GetAllEvents",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body is array\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Event contains correct fields\", function () {\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('id');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('image');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('title');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('description');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('startDate');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('endDate');\r",
+									"    pm.expect(pm.response.json()[0]).to.have.property('ticket');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseAddress}}/events",
+							"host": [
+								"{{baseAddress}}"
+							],
+							"path": [
+								"events"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
@@ -187,8 +236,7 @@
 		{
 			"key": "baseAddress",
 			"value": "http://localhost:5137",
-			"type": "string",
-			"disabled": true
+			"type": "string"
 		}
 	]
 }

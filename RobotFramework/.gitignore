@@ -2,3 +2,6 @@
 *.html
 *.log
 *.png
+*.json
+results/
+allure-report/
