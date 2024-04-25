@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\Pages\EventElement.razor" />
     <_ContentIncludedByDefault Remove="Components\Pages\KlarnaOrder.razor" />
     <_ContentIncludedByDefault Remove="Components\Pages\Orders.razor" />
     <_ContentIncludedByDefault Remove="Components\Pages\ShoppingCart.razor" />
@@ -34,6 +35,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Components\Pages\KlarnaOrder.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\Pages\EventElement.razor" />
   </ItemGroup>
 
 </Project>

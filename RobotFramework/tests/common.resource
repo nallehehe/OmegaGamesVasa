@@ -23,13 +23,13 @@ ${shoppingCartImage}    //div[contains(@class, 'shopping-cart-image')]
 
 *** Keywords ***
 Open browser and maximize
-    Open Browser    browser=${BROWSER}
+    Open Browser    browser=${BROWSER}    options=add_argument("--ignore-certificate-errors")
     Maximize Browser Window
     Set Selenium Speed    0.1
     Go To    ${BASE_URL}
 
 Open incognito browser
-    Open Browser    browser=${BROWSER}    options=add_argument("--incognito")
+    Open Browser    browser=${BROWSER}    options=add_argument("--incognito");add_argument("--ignore-certificate-errors")
     Maximize Browser Window
     Go To    ${BASE_URL}
 
