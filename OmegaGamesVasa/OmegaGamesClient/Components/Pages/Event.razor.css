@@ -21,3 +21,9 @@
     min-height: 250px;
     object-fit: cover;
 }
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050; /* Adjust as needed to ensure it appears on top */
+}

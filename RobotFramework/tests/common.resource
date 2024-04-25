@@ -5,6 +5,7 @@ Resource    checkout.resource
 Resource    products.resource
 Resource    adminLogin.resource
 Resource    orderPage.resource
+Resource    events.resource
 
 *** Variables ***
 ${SLEEP_TIME}=    800ms
@@ -57,6 +58,10 @@ Go to shopping cart page
 
 Go to admin login page
     Go To    ${BASE_URL}/auth
+    Sleep    ${SLEEP_TIME}
+
+Go To events page
+    Click Link    /Event
     Sleep    ${SLEEP_TIME}
 
 the user is on the products page
