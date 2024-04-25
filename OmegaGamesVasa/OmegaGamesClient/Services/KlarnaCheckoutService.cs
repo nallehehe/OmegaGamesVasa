@@ -85,6 +85,7 @@ namespace OmegaGamesClient.Services
             
             if (!response.IsSuccessStatusCode)
             {
+                _logger.LogWarning($"Error when sending order request to klarna: {response.ReasonPhrase}");
                 return null;
             } else
             {
