@@ -10,7 +10,7 @@ namespace Common.Interface
 {
     public interface ICheckoutService
     {
-        public Task<string> CreateOrder(OrderDTO order);
+        public Task<KlarnaResponseDTO> CreateOrder(OrderDTO order);
         public Task<KlarnaOrderDTO> GetOrder(string order_id);
     }
 }

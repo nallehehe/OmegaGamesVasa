@@ -25,7 +25,7 @@ namespace OmegaGamesClient.Services
             return Convert.ToInt32(totalAmount - (totalAmount * changeFactor));
         }
 
-        public async Task<string> CreateOrder(OrderDTO order)
+        public async Task<KlarnaResponseDTO> CreateOrder(OrderDTO order)
         {
             var baseUrl = _navigationManager.BaseUri;
             var apiUrl = new Uri(_configuration["OmegaGamesAPIBaseAdress"]);
@@ -90,8 +90,7 @@ namespace OmegaGamesClient.Services
             {
                 var result = await response.Content.ReadAsStringAsync();
                 var responseDTO = await response.Content.ReadFromJsonAsync<KlarnaResponseDTO>();
-                var htmlSnippet = responseDTO.html_snippet;
-                return htmlSnippet;
+                return responseDTO;
             }
         }
 
@@ -99,6 +98,10 @@ namespace OmegaGamesClient.Services
         {
             KlarnaOrderDTO order = new KlarnaOrderDTO();
             var response = await _httpClient.GetAsync($"/checkout/v3/orders/{order_id}");
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
             var result = await response.Content.ReadFromJsonAsync<KlarnaOrderDTO>();
 
             return result;

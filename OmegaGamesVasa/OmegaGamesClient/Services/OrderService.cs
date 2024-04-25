@@ -40,29 +40,38 @@ public class OrderService : IOrderRepository<OrderDTO>
 
     }
 
-    public async Task<OrderDTO> AddOrderAsync(OrderDTO order)
+    public async Task<OrderDTO> ConfirmOrderAsync(OrderDTO order)
     {
+        // TODO: Mark order as confirmed in mongodb
+        order.OrderStatus = "ORDER_CONFIRMED";
         var productsWithCodes = await GetCodesFromCustomerCart(order.CustomerCart);
         order.CustomerCart = productsWithCodes;
+        var updatedOrder = await UpdateOrderAsync(order);
+
+        var emailDisabled = _configuration.GetValue<bool>("DisableLogicApp");
+        var customerEmail = order.CustomerEmail;
+        if (!emailDisabled && customerEmail != "test@example.com")
+        {
+            var content = JsonContent.Create(order);
+            await content.LoadIntoBufferAsync();
+            var response2 = await _emailHttpClient.PostAsync("", content);
+        }
+
+        return order;
+    }
+
+    public async Task<OrderDTO> AddOrderAsync(OrderDTO order)
+    {
+
         var response = await _httpClient.PostAsJsonAsync("orders", order);
 
         var addedOrder = await response.Content.ReadFromJsonAsync<OrderDTO>();
 
-        if (!response.IsSuccessStatusCode)
+        if (!response.IsSuccessStatusCode || addedOrder == null)
         {
             return null;
         }
-        else
-        {
-            var emailDisabled = _configuration.GetValue<bool>("DisableLogicApp");
-            var customerEmail = addedOrder.CustomerEmail;
-            if (!emailDisabled && customerEmail != "test@example.com")
-            {
-                var content = JsonContent.Create(addedOrder);
-                await content.LoadIntoBufferAsync();
-                var response2 = await _emailHttpClient.PostAsync("", content);
-            }
-        }
+
         return addedOrder;
     }
 
@@ -110,6 +119,13 @@ public class OrderService : IOrderRepository<OrderDTO>
         result = result.Trim(charsToTrim);
 
         return result;
+    }
+
+    public async Task<OrderDTO> GetOrderByExternalRefAsync(string externalRef)
+    {
+        var orders = await GetAllOrders();
+        var foundOrder = orders.FirstOrDefault(o => o.ExternalRef == externalRef);
+        return foundOrder;
     }
 
 }
