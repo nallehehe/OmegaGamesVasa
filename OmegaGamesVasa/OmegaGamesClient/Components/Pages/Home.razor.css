@@ -123,24 +123,24 @@ h3 {
     overflow: hidden;
 }
 
-    .carousel-caption h5 {
-        font-weight: bold;
-        font-size: 2vw;
-        padding: 2vw;
-    }
+.carousel-caption h5 {
+    font-weight: bold;
+    font-size: 2vw;
+    padding: 2vw;
+}
 
-    .carousel-caption p {
-        font-size: 1vw;
-    }
+.carousel-caption p {
+    font-size: 1vw;
+}
 
-    .carousel-caption span {
-        font-size: 1vw;
-    }
+.carousel-caption span {
+    font-size: 1vw;
+}
 
-    .carousel-caption .btn {
-        position: absolute;
-        bottom: 1vw;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 1vw;
-    }
+.carousel-caption .btn {
+    position: absolute;
+    bottom: 1vw;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1vw;
+}
