@@ -136,6 +136,7 @@ h3 {
 
 .carousel-item img {
     object-fit: cover;
+    height: 100vh;
 }
 
 .carousel-caption {
