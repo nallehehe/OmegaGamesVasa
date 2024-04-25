@@ -36,22 +36,22 @@
                     <ul class="navbar-nav ms-auto me-5">
                         <AuthorizeView>
                             <Authorized>
-                                <li class="nav-item">
+                                <li class="nav-item mt-1">
                                     <div class="btn btn-success active-user">
                                         Administrator<span></span>
                                     </div>
                                 </li>
-                                <li>
+                                <li class="mt-1">
                                     <NavLink class="nav-link text-white" href="/Logout" Match="NavLinkMatch.Prefix">Logga ut</NavLink>
                                 </li>
                             </Authorized>
                             <NotAuthorized>
-                                <li class="nav-item">
+                                <li class="nav-item mt-1">
                                     <NavLink class="nav-link text-white" href="/Account/Login" Match="NavLinkMatch.Prefix">Logga in</NavLink>
                                 </li>
                             </NotAuthorized>
                         </AuthorizeView>
-                        <li class="nav-item">
+                        <li class="nav-item mt-1">
                             <a class="nav-link text-white" href="/ShoppingCart" Match="NavLinkMatch.Prefix">
                                 Kundvagn
                             </a>
