@@ -82,7 +82,7 @@
                     </ul>
                 </div>
                 <div class="card-footer text-muted text-center">
-                    Orderdatum: @order.OrderDate.ToLocalTime().ToString(CultureInfo.CurrentCulture)
+                    Orderdatum: @order.OrderDate.ToLocalTime().ToString("yyyy-MM-dd HH:mm")
                 </div>
             </div>
         }

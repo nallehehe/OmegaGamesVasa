@@ -3,7 +3,15 @@
 @using System.Globalization
 @rendermode InteractiveServer
 @inject CustomerService customerService
+@inject IJSRuntime JSRuntime
 
+<script>
+    window.showBootstrapToast = function () {
+        var toast = document.getElementById('myToast');
+        var bsToast = new bootstrap.Toast(toast);
+        bsToast.show();
+    }
+</script>
 
 
 
@@ -17,7 +25,7 @@
                 <div>
                     <h5 class="card-title event-title">@selectedEvent.Title</h5>
                     <p class="card-text">@selectedEvent.Description</p>
-                    <p class="card-text text-end" style="font-weight: bold; margin-bottom: 0px; ">Datum: @Date.ToString(CultureInfo.CurrentCulture)</p>
+                    <p class="card-text text-end" style="font-weight: bold; margin-bottom: 0px; ">Datum: @selectedEvent.StartDate.ToLocalTime().ToString("yyyy-MM-dd")</p>
                     <p class="card-text text-end" style="font-weight: bold; margin-bottom: 20px; ">Klockan: @Time</p>
                 </div>
                 <div class="mb-3">
@@ -48,6 +56,8 @@
                 ProductName = selectedEvent.Ticket.ProductName
             };
         await customerService.AddToCart(productInCart);
+
+        await JSRuntime.InvokeVoidAsync("showBootstrapToast");
     }
 
     protected override void OnInitialized()
