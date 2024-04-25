@@ -17,7 +17,7 @@
                 <div>
                     <h5 class="card-title">@selectedEvent.Title</h5>
                     <p class="card-text">@selectedEvent.Description</p>
-                    <p class="card-text text-end" style="font-weight: bold; margin-bottom: 0px; ">Datum: @Date.ToString(CultureInfo.CurrentCulture)</p>
+                    <p class="card-text text-end" style="font-weight: bold; margin-bottom: 0px; ">Datum: @selectedEvent.StartDate.ToLocalTime().ToString("yyyy-MM-dd")</p>
                     <p class="card-text text-end" style="font-weight: bold; margin-bottom: 20px; ">Klockan: @Time</p>
                 </div>
                 <div class="mb-3">
