@@ -3,7 +3,15 @@
 @using System.Globalization
 @rendermode InteractiveServer
 @inject CustomerService customerService
+@inject IJSRuntime JSRuntime
 
+<script>
+    window.showBootstrapToast = function () {
+        var toast = document.getElementById('myToast');
+        var bsToast = new bootstrap.Toast(toast);
+        bsToast.show();
+    }
+</script>
 
 
 
@@ -48,6 +56,8 @@
                 ProductName = selectedEvent.Ticket.ProductName
             };
         await customerService.AddToCart(productInCart);
+
+        await JSRuntime.InvokeVoidAsync("showBootstrapToast");
     }
 
     protected override void OnInitialized()
