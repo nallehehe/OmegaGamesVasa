@@ -10,19 +10,19 @@
     <main>
         <nav class="navbar navbar-position fixed-top fw-bold navbar-dark navbar-expand-lg" id="navbar">
             <div class="container-fluid">
-                <NavLink class="navbar-brand me-auto fs-2" href="/">Omega Games</NavLink>
+                <NavLink class="navbar-brand" href="/"> <img src="https://teamvasastorage.blob.core.windows.net/images/Logo_small_white.png" class="logo-image"/></NavLink>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#top-navbar" aria-controls="top-navbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="top-navbar">
-                    <ul class="navbar-nav justify-content-center flex-fill fs-2">
-                        <li class="nav-item">
+                    <ul class="navbar-nav justify-content-center flex-fill fs-2 col-md-auto">
+                        <li class="nav-item mt-1">
                             <a class="nav-link text-white" aria-current="page" href="/" Match="NavLinkMatch.All">Hem</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item mt-1">
                             <a class="nav-link text-white" href="/ProductPage" Match="NavLinkMatch.Prefix">Produkter</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item mt-1">
                             <a class="nav-link text-white" href="/Event" Match="NavLinkMatch.Prefix">Events</a>
                         </li>
                         <AuthorizeView Roles="Admin">
@@ -85,7 +85,7 @@
 
 <style>
     .navbar-scrolled {
-        background-color: black;
+        background-color: #3C454B;
     }
 </style>
 

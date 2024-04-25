@@ -6,7 +6,7 @@
 
 
 
-<div class="card mb-3" style="max-width: 840px;">
+<div class="card mb-3 event-opacity" style="max-width: 840px;">
     <div class="row g-0">
         <div class="col-md-4">
             <img src="@selectedEvent.Image" class="img-fluid rounded-start img-size" alt="...">
@@ -16,7 +16,8 @@
                 <div>
                     <h5 class="card-title">@selectedEvent.Title</h5>
                     <p class="card-text">@selectedEvent.Description</p>
-                    <p class="card-text text-end" style="font-weight: bold; margin-bottom: 20px;">@selectedEvent.StartDate</p>
+                    <p class="card-text text-end" style="font-weight: bold; margin-bottom: 0px; ">Datum: @Date</p>
+                    <p class="card-text text-end" style="font-weight: bold; margin-bottom: 20px; ">Klockan: @Time</p>
                 </div>
                 <div class="mb-3">
                     <button class="align-bottom align-content-end bottomright btn btn-primary" @onclick="() => AddToCart()">Boka biljett</button>
@@ -28,6 +29,8 @@
 
 @code {
     [Parameter] public EventDTO selectedEvent { get; set; } = new ();
+    public string Date { get; set; }
+    public string Time { get; set; }
 
     private async Task AddToCart()
     {
@@ -44,5 +47,12 @@
                 ProductName = selectedEvent.Ticket.ProductName
             };
         await customerService.AddToCart(productInCart);
+    }
+
+    protected override void OnInitialized()
+    {
+        Date = selectedEvent.StartDate.ToShortDateString();
+        Time = selectedEvent.StartDate.ToShortTimeString();
+        base.OnInitialized();
     }
 }

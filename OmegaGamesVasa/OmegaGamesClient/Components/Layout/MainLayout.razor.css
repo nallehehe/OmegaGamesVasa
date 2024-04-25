@@ -8,6 +8,14 @@ main {
     flex: 1;
 }
 
+.nav-item{
+     bottom: 7rem;
+}
+
+.logo-image{
+    max-width: 15rem;
+}
+
 .navbar-position {
     z-index: 100;
 }
