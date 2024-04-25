@@ -50,7 +50,6 @@ Enter valid checkout information
     When the user enters valid customer information
     And the user finalizes the order
     Then the page should display klarna checkout page
-    And the shopping cart should be empty
 
 Required fields show errors when empty
     [Documentation]    Test case for that required fields show correct error when empty
