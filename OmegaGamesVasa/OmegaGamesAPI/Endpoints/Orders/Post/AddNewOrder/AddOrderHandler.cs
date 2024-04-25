@@ -27,7 +27,9 @@ public class AddOrderHandler(IOrderRepository<Order> repo) : Endpoint<OrderDTO, 
             CustomerFirstName = req.CustomerFirstName,
             CustomerId = req.CustomerId,
             CustomerLastName = req.CustomerLastName,
-            CustomerPhone = req.CustomerPhone
+            CustomerPhone = req.CustomerPhone,
+            ExternalRef = req.ExternalRef,
+            OrderStatus = req.OrderStatus,
         };
 
         foreach (var product in req.CustomerCart)

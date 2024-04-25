@@ -1,21 +1,29 @@
 ﻿@page "/OrderConfirm"
+@using Common.DTO
 @using Common.DTO.Klarna
 @using Common.Interface
+@using OmegaGamesAPI.Services
 @inject ICheckoutService KlarnaCheckoutService
+@inject OrderService orderService;
 @rendermode @(new InteractiveServerRenderMode(prerender:false))
 @inject NavigationManager NavigationManager
+@inject CustomerService customerService;
 
 <div class="shopping-cart-image">
 </div>
 <section class="h-100 h-custom checkout-opacity pt-5">
 <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
-        <div>
+            @if (errorMessage != null && errorMessage.Length > 0)
+            {
+                <div class="alert alert-danger">@errorMessage</div>
+            }
+            <div>
         @if (klarnaHtmlSnippet != null)
         {
             @klarnaHtmlSnippet
         }
-            </div>
+        </div>
     </div>
 </div>
 </section>
@@ -25,14 +33,42 @@
 
     [SupplyParameterFromQuery(Name = "order_id")] public string? OrderId { get; set; }
 
-    public KlarnaOrderDTO KlarnaOrder { get; set; }
+    public KlarnaOrderDTO? KlarnaOrder { get; set; }
+    public OrderDTO? order { get; set; }
+    public string? errorMessage;
     private MarkupString? klarnaHtmlSnippet = null;
+    private CustomerDTO? newCustomer { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        if (OrderId == null)
+        {
+            errorMessage = "Felaktigt order-id.";
+            await InvokeAsync(StateHasChanged);
+            return;
+        }
+        newCustomer = customerService.Customer;
         KlarnaOrder = await KlarnaCheckoutService.GetOrder(OrderId);
+        if (KlarnaOrder == null)
+        {
+            errorMessage = $"Kunde inte hitta order från Klarna med id {OrderId}";
+            await InvokeAsync(StateHasChanged);
+            return;
+        }
+        order = await orderService.GetOrderByExternalRefAsync(OrderId);
+        if (order == null)
+        {
+            errorMessage = $"Kunde inte hitta order med id {OrderId}";
+            await InvokeAsync(StateHasChanged);
+            return;
+        }
 
+        if (order.OrderStatus != "ORDER_CONFIRMED")
+        {
+            await orderService.ConfirmOrderAsync(order);
+        }
         klarnaHtmlSnippet = new MarkupString(KlarnaOrder.html_snippet);
         await InvokeAsync(StateHasChanged);
+        
     }
 }

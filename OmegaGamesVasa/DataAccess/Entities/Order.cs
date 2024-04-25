@@ -19,4 +19,6 @@ public class Order
     public string CustomerPhone { get; set; }
     public DateTime OrderDate { get; set; }
     public double TotalPrice { get; set; }
+    public string OrderStatus {  get; set; }
+    public string ExternalRef {  get; set; }
 }

@@ -21,13 +21,16 @@ public class AddCodesToOrderHandler(IOrderRepository<Order> repo) : Endpoint<Ord
     {
         var newOrder = new Order
         {
+            Id = req.Id,
             CustomerAddress = req.CustomerAddress,
             CustomerEmail = req.CustomerEmail,
             OrderDate = req.OrderDate,
             CustomerFirstName = req.CustomerFirstName,
             CustomerId = req.CustomerId,
             CustomerLastName = req.CustomerLastName,
-            CustomerPhone = req.CustomerPhone
+            CustomerPhone = req.CustomerPhone,
+            ExternalRef = req.ExternalRef,
+            OrderStatus = req.OrderStatus
         };
 
         foreach (var product in req.CustomerCart)
